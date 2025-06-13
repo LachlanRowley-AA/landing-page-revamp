@@ -7,8 +7,8 @@ import { GoogleAnalytics} from '@next/third-parties/google'
 
 
 export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
+  title: 'Asset Alley',
+  description: 'Power your business with Asset Alley!',
 };
 
 export default function RootLayout({ children }: { children: any }) {
