@@ -36,7 +36,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: <IconBuilding size={28} stroke={1.5} />,
-    title: 'Use for Design',
+    title: 'Use for Branding & Design',
     description: 'Works with all websites — no restrictions',
   },
   {

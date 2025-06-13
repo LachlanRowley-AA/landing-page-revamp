@@ -65,10 +65,10 @@ const ExampleCard = ({
       }}
     >
       <Stack align="center" gap="xs">
-        <Text size="sm" c="rgba(255, 255, 255, 0.7)" ta="center" fw={500}>
+        <Text size="xl" c="rgba(255, 255, 255, 0.7)" ta="center" fw={500}>
           {title}
         </Text>
-        <Text fz={{base: rem(24), md: rem(36)}} fw="bold" c={highlight ? "#01E194" : "white"} ta="center">
+        <Text fz={{base: rem(24), md: rem(54)}} fw="bold" c={highlight ? "#01E194" : "white"} ta="center">
           {amount}
         </Text>
         {period && (
@@ -107,20 +107,20 @@ const CalculationBreakdown = () => {
             >
               Loan Example
             </Badge>
-            <Text size="md" c="rgba(255, 255, 255, 0.7)" mb="xs">
+            <Text size="xl" c="rgba(255, 255, 255, 0.7)" mb="xs">
               Here's what your repayments would look like for a
             </Text>
-            <Text size={rem(36)} fw="bold" c="white">
+            <Text size={rem(56)} fw="bold" c="white">
               ${EXAMPLE_AMOUNT.toLocaleString()} loan
             </Text>
-            <Text size="xs" c="rgba(255, 255, 255, 0.6)" mt="xs">
+            {/* <Text size="xs" c="rgba(255, 255, 255, 0.6)" mt="xs">
               Paid off in 3 months
-            </Text>
+            </Text> */}
           </Box>
         </motion.div>
 
         <Grid gutter="md">
-          <Grid.Col span={6}>
+          <Grid.Col span={12}>
             <ExampleCard 
               title="Weekly Repayment"
               amount={`$${weeklyRepayment.toFixed(2)}`}
@@ -135,13 +135,13 @@ const CalculationBreakdown = () => {
               period="12 payments per year"
             />
           </Grid.Col> */}
-          <Grid.Col span={6}>
+          {/* <Grid.Col span={6}>
             <ExampleCard 
               title="Total Charges (incl. interest)"
               amount="$1,176.26"
               period=""
             />
-          </Grid.Col>
+          </Grid.Col> */}
 
         </Grid>
 
@@ -194,7 +194,7 @@ export const Calculator = () => {
       bg="black"
       py="xl"
       px={{ base: "xs", md: "xl" }}
-      style={{ minHeight: "80vh" }}
+      style={{ minHeight: "70vh" }}
     >
       <Container size="lg" ta="center">
         <motion.div
