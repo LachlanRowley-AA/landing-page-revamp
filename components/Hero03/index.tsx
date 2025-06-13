@@ -21,6 +21,7 @@ import { motion } from 'motion/react';
 import NextImage from 'next/image';
 import classes from './index.module.css';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 type ImageItem = { src: string; alt: string };
 
@@ -62,6 +63,8 @@ export const Hero03 = ({
             style={{ zIndex: 1 }}
           >
             {badge && (
+              <Suspense>
+
               <Image
                 variant="default"
                 p="md"
@@ -70,6 +73,8 @@ export const Hero03 = ({
                 mb="lg"
                 style={{ textTransform: 'none' }}
               />
+              </Suspense>
+
             )}
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}

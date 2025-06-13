@@ -7,11 +7,12 @@ import { Calculator } from '@/components/Calculator/Calculator';
 import { Footer01 } from '@/components/footer/footer';
 import { FAQ } from '@/components/FAQ/Faq';
 import { ContactForm } from '@/components/Contact/Contact';
+import { Suspense } from 'react';
 
 export default function HomePage() {
   return (
     <>
-      <Hero03 />
+      <Suspense><Hero03 /></Suspense>
       <Feature02 />
       <Calculator />
       <UseCases />
