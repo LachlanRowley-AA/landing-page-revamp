@@ -1,4 +1,4 @@
-import { Hero03 } from '@/components/Hero03/index';
+import { Hero03 } from '@/components/Hero03';
 import { Feature02 } from '@/components/feature-02';
 import { Calculator } from '@/components/Calculator/Calculator';
 import { Footer01 } from '@/components/footer/footer';
@@ -9,19 +9,21 @@ import { UseCases as Benefits} from '@/components/Benefits/Benefits';
 import { audienceContent, AudienceKey } from '@/lib/audienceContent';
 
 
-export default function HomePage( {params} : { params: { audience: string}}) {
+export default async function HomePage(props: { params: Promise<{ audience: string, partner: string}>}) {
+  const params = await props.params;
   const audience = params.audience as AudienceKey
+  const partner = params.partner
 
   const content = audienceContent[audience];
   return (
     <>
-      <Suspense><Hero03 /></Suspense>
+      <Suspense><Hero03 partner={partner}/></Suspense>
       <Feature02 features={content?.features}/>
       <Calculator />
       {/* <UseCases /> */}
       <Suspense><Benefits /></Suspense>
       <FAQ />
-      <ContactForm />
+      <ContactForm referrer={partner} />
       <Footer01 />
     </>
   );

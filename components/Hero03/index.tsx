@@ -32,12 +32,14 @@ type Hero03Props = ContainerProps & {
   description?: string;
   rating?: number;
   ratingLabel?: string;
+  partner?: string;
 };
 
 export const Hero03 = ({
   badge = 'Build faster with AI-powered tools',
   title = 'Pay Over Time \n Not Upfont',
   description = 'No financials required, Approvals in 24-28 hours. Credit score safe ',
+  partner,
   ...containerProps
 }: Hero03Props) => {
   const searchParams = useSearchParams();
@@ -69,7 +71,7 @@ export const Hero03 = ({
                 variant="default"
                 p="md"
                 bg="var(--mantine-color-body)"
-                src={`/${search || 'default'}/logo_black.png`}
+                src={`/${partner || 'default'}/logo_black.png`}
                 mb="lg"
                 style={{ textTransform: 'none' }}
               />

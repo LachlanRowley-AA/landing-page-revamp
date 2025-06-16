@@ -75,7 +75,11 @@ const formFields = [
   }
 ];
 
-export const ContactForm = () => {
+interface ContactProps {
+  referrer?: string
+}
+
+export const ContactForm = ({referrer} : ContactProps) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
   
@@ -114,7 +118,8 @@ export const ContactForm = () => {
           email: formData.email,
           businessName: formData.businessName,
           price: formData.price,
-          phoneNumber: formData.phoneNumber // Assuming phone number maps to amount
+          phoneNumber: formData.phoneNumber,
+          referrer
         }),
       });
 

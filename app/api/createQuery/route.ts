@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY! // Usually it's SUPABASE_ANON_KEY, not SUPABASE_KEY
+    process.env.SUPABASE_KEY!
 )
 
 export async function POST(request: NextRequest) {
@@ -12,10 +12,10 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
         
-        const { name, email, price, businessName, phoneNumber } = body
+        const { name, email, price, businessName, phoneNumber, referrer } = body
         
         const { data, error } = await supabase
-            .from('materials_enquiries')
+            .from('cobrand_enquiries_test')
             .insert([
                 {
                     name,
@@ -23,7 +23,8 @@ export async function POST(request: NextRequest) {
                     price,
                     business_name: businessName,
                     created_at: new Date().toISOString(),
-                    phone_number: phoneNumber
+                    phone_number: phoneNumber,
+                    referrer
                 }
             ])
         

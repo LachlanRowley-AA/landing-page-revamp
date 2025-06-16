@@ -1,6 +1,3 @@
-import { UseCases } from '@/components/UseCases/Usecases';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-import { Welcome } from '../components/Welcome/Welcome';
 import { Hero03 } from '@/components/Hero03/index';
 import { Feature02 } from '@/components/feature-02';
 import { Calculator } from '@/components/Calculator/Calculator';
@@ -12,7 +9,8 @@ import { UseCases as Benefits} from '@/components/Benefits/Benefits';
 import { audienceContent, AudienceKey } from '@/lib/audienceContent';
 
 
-export default function HomePage( {params} : { params: { audience: string}}) {
+export default async function HomePage(props: { params: Promise<{ audience: string}>}) {
+  const params = await props.params;
   const audience = params.audience as AudienceKey
 
   const content = audienceContent[audience];
