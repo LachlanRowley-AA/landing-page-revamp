@@ -16,12 +16,9 @@ import {
   TextInput,
   Button
 } from '@mantine/core';
-import { IconArrowRight } from '@tabler/icons-react';
 import { motion } from 'motion/react';
-import NextImage from 'next/image';
 import classes from './index.module.css';
-import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 type ImageItem = { src: string; alt: string };
 
@@ -42,19 +39,73 @@ export const Hero03 = ({
   partner,
   ...containerProps
 }: Hero03Props) => {
-  const searchParams = useSearchParams();
-  const search = searchParams.get('p');
+  const [has_black, setBlack] = useState(false);
+  const [has_white, setWhite] = useState(false);
+
+  useEffect(() => {
+    if (!partner) {return};
+    console.log(partner);
+    fetch(`/${partner}/logo_black.png`, { method: 'HEAD' })
+      .then((res) => {
+        const contentLength = res.headers.get('content-length');
+        const isValidImage = res.ok && contentLength && parseInt(contentLength, 10) > 0;
+        if (isValidImage) {
+          setBlack(true);
+          console.log(res);
+        } else {
+          // If black logo not found, check white logo
+          console.log('not found')
+          fetch(`/${partner}/logo_white.png`, { method: 'HEAD' })
+            .then((res) => {
+              const contentLength = res.headers.get('content-length');
+              const isValidImage = res.ok && contentLength && parseInt(contentLength, 10) > 0;
+              if (isValidImage) {
+                setWhite(true);
+              }
+            })
+            .catch(() => {});
+        }
+      })
+      .catch(() => {
+        // Optional: fallback to white if black request errors out
+        fetch(`/${partner}/logo_white.png`, { method: 'HEAD' })
+          .then((res) => {
+            if (res.ok) {
+              setWhite(true);
+            }
+          })
+          .catch(() => {});
+      });
+  }, [partner]);
+
+  // Determine if we should use dark theme (black background, white text)
+  const useDarkTheme = has_white && !has_black;
 
   return (
-    <Container pos="relative" h="80vh" mah={950} style={{ overflow: 'hidden' }} fluid>
-      <Container component="section" h="80vh" mah={950} mx="auto" size="xl" {...containerProps}>
+    <Container
+      pos="relative"
+      h="80vh"
+      mah={950}
+      style={{
+        overflow: 'hidden',
+        backgroundColor: useDarkTheme ? 'black' : undefined,
+      }}
+      fluid
+    >
+      <Container
+        component="section"
+        h="80vh"
+        mah={950}
+        mx="auto"
+        size="xl"
+        {...containerProps}
+      >
         <Box
           pos="absolute"
           top={0}
           left={0}
           h="100%"
           w="100%"
-          className={classes['vertical-backdrop']}
         />
         <Flex h="100%" align="center" pos="relative" justify="center">
           <Stack
@@ -64,50 +115,68 @@ export const Hero03 = ({
             gap="lg"
             style={{ zIndex: 1 }}
           >
-            {badge && (
+            {badge && partner && (has_black || has_white) && (
               <Suspense>
-
-              <Image
-                variant="default"
-                p="md"
-                bg="var(--mantine-color-body)"
-                src={`/${partner || 'default'}/logo_black.png`}
-                mb="lg"
-                style={{ textTransform: 'none' }}
-              />
+                <Image
+                  variant="default"
+                  p="md"
+                  bg={useDarkTheme ? 'rgba(255, 255, 255, 0)' : 'var(--mantine-color-body)'}
+                  src={
+                    has_black
+                      ? `/${partner}/logo_black.png`
+                      : `/${partner}/logo_white.png`
+                  }
+                  mb="lg"
+                  style={{
+                    textTransform: 'none',
+                  }}
+                />
               </Suspense>
-
             )}
+
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: 'easeInOut' }}
               viewport={{ once: true }}
             >
-              <JumboTitle ta="center" order={1} fz="lg" style={{ textWrap: 'balance' }}>
+              <JumboTitle
+                ta="center"
+                order={1}
+                fz="lg"
+                style={{
+                  textWrap: 'balance',
+                  color: useDarkTheme ? 'white' : undefined,
+                }}
+              >
                 {title}
               </JumboTitle>
             </motion.div>
+
             <Text
               ta="center"
               maw="var(--mantine-breakpoint-xs)"
               fz="xl"
-              style={{ textWrap: 'balance' }}
+              style={{
+                textWrap: 'balance',
+                color: useDarkTheme ? 'white' : undefined,
+              }}
             >
               {description}
             </Text>
+
             <Button
               size="lg"
-              bg="rgba(1, 225, 148, 0.2)"
+              bg={useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.2)'}
               mt="xl"
-              c="#01E194"
+              c={useDarkTheme ? 'black' : '#01E194'}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#01E194';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.backgroundColor = useDarkTheme ? '#ccc' : '#01E194';
+                e.currentTarget.style.color = useDarkTheme ? 'black' : 'white';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(1, 225, 148, 0.2)';
-                e.currentTarget.style.color = '#01E194';
+                e.currentTarget.style.backgroundColor = useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.2)';
+                e.currentTarget.style.color = useDarkTheme ? 'black' : '#01E194';
               }}
             >
               Get Started
