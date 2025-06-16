@@ -24,7 +24,7 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
       <Suspense><Benefits /></Suspense>
       <FAQ />
       <ContactForm referrer={partner} />
-      <Footer01 />
+      <section id="footer"><Footer01 /></section>
     </>
   );
 }
