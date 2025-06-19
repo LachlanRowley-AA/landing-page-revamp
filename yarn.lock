@@ -2545,6 +2545,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kurkle/color@npm:^0.3.0":
+  version: 0.3.4
+  resolution: "@kurkle/color@npm:0.3.4"
+  checksum: 10c0/0e9fd55c614b005c5f0c4c755bca19ec0293bc7513b4ea3ec1725234f9c2fa81afbc78156baf555c8b9cb0d305619253c3f5bca016067daeebb3d00ebb4ea683
+  languageName: node
+  linkType: hard
+
 "@mantine/core@npm:8.0.2":
   version: 8.0.2
   resolution: "@mantine/core@npm:8.0.2"
@@ -4903,6 +4910,24 @@ __metadata:
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
   checksum: 10c0/57a09a86371331e0be35d9083ba429e86c4f4648ecbe27455dbfb343037c16ee6fdc7f6b61f433a57cc5ded5561d71c56a150e018f40c2ffb7bc93a26dae341e
+  languageName: node
+  linkType: hard
+
+"chart.js@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "chart.js@npm:4.5.0"
+  dependencies:
+    "@kurkle/color": "npm:^0.3.0"
+  checksum: 10c0/f12c7f9a238ee7ce6d3f7111628e9daba86bb8ff8e54cfe63525fde6ded9003c72c4c8d2c7d5702539dc0aff7e682dfec058660ade8d03a970da002656d4ac91
+  languageName: node
+  linkType: hard
+
+"chartjs-plugin-datalabels@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "chartjs-plugin-datalabels@npm:2.2.0"
+  peerDependencies:
+    chart.js: ">=3.0.0"
+  checksum: 10c0/de4855a795e4eef34869a16db1a8a0f905b6dfed0258c733338f472625361eb56fb899214b18651c1c1064cd343a78285ba576576693a40ec51285a84f022ea0
   languageName: node
   linkType: hard
 
@@ -8923,6 +8948,8 @@ __metadata:
     "@types/node": "npm:^22.13.11"
     "@types/react": "npm:19.0.12"
     babel-loader: "npm:^10.0.0"
+    chart.js: "npm:^4.5.0"
+    chartjs-plugin-datalabels: "npm:^2.2.0"
     cloudinary: "npm:^2.6.1"
     eslint: "npm:^9.23.0"
     eslint-config-mantine: "npm:^4.0.3"
@@ -8940,6 +8967,7 @@ __metadata:
     postcss-simple-vars: "npm:^7.0.1"
     prettier: "npm:^3.5.3"
     react: "npm:19.1.0"
+    react-chartjs-2: "npm:^5.3.0"
     react-dom: "npm:19.1.0"
     sharp: "npm:^0.34.2"
     storybook: "npm:^8.6.8"
@@ -10503,6 +10531,16 @@ __metadata:
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
   checksum: 10c0/96c032ac2475c8027b7a4e9fe22dc0dfe0f6d90b85e496e0f016fbdb99d6d066de0112e680805075bd989905e2123b3b3d002765149294dce0c1f7f01fcc2ea0
+  languageName: node
+  linkType: hard
+
+"react-chartjs-2@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "react-chartjs-2@npm:5.3.0"
+  peerDependencies:
+    chart.js: ^4.1.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/4415d40217c084a49f9a936fbd30f67e0e705148e6f8359bec65601033d1076f31085c45793839fc29ec833e6c427b0bf9861a0c54c432c08d35bc9590ffa41a
   languageName: node
   linkType: hard
 
