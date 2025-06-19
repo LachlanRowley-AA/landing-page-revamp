@@ -81,11 +81,11 @@ const ExampleCard = ({
   </motion.div>
 );
 
-const CalculationBreakdown = () => {
-  const weeklyRepayment = calculateRepayment(EXAMPLE_AMOUNT, DEFAULT_INTEREST_RATE, true);
-  const monthlyRepayment = calculateRepayment(EXAMPLE_AMOUNT, DEFAULT_INTEREST_RATE, false);
-  const totalInterestWeekly = calculateTotalInterest(EXAMPLE_AMOUNT, DEFAULT_INTEREST_RATE, true);
-  const totalInterestMonthly = calculateTotalInterest(EXAMPLE_AMOUNT, DEFAULT_INTEREST_RATE, false);
+const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
+  const weeklyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, true);
+  const monthlyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, false);
+  const totalInterestWeekly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, true);
+  const totalInterestMonthly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, false);
 
   return (
     <Container size="sm" p={0}>
@@ -111,7 +111,7 @@ const CalculationBreakdown = () => {
               Here's what your repayments would look like for a
             </Text>
             <Text size={rem(56)} fw="bold" c="white">
-              ${EXAMPLE_AMOUNT.toLocaleString()} loan
+              ${amount.toLocaleString()} loan
             </Text>
             {/* <Text size="xs" c="rgba(255, 255, 255, 0.6)" mt="xs">
               Paid off in 3 months
@@ -185,7 +185,13 @@ const CalculationBreakdown = () => {
   );
 };
 
-export const Calculator = () => {
+type CalculatorProps = {
+  startingAmount?: number;
+}
+
+export const Calculator = ({
+  startingAmount = 30000
+}: CalculatorProps) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
   
@@ -227,7 +233,7 @@ export const Calculator = () => {
           </Stack>
         </motion.div>
         
-        <CalculationBreakdown />
+        <CalculationBreakdown amount={startingAmount}/>
       </Container>
     </Box>
   );

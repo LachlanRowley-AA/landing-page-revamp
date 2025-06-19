@@ -1,19 +1,13 @@
 'use client';
 import { JumboTitle } from '../JumboTitle/JumboTitle';
 import {
-  ActionIcon,
-  Avatar,
-  AvatarGroup,
-  Badge,
   Box,
   Container,
   ContainerProps,
   Flex,
   Image,
-  Rating,
   Stack,
   Text,
-  TextInput,
   Button
 } from '@mantine/core';
 import { motion } from 'motion/react';
@@ -145,6 +139,24 @@ export const Hero03 = ({
                 />
               </Suspense>
             )}
+
+            {badge && !partner && (
+              <Suspense>
+                <Image
+                  variant="default"
+                  p="md"
+                  bg={useDarkTheme ? 'rgba(255, 255, 255, 0)' : 'var(--mantine-color-body)'}
+                  src={
+                      `/Default/logo_black.png`
+                  }
+                  mb="lg"
+                  style={{
+                    textTransform: 'none',
+                  }}
+                />
+              </Suspense>
+            )}
+
 
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}
