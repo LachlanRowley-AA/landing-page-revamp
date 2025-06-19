@@ -9,7 +9,7 @@ interface GoogleProfile extends Profile {
   email_verified?: boolean;
 }
 
-const allowedEmails = ['lachlan@assetalley.com.au', 'familyfriendlydev@gmail.com'];
+const allowedEmails = ['lachlan@assetalley.com.au', 'familyfriendlydev@gmail.com', 'eliasdib0@gmail.com'];
 
 export const authConfig: AuthOptions = {
   pages: {
