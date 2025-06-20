@@ -12,16 +12,18 @@ import { Loader } from '@mantine/core';
 
 interface HomePageClientProps {
   audience: AudienceKey;
-  partner: string;
+  partner?: string;
   content: any;
+  calculatorValue?: number;
 }
 
-export default function HomePageClient({ audience, partner, content }: HomePageClientProps) {
+export default function HomePageClient({ audience, partner, content, calculatorValue }: HomePageClientProps) {
   const [isPageReady, setIsPageReady] = useState(false);
   const [heroData, setHeroData] = useState<{
     has_black: boolean;
     has_white: boolean;
   }>({ has_black: false, has_white: false });
+  const [calculatorValueState, setCalculatorValueState] = useState(calculatorValue || 30000);
 
   // Pre-load hero data before rendering anything
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function HomePageClient({ audience, partner, content }: HomePageC
   return (
     <div style={{ 
       opacity: 0,
-      animation: 'fadeIn 0.5s ease-in-out forwards'
+      animation: 'fadeIn 1s ease-in-out forwards'
     }}>
       <style jsx>{`
         @keyframes fadeIn {
@@ -124,7 +126,7 @@ export default function HomePageClient({ audience, partner, content }: HomePageC
         preloadedData={heroData}
       />
       <Feature02 features={content?.features}/>
-      <Calculator />
+      <Calculator startingAmount={calculatorValueState}/>
       <Suspense><Benefits /></Suspense>
       <FAQ />
       <ContactForm referrer={partner} />
