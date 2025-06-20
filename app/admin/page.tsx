@@ -1,7 +1,7 @@
 'use client';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useQRCode } from 'next-qrcode';
 import {
   Container,
@@ -66,6 +66,8 @@ export default function AdminPage() {
   const [imageError, setImageError] = useState('');
 
   const { Canvas } = useQRCode();
+
+  const currentQRCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Function to add green border to QR code canvas
   const addBorderToCanvas = (canvas: HTMLCanvasElement, borderWidth: number = 10, borderColor: string = '#01E194') => {
@@ -141,10 +143,9 @@ export default function AdminPage() {
         
         setFetchedImages(imageUrls);
         return imageUrls;
-      } else {
+      }
         console.error('Unexpected response format:', imageData);
         throw new Error('Unexpected response format from server');
-      }
     } catch (error) {
       console.error('Error fetching images:', error);
       setImageError(`Failed to load images: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -483,6 +484,7 @@ export default function AdminPage() {
                         <Grid.Col span={{ base: 12, md: 4 }}>
                           <Box style={{ textAlign: 'center' }}>
                             <Canvas
+                              key={`qr-${partnerName.replace(/\s+/g, '_')}`}
                               text={qrCodeUrl}
                               options={{
                                 width: 200,

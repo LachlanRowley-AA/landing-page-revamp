@@ -13,7 +13,7 @@ cloudinary.config({
 });
 
 async function getImage(): Promise<CloudinaryResource[]> {
-    const { resources } = await cloudinary.search.expression('tags=logo_black').execute();
+    const { resources } = await cloudinary.search.expression('tags=logo_black AND asset_folder=TestPartner').execute();
     return resources.map((res: any) => ({
         public_id: res.public_id,
         secure_url: res.secure_url

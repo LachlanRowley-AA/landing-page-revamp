@@ -8,7 +8,9 @@ import {
   Image,
   Stack,
   Text,
-  Button
+  Button,
+  Loader,
+  Center
 } from '@mantine/core';
 import { motion } from 'motion/react';
 import classes from './index.module.css';
@@ -24,19 +26,24 @@ type Hero03Props = ContainerProps & {
   rating?: number;
   ratingLabel?: string;
   partner?: string;
+  preloadedData?: {
+    has_black: boolean;
+    has_white: boolean;
+  };
 };
-
-
 
 export const Hero03 = ({
   badge = 'Build faster with AI-powered tools',
   title = 'Pay Over Time \n Not Upfont',
   description = 'No financials required, Approvals in 24-28 hours. Credit score safe ',
   partner,
+  preloadedData,
   ...containerProps
 }: Hero03Props) => {
-  const [has_black, setBlack] = useState(false);
-  const [has_white, setWhite] = useState(false);
+  // Use preloaded data if available, otherwise fall back to loading
+  const [has_black, setBlack] = useState(preloadedData?.has_black || false);
+  const [has_white, setWhite] = useState(preloadedData?.has_white || false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -49,40 +56,46 @@ export const Hero03 = ({
   };
 
   useEffect(() => {
-    if (!partner) {return};
-    console.log(partner);
-    fetch(`/${partner}/logo_black.png`, { method: 'HEAD' })
-      .then((res) => {
-        const contentLength = res.headers.get('content-length');
-        const isValidImage = res.ok && contentLength && parseInt(contentLength, 10) > 0;
-        if (isValidImage) {
+    // If we have preloaded data, use it and skip the API calls
+    if (preloadedData) {
+      setBlack(preloadedData.has_black);
+      setWhite(preloadedData.has_white);
+      return;
+    }
+
+    // Fallback: do the API calls if no preloaded data (shouldn't happen in normal flow)
+    const checkLogos = async () => {
+      if (!partner) return;
+
+      console.log(partner);
+      
+      try {
+        const blackResponse = await fetch(`/${partner}/logo_black.png`, { method: 'HEAD' });
+        const contentLength = blackResponse.headers.get('content-length');
+        const isValidBlackImage = blackResponse.ok && contentLength && parseInt(contentLength, 10) > 0;
+        
+        if (isValidBlackImage) {
           setBlack(true);
-          console.log(res);
         } else {
-          // If black logo not found, check white logo
-          console.log('not found')
-          fetch(`/${partner}/logo_white.png`, { method: 'HEAD' })
-            .then((res) => {
-              const contentLength = res.headers.get('content-length');
-              const isValidImage = res.ok && contentLength && parseInt(contentLength, 10) > 0;
-              if (isValidImage) {
-                setWhite(true);
-              }
-            })
-            .catch(() => {});
-        }
-      })
-      .catch(() => {
-        // Optional: fallback to white if black request errors out
-        fetch(`/${partner}/logo_white.png`, { method: 'HEAD' })
-          .then((res) => {
-            if (res.ok) {
+          try {
+            const whiteResponse = await fetch(`/${partner}/logo_white.png`, { method: 'HEAD' });
+            const whiteContentLength = whiteResponse.headers.get('content-length');
+            const isValidWhiteImage = whiteResponse.ok && whiteContentLength && parseInt(whiteContentLength, 10) > 0;
+            
+            if (isValidWhiteImage) {
               setWhite(true);
             }
-          })
-          .catch(() => {});
-      });
-  }, [partner]);
+          } catch (error) {
+            console.log('White logo check failed:', error);
+          }
+        }
+      } catch (error) {
+        console.log('Logo check failed:', error);
+      }
+    };
+
+    checkLogos();
+  }, [partner, preloadedData]);
 
   // Determine if we should use dark theme (black background, white text)
   const useDarkTheme = has_white && !has_black;
@@ -133,8 +146,12 @@ export const Hero03 = ({
                       : `/${partner}/logo_white.png`
                   }
                   mb="lg"
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => setImageLoaded(true)} // Consider loaded even on error
                   style={{
                     textTransform: 'none',
+                    opacity: imageLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out',
                   }}
                 />
               </Suspense>
@@ -146,17 +163,18 @@ export const Hero03 = ({
                   variant="default"
                   p="md"
                   bg={useDarkTheme ? 'rgba(255, 255, 255, 0)' : 'var(--mantine-color-body)'}
-                  src={
-                      `/Default/logo_black.png`
-                  }
+                  src={`/Default/logo_black.png`}
                   mb="lg"
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => setImageLoaded(true)}
                   style={{
                     textTransform: 'none',
+                    opacity: imageLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out',
                   }}
                 />
               </Suspense>
             )}
-
 
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}
