@@ -225,18 +225,37 @@ export default function AdminPage() {
     setGeneratedQrCodes(prev => [newQrCode, ...prev]);
   };
 
-  const downloadQRCode = (partnerName: string) => {
-    const canvas = document.getElementById(`qr-${partnerName.replace(/\s+/g, '_')}`) as HTMLCanvasElement;
-    if (canvas) {
-      // Add border before downloading
-      addBorderToCanvas(canvas, 10, '#01E194');
-      
-      const link = document.createElement('a');
-      link.download = `qr-code-${partnerName.replace(/\s+/g, '_')}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
+const downloadQRCode = (partnerName: string) => {
+  // Find the canvas element in the DOM - the useQRCode Canvas component renders a canvas
+  const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+  
+  if (canvas) {
+    // Create a copy of the canvas to avoid modifying the original
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    if (!tempCtx) {
+      console.log('Could not get canvas context');
+      return;
     }
-  };
+    
+    // Copy the original canvas content
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    tempCtx.drawImage(canvas, 0, 0);
+    
+    // Add border to the copy
+    addBorderToCanvas(tempCanvas, 10, '#01E194');
+    
+    // Download the modified canvas
+    const link = document.createElement('a');
+    link.download = `qr-code-${partnerName.replace(/\s+/g, '_')}.png`;
+    link.href = tempCanvas.toDataURL();
+    link.click();
+  } else {
+    console.log('QR Code canvas not found');
+  }
+};
 
   const clearQRCode = () => {
     setPartnerName('');
@@ -353,13 +372,13 @@ export default function AdminPage() {
 
   return (
     <Box
+      p={{ base: '0px', md: 'md'}}
       style={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-        padding: rem(20)
       }}
     >
-      <Container size="xl">
+      <Container size="xl" p={{ base: "0px", md: "md" }}>
         <Stack gap="xl">
           {/* Header */}
           <Paper
@@ -417,7 +436,7 @@ export default function AdminPage() {
           </Paper>
 
           {/* QR Code Generator Section */}
-          <Paper p="xl" radius="lg" shadow="sm">
+          <Paper p={{base:"xs", md:"md"}} radius="lg" shadow="sm">
             <Stack gap="lg">
               <Group>
                 <ThemeIcon size="xl" variant="gradient" gradient={{ from: 'teal', to: 'green' }}>
@@ -595,7 +614,7 @@ export default function AdminPage() {
                     Partner Logo Processor
                   </Title>
                   <Text c="dimmed" size="sm">
-                    Upload and combine partner logos with your branding
+                    Upload and combine partner logos with the Asset Alley Logo
                   </Text>
                 </Stack>
               </Group>
