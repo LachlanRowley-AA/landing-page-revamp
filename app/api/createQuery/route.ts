@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const { name, email, price, businessName, phoneNumber, referrer } = body
         
         const { data, error } = await supabase
-            .from('cobrand_enquiries_test')
+            .from('cobrand_enquiries')
             .insert([
                 {
                     name,
