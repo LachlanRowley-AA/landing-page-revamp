@@ -36,8 +36,8 @@ const FEATURES: Feature[] = [
   },
   {
     icon: <IconBuilding size={28} stroke={1.5} />,
-    title: 'Use for Branding & Design',
-    description: `Works with all websites and branding requirements — no restrictions. 
+    title: 'Use for Software, Branding & Design',
+    description: `Works with all software, websites and branding requirements — no restrictions. 
     Only pay on what you use, you have the choice to fund 25%, 50%, or even 100% of your project`,
   },
   {
