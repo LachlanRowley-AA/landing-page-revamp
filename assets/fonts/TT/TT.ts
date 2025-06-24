@@ -4,7 +4,7 @@ export const TT = localFont({
   src: [
     {
       path: './TT Commons Light.otf',
-      weight: '800',
+      weight: '1200',
       style: 'normal',
     },
   ],
