@@ -129,8 +129,8 @@ export default function HomePageClient({ audience, partner, content, calculatorV
       <Calculator startingAmount={calculatorValueState}/>
       <Suspense><Benefits /></Suspense>
       <FAQ />
-      <ContactForm referrer={partner} />
-      <section id="footer"><Footer01 /></section>
+      <section id="footer"><ContactForm referrer={partner} /></section>
+      <Footer01 />
     </div>
   );
 }
