@@ -138,7 +138,7 @@ export const Hero03 = ({
               <Suspense>
                 <Image
                   variant="default"
-                  p="md"
+                  p={0}
                   bg={useDarkTheme ? 'rgba(255, 255, 255, 0)' : 'var(--mantine-color-body)'}
                   src={
                     has_black
@@ -209,16 +209,16 @@ export const Hero03 = ({
 
             <Button
               size="lg"
-              bg={useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.2)'}
+              bg={useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.8)'}
               mt="xl"
-              c={useDarkTheme ? 'black' : '#01E194'}
+              c={useDarkTheme ? 'black' : 'white'}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = useDarkTheme ? '#ccc' : '#01E194';
                 e.currentTarget.style.color = useDarkTheme ? 'black' : 'white';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.2)';
-                e.currentTarget.style.color = useDarkTheme ? 'black' : '#01E194';
+                e.currentTarget.style.backgroundColor = useDarkTheme ? 'white' : 'rgba(1, 225, 148, 0.8)';
+                e.currentTarget.style.color = useDarkTheme ? 'black' : 'white';
               }}
               onClick={(e:any)=>{e.preventDefault;scrollToSection('footer')}}
             >
