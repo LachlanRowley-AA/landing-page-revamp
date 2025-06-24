@@ -211,6 +211,17 @@ export const FAQ = ({ variant = 'cards' }: { variant?: 'cards' | 'accordion' }) 
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
   
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+    else {
+      console.log('section not found');
+    }
+  };
+
+
   return (
     <Box
       bg="black"
@@ -321,6 +332,7 @@ export const FAQ = ({ variant = 'cards' }: { variant?: 'cards' | 'accordion' }) 
             onMouseLeave={(e) => {
                 e.currentTarget.style.background = "rgba(1, 225, 148, 0.2)";
             }}
+            onClick={(e:any)=>{e.preventDefault;scrollToSection('footer')}}
 
           >
             <Stack align="center" gap="md">
