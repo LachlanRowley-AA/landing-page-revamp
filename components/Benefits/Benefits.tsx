@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, Container, Flex, Grid, Stack, Text, Group } from '@mantine/core';
+import { Box, Card, Container, Flex, Grid, Stack, Text, Group, useMantineTheme } from '@mantine/core';
 import {
   IconAlertTriangle,
   IconClockX,
@@ -9,6 +9,7 @@ import {
 } from '@tabler/icons-react';
 import { motion } from 'motion/react';
 import { ReactNode } from 'react';
+import { JumboTitle } from '../JumboTitle/JumboTitle';
 
 type UseCase = {
   icon: ReactNode;
@@ -46,18 +47,6 @@ type JumboTitleProps = {
   style?: React.CSSProperties;
 };
 
-const JumboTitle = ({ children, fz = 'md', style = {} }: JumboTitleProps) => (
-  <Text
-    size={fz === 'md' ? '3rem' : fz}
-    fw={700}
-    ta="center"
-    mb="xl"
-    c="#000"
-    style={{ textWrap: 'balance', ...style }}
-  >
-    {children}
-  </Text>
-);
 
 const ProblemSolutionCard = ({
   benefit,
@@ -128,11 +117,13 @@ type UseCasesProps = {
 export const UseCases = ({
   title = 'Benefits',
   useCases = USE_CASES,
-}: UseCasesProps) => (
+}: UseCasesProps) => {
+  const theme = useMantineTheme();
+  return(
   <Container
     py={{ base: 40, xs: 60, lg: 80 }}
     fluid
-    style={{ backgroundColor: '#f6f6f6' }}
+    style={{ backgroundColor: theme.colors.secondary[0] }}
   >
     <Container size="lg" px={0}>
       <motion.div
@@ -141,7 +132,7 @@ export const UseCases = ({
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <JumboTitle order={2} fz="md">
+        <JumboTitle order={2} fz="md" c="black" ta="center">
           {title}
         </JumboTitle>
       </motion.div>
@@ -162,4 +153,4 @@ export const UseCases = ({
         </Grid>
     </Container>
   </Container>
-);
+)};

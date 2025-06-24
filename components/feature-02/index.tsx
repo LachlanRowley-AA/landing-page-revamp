@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, Container, Flex, Grid, Stack, Text } from '@mantine/core';
+import { Box, Card, Container, Flex, Grid, Stack, Text, useMantineTheme } from '@mantine/core';
 import {
   IconCurrencyDollar,
   IconFileOff,
@@ -11,12 +11,15 @@ import {
 } from '@tabler/icons-react';
 import { motion } from 'motion/react';
 import { ReactNode } from 'react';
+import { JumboTitle } from '../JumboTitle/JumboTitle';
+
 
 type Feature = {
   icon: ReactNode;
   title: string;
   description: ReactNode;
 };
+
 
 const FEATURES: Feature[] = [
   {
@@ -52,28 +55,6 @@ const FEATURES: Feature[] = [
   },
 ] as const;
 
-const JumboTitle = ({
-  children,
-  order = 2,
-  fz = 'md',
-  style = {},
-}: {
-  children: ReactNode;
-  order?: number;
-  fz?: string;
-  style?: React.CSSProperties;
-}) => (
-  <Text
-    size={fz === 'md' ? '3rem' : fz}
-    fw={700}
-    ta="center"
-    mb="xl"
-    c="#000"
-    style={{ textWrap: 'balance', ...style }}
-  >
-    {children}
-  </Text>
-);
 
 const FeatureCell = ({
   icon,
@@ -82,7 +63,10 @@ const FeatureCell = ({
   index = 1,
 }: Feature & {
   index?: number;
-}) => (
+  
+}) => {
+  const theme = useMantineTheme();
+  return (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -121,8 +105,8 @@ const FeatureCell = ({
             h={56}
             justify="center"
             align="center"
+            bg={theme.colors.secondary[0]}
             style={{
-              backgroundColor: '#f6f6f6',
               borderRadius: '12px',
               color: '#01E194',
             }}
@@ -142,7 +126,7 @@ const FeatureCell = ({
       </Card>
     </motion.div>
   </motion.div>
-);
+)};
 
 type Feature02Props = {
   title?: string;
@@ -152,11 +136,13 @@ type Feature02Props = {
 export const Feature02 = ({
   title = 'Features',
   features = FEATURES,
-}: Feature02Props) => (
+}: Feature02Props) => {
+  const theme = useMantineTheme();
+  return(
   <Container
     py={{ base: 60, xs: 80, lg: 100 }}
     fluid
-    style={{ backgroundColor: '#f6f6f6' }}
+    bg={theme.colors.secondary[0]}
   >
     <Container size="lg" px={0}>
       <motion.div
@@ -165,7 +151,7 @@ export const Feature02 = ({
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <JumboTitle order={2} fz="md">
+        <JumboTitle order={2} fz="md" c="black" ta='center'>
           {title}
         </JumboTitle>
       </motion.div>
@@ -206,4 +192,4 @@ export const Feature02 = ({
       </Box>
     </Container>
   </Container>
-);
+)};

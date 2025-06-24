@@ -276,7 +276,7 @@ export const UseCases = ({
   <Container
     py={{ base: 40, xs: 60, lg: 80 }}
     fluid
-    style={{ backgroundColor: '#f6f6f6' }}
+    style={{ backgroundColor: 'var(--mantine-color-secondary[1])' }}
   >
     <Container size="lg" px={0}>
       <motion.div

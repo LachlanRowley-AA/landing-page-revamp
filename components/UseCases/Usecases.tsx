@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, Container, Flex, Grid, Stack, Text, Group } from '@mantine/core';
+import { Box, Card, Container, Flex, Grid, Stack, Text, Group, useMantineTheme } from '@mantine/core';
 import {
   IconAlertTriangle,
   IconClockX,
@@ -51,7 +51,8 @@ type JumboTitleProps = {
   style?: React.CSSProperties;
 };
 
-const JumboTitle = ({ children, fz = 'md', style = {} }: JumboTitleProps) => (
+const JumboTitle = ({ children, fz = 'md', style = {} }: JumboTitleProps) => {
+  return(
   <Text
     size={fz === 'md' ? '3rem' : fz}
     fw={700}
@@ -62,7 +63,7 @@ const JumboTitle = ({ children, fz = 'md', style = {} }: JumboTitleProps) => (
   >
     {children}
   </Text>
-);
+)};
 
 const ProblemSolutionCard = ({
   icon,
@@ -272,11 +273,13 @@ export const UseCases = ({
   title = 'Common Challenges We Solve',
   style = 'cards',
   useCases = USE_CASES,
-}: UseCasesProps) => (
+}: UseCasesProps) => {
+  const theme = useMantineTheme();
+  return(
   <Container
     py={{ base: 40, xs: 60, lg: 80 }}
     fluid
-    style={{ backgroundColor: '#f6f6f6' }}
+    bg={theme.colors.secondary[0]}
   >
     <Container size="lg" px={0}>
       <motion.div
@@ -311,4 +314,4 @@ export const UseCases = ({
       )}
     </Container>
   </Container>
-);
+)};

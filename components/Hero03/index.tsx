@@ -107,7 +107,7 @@ export const Hero03 = ({
       mah={950}
       style={{
         overflow: 'hidden',
-        backgroundColor: useDarkTheme ? 'black' : undefined,
+        backgroundColor: useDarkTheme ? 'black' : 'var(--mantine-color-body)',
       }}
       fluid
     >
@@ -188,7 +188,7 @@ export const Hero03 = ({
                 fz="lg"
                 style={{
                   textWrap: 'balance',
-                  color: useDarkTheme ? 'white' : undefined,
+                  color: useDarkTheme ? 'white' : 'var(--mantine-color-black)',
                 }}
               >
                 {title}

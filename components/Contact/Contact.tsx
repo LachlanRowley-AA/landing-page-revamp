@@ -202,7 +202,7 @@ export const ContactForm = ({referrer} : ContactProps) => {
           <Card 
             padding="xl" 
             radius="lg" 
-            bg="rgba(20, 20, 20, 0.05)"
+            bg={theme.colors.secondary[1]}
             style={{ 
               border: "1px solid rgba(255, 255, 255, 0.08)",
               backdropFilter: "blur(10px)",
