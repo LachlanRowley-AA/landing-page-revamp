@@ -118,7 +118,7 @@ export const Hero03 = ({
         mx="auto"
         size="xl"
         {...containerProps}
-        mt={{base: 0, md: 50}}
+        mt={{base: 0, md: 0}}
       >
         <Box
           pos="absolute"
@@ -129,10 +129,10 @@ export const Hero03 = ({
         />
         <Flex h="100%" align="center" pos="relative" justify="center">
           <Stack
-            pt={{ base: 'xl', sm: 0 }}
+            pt={{ base: 'xs', sm:90 }}
             maw="var(--mantine-breakpoint-md)"
             align="center"
-            gap="lg"
+            gap="xl"
             style={{ zIndex: 1 }}
           >
             {badge && partner && (has_black || has_white) && (
@@ -146,7 +146,7 @@ export const Hero03 = ({
                       ? `/${partner}/logo_black.png`
                       : `/${partner}/logo_white.png`
                   }
-                  mb="lg"
+                  mb={{base: 0, md:100}}
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageLoaded(true)} // Consider loaded even on error
                   style={{
