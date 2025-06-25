@@ -34,7 +34,7 @@ type Hero03Props = ContainerProps & {
 
 export const Hero03 = ({
   badge = 'Build faster with AI-powered tools',
-  title = 'Pay Over Time \n Not Upfont',
+  title = 'Pay Over Time \n Not Upfront',
   description = 'No financials required, Approvals in 24-28 hours. Credit score safe ',
   partner,
   preloadedData,
@@ -154,6 +154,7 @@ export const Hero03 = ({
                     opacity: imageLoaded ? 1 : 0,
                     transition: 'opacity 0.3s ease-in-out',
                   }}
+                  maw={{base: "100vw", md:"50vw"}}
                 />
               </Suspense>
             )}
