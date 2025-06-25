@@ -118,6 +118,7 @@ export const Hero03 = ({
         mx="auto"
         size="xl"
         {...containerProps}
+        mt={{base: 0, md: 50}}
       >
         <Box
           pos="absolute"
