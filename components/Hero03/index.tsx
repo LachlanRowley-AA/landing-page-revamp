@@ -132,7 +132,7 @@ export const Hero03 = ({
             pt={{ base: 'xs', sm:90 }}
             maw="var(--mantine-breakpoint-md)"
             align="center"
-            gap="xl"
+            gap="lg"
             style={{ zIndex: 1 }}
           >
             {badge && partner && (has_black || has_white) && (
