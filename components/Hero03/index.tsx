@@ -174,6 +174,7 @@ export const Hero03 = ({
                     opacity: imageLoaded ? 1 : 0,
                     transition: 'opacity 0.3s ease-in-out',
                   }}
+                  maw={{base: "100vw", md:"50vw"}}
                 />
               </Suspense>
             )}
