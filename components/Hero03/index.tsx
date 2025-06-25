@@ -113,7 +113,7 @@ export const Hero03 = ({
     >
       <Container
         component="section"
-        h="80vh"
+        h="75vh"
         mah={950}
         mx="auto"
         size="xl"
