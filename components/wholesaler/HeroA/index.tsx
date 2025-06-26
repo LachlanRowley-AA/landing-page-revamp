@@ -18,9 +18,9 @@ import { Suspense, useEffect, useState } from 'react';
 
 type ImageItem = { src: string; alt: string };
 
-type Hero03Props = ContainerProps & {
+type HeroAProps = ContainerProps & {
   avatarItems?: ImageItem[];
-  title?: string[];
+  titles?: string[];
   description?: string;
   rating?: number;
   ratingLabel?: string;
@@ -33,12 +33,12 @@ type Hero03Props = ContainerProps & {
 
 
 export const HeroA = ({
-  title = ['Zero Risk', 'Zero Change', 'More Sales'],
+  titles = ['Zero Risk', 'Zero Change', 'More Sales'],
   description = 'No financials required, Approvals in 24-28 hours. Credit score safe ',
   partner,
   preloadedData,
   ...containerProps
-}: Hero03Props) => {
+}: HeroAProps) => {
   // Use preloaded data if available, otherwise fall back to loading
   const [has_black, setBlack] = useState(preloadedData?.has_black || false);
   const [has_white, setWhite] = useState(preloadedData?.has_white || false);
@@ -182,7 +182,7 @@ export const HeroA = ({
               transition={{ duration: 0.8, ease: 'easeInOut' }}
               viewport={{ once: true }}
             >
-              {title.map(i => 
+              {titles.map(i => 
               <JumboTitle
                 key={i}
                 ta="center"

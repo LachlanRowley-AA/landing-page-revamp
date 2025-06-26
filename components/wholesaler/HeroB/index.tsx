@@ -158,7 +158,6 @@ function HeroB() {
                 <Button 
                   size="lg" 
                   style={{ backgroundColor: '#01E194' }}
-                  gap="sm"
                 >
                   Get Started
                 </Button>
