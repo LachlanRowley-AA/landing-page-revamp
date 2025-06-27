@@ -34,7 +34,7 @@ type HeroAProps = ContainerProps & {
 
 export const HeroA = ({
   titles = ['Zero Risk', 'Zero Change', 'More Sales'],
-  description = 'No financials required, Approvals in 24-28 hours. Credit score safe ',
+  description = 'No financials required, Approvals in 24-48 hours. Credit score safe ',
   partner,
   preloadedData,
   ...containerProps
