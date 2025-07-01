@@ -106,7 +106,6 @@ export const Hero03 = ({
 
   return (
     <Container
-      mb="xl"
       mih={600}
       pos="relative"
       style={{
@@ -114,6 +113,7 @@ export const Hero03 = ({
         backgroundColor: useDarkTheme ? 'black' : 'var(--mantine-color-body)',
       }}
       fluid
+      pb="xl"
     >
       <Container
         component="section"
