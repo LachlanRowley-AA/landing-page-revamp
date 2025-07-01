@@ -30,7 +30,8 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
          </Text>
           <Title
             fw={800}
-            fz={{ base: 'xl', sm: '2xl', md: '30px'}}           
+            fz={{ base: 'xl', sm: '2xl', md: '30px'}}   
+            ta="center"        
           >
             This is an <Text c="#01E194" span inherit> investment in yourself </Text>
           </Title>
