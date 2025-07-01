@@ -6,9 +6,10 @@ import ReactMarkdown from 'react-markdown';
 
 type DynamicTextDisplayProps = {
   type: textKey;
+  darkMode?: boolean;
 };
 
-export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) => {
+export const DynamicTextDisplay = ({ type = 'empty', darkMode=false }: DynamicTextDisplayProps) => {
   const content = textContent[type];
 
   return (
@@ -20,15 +21,16 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
         <div
           style={{
             textAlign: 'center',
-            fontSize: '1.25rem',
-            lineHeight: '1.8',
+            fontSize: '1.5rem',
+            lineHeight: '2',
             maxWidth: 800,
+            fontFamily: 'fantasy'
           }}
         >
           <ReactMarkdown
             components={{
               p: ({ children }) => (
-                <p style={{ marginBottom: '1rem' }}>{children}</p>
+                <p style={{ marginBottom: '1rem', color: darkMode ? '#000000': "#FFFFFF" }}>{children}</p>
               ),
               ul: ({ children }) => (
                 <ul
