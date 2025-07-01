@@ -15,6 +15,8 @@ import {
 import { motion } from 'motion/react';
 import classes from './index.module.css';
 import { Suspense, useEffect, useState } from 'react';
+import { DynamicTextDisplay } from '@/components/Description'
+import { textKey } from '@/lib/audienceContent';
 
 type ImageItem = { src: string; alt: string };
 
@@ -30,6 +32,7 @@ type Hero03Props = ContainerProps & {
     has_black: boolean;
     has_white: boolean;
   };
+  audience? : textKey;
 };
 
 export const Hero03 = ({
@@ -38,6 +41,7 @@ export const Hero03 = ({
   description = 'No financials required, Approvals in 24-48 hours. Credit score safe ',
   partner,
   preloadedData,
+  audience = 'empty',
   ...containerProps
 }: Hero03Props) => {
   // Use preloaded data if available, otherwise fall back to loading
@@ -102,9 +106,9 @@ export const Hero03 = ({
 
   return (
     <Container
+      mb="xl"
+      mih={600}
       pos="relative"
-      h="80vh"
-      mah={950}
       style={{
         overflow: 'hidden',
         backgroundColor: useDarkTheme ? 'black' : 'var(--mantine-color-body)',
@@ -113,12 +117,11 @@ export const Hero03 = ({
     >
       <Container
         component="section"
-        h="75vh"
-        mah={950}
+        h="100%"
         mx="auto"
         size="xl"
         {...containerProps}
-        mt={{base: 0, md: 0}}
+        mt={{base: "xl", md: 0}}
       >
         <Box
           pos="absolute"
@@ -129,7 +132,7 @@ export const Hero03 = ({
         />
         <Flex h="100%" align="center" pos="relative" justify="center">
           <Stack
-            pt={{ base: 'xs', sm:90 }}
+            pt={{ base: 'xs', sm:'lg' }}
             maw="var(--mantine-breakpoint-md)"
             align="center"
             gap="lg"
@@ -146,7 +149,7 @@ export const Hero03 = ({
                       ? `/${partner}/logo_black.png`
                       : `/${partner}/logo_white.png`
                   }
-                  mb={{base: 0, md:100}}
+                  mb={{base: 0, md:20}}
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageLoaded(true)} // Consider loaded even on error
                   style={{
@@ -178,7 +181,7 @@ export const Hero03 = ({
                 />
               </Suspense>
             )}
-
+            <DynamicTextDisplay type={audience}/>
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}

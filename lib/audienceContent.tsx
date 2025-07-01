@@ -127,3 +127,46 @@ export const audienceContent = {
         ],
     }
 } as const satisfies Record<AudienceKey, AudienceContent>;
+
+export type textKey = 'websites' | 'branding' | 'monica' | 'empty';
+
+export const textContent = {
+  websites: {
+    heading: 'Finance Your Website Build',
+    body: `
+A professional website is crucial but paying for it upfront can be tough. We make it easier by financing your website, whether it's on:
+
+- Shopify  
+- WordPress  
+- Squarespace or
+- Custom-built platforms  
+
+Break the cost into manageable payments while launching sooner and growing faster.
+    `,
+  },
+  branding: {
+    heading: 'Finance Your Brand Identity',
+    body: `
+Your brand is your first impression—and a lasting one. Don’t hold back because of budget. We offer finance options for:
+
+- Logo design  
+- Brand strategy  
+- Visual identity  
+
+Launch with confidence and stand out from the start.
+    `,
+  },
+  monica: {
+    heading: '',
+    body: `
+Build your desired brand **without** cutting corners.  
+**Don't** let budget hold you back from making the impact you want.  
+Allow us to help you build a brand worth owning.  
+**This is an investment in yourself.**
+    `,
+  },
+  empty: {
+    heading: '',
+    body: '',
+  },
+};

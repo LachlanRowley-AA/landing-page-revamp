@@ -9,15 +9,21 @@ import { Suspense, useState, useEffect } from 'react';
 import { UseCases as Benefits} from '@/components/Benefits/Benefits';
 import { AudienceKey } from '@/lib/audienceContent';
 import { Loader } from '@mantine/core';
+import { DynamicTextDisplay } from '@/components/Description';
+import { textKey } from '@/lib/audienceContent';
 
 interface HomePageClientProps {
   audience: AudienceKey;
   partner?: string;
   content: any;
   calculatorValue?: number;
+  showDescription?: boolean;
+  textKey?: textKey
 }
 
-export default function HomePageClient({ audience, partner, content, calculatorValue }: HomePageClientProps) {
+export default function HomePageClient({ audience, partner, content, calculatorValue, showDescription = false,
+  textKey = 'empty'
+ }: HomePageClientProps) {
   const [isPageReady, setIsPageReady] = useState(false);
   const [heroData, setHeroData] = useState<{
     has_black: boolean;
@@ -124,7 +130,9 @@ export default function HomePageClient({ audience, partner, content, calculatorV
       <Hero03 
         partner={partner}
         preloadedData={heroData}
+        audience={textKey}
       />
+      {showDescription && <DynamicTextDisplay type={textKey} />}
       <Feature02 features={content?.features}/>
       <Calculator startingAmount={calculatorValueState}/>
       <Suspense><Benefits /></Suspense>
