@@ -1,6 +1,6 @@
 'use client';
 
-import { Title, Stack, Container } from '@mantine/core';
+import { Title, Stack, Container, Text, Highlight, Card } from '@mantine/core';
 import { textContent, textKey } from '@/lib/audienceContent';
 import ReactMarkdown from 'react-markdown';
 
@@ -11,48 +11,23 @@ type DynamicTextDisplayProps = {
 
 export const DynamicTextDisplay = ({ type = 'empty', darkMode=false }: DynamicTextDisplayProps) => {
   const content = textContent[type];
-
+  if(type === 'empty') {
+    return(<></>);
+  }
   return (
-    <Container size="xl" py={0} w="100%">
-      <Stack align="center">
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '2rem',
-            lineHeight: '2',
-            maxWidth: 1300,
-            fontFamily: 'fantasy',
-          }}
+      <Stack>
+        <Text ta="center" fz="xl" fw={600}>Build your desired brand without cutting corners.</Text>
+        <Text ta="center" fz="xl" fw={600}>Don't let budget hold you back from making the impact you want.</Text>
+        <Text ta="center" fz="xl" fw={600}>Allow us to help you build a brand worth owning.</Text>
+        <Highlight
+          highlight="investment in yourself"
+          color="#01E194"
+          fw={700}
+          size="xl"
+          ta="center"
         >
-          <ReactMarkdown
-            components={{
-              p: ({ children }) => (
-                <p style={{ marginBottom: '1rem', color: darkMode ? '#000000': "#FFFFFF" }}>{children}</p>
-              ),
-              ul: ({ children }) => (
-                <ul
-                  style={{
-                    listStyleType: 'disc',
-                    paddingLeft: '1.5rem',
-                    textAlign: 'left',
-                    margin: '1rem 0',
-                  }}
-                >
-                  {children}
-                </ul>
-              ),
-              li: ({ children }) => (
-                <li style={{ marginBottom: '0.5rem' }}>{children}</li>
-              ),
-              strong: ({ children }) => (
-                <strong style={{ fontWeight: 600 }}>{children}</strong>
-              ),
-            }}
-          >
-            {content.body}
-          </ReactMarkdown>
-        </div>
+          This is an investment in yourself
+        </Highlight>
       </Stack>
-    </Container>
   );
 };
