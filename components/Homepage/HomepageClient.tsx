@@ -132,6 +132,7 @@ export default function HomePageClient({ audience, partner, content, calculatorV
         preloadedData={heroData}
         audience={textKey}
       />
+      {showDescription && <DynamicTextDisplay type='monica'/>}
       <Feature02 features={content?.features}/>
       <Calculator startingAmount={calculatorValueState}/>
       <Suspense><Benefits /></Suspense>

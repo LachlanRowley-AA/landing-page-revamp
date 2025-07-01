@@ -113,7 +113,7 @@ export const Hero03 = ({
         backgroundColor: useDarkTheme ? 'black' : 'var(--mantine-color-body)',
       }}
       fluid
-      pb="xl"
+      py="xl"
     >
       <Container
         component="section"
@@ -181,7 +181,6 @@ export const Hero03 = ({
                 />
               </Suspense>
             )}
-            <DynamicTextDisplay type={audience} darkMode={!useDarkTheme}/>
             <motion.div
               initial={{ opacity: 0.0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}

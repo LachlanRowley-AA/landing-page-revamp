@@ -17,7 +17,7 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
       partner={partner}
       content={content}
       calculatorValue={30000}
-      showDescription={false}
+      showDescription={true}
       textKey={description}
     />
   );

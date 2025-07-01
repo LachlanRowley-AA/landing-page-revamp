@@ -1,33 +1,41 @@
 'use client';
 
-import { Title, Stack, Container, Text, Highlight, Card } from '@mantine/core';
+import { Title, Stack, Container, Text, Highlight, Card, Box, Mark } from '@mantine/core';
 import { textContent, textKey } from '@/lib/audienceContent';
-import ReactMarkdown from 'react-markdown';
 
 type DynamicTextDisplayProps = {
   type: textKey;
-  darkMode?: boolean;
 };
 
-export const DynamicTextDisplay = ({ type = 'empty', darkMode=false }: DynamicTextDisplayProps) => {
+export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) => {
   const content = textContent[type];
-  if(type === 'empty') {
-    return(<></>);
-  }
+  if (type === 'empty') return null;
+
   return (
-      <Stack>
-        <Text ta="center" fz="xl" fw={600}>Build your desired brand without cutting corners.</Text>
-        <Text ta="center" fz="xl" fw={600}>Don't let budget hold you back from making the impact you want.</Text>
-        <Text ta="center" fz="xl" fw={600}>Allow us to help you build a brand worth owning.</Text>
-        <Highlight
-          highlight="investment in yourself"
-          color="#01E194"
-          fw={700}
-          size="xl"
-          ta="center"
-        >
-          This is an investment in yourself
-        </Highlight>
-      </Stack>
+    <Box
+      w="100%"
+      py={80}
+      px="lg"
+      style={{
+        background: 'linear-gradient(to bottom, #0f0f0f, #1a1a1a)',
+        color: 'white',
+      }}
+    >
+      <Container size="lg">
+        <Stack align="center">
+          <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+            <Text c="#01E194" span inherit>Building a brand </Text> that truly represents you shouldn’t mean compromising on quality,
+            so you shouldn't let a limited budget hold you back. We're here to help you get a brand
+            worth owing.
+         </Text>
+          <Title
+            fw={800}
+            fz={{ base: 'xl', sm: '2xl', md: '30px'}}           
+          >
+            This is an <Text c="#01E194" span inherit> investment in yourself </Text>
+          </Title>
+        </Stack>
+      </Container>
+    </Box>
   );
 };

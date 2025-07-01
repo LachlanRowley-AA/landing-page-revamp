@@ -11,7 +11,7 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
     <HomePageClient 
       audience={audience}
       content={content}
-      showDescription={audience==='design'}
+      showDescription={false}
       // textKey={audience === 'design' ? 'monica' : 'empty'}
     />
   );
