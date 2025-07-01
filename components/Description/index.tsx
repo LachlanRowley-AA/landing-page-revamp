@@ -13,18 +13,15 @@ export const DynamicTextDisplay = ({ type = 'empty', darkMode=false }: DynamicTe
   const content = textContent[type];
 
   return (
-    <Container size="xl" py="md" w="100%">
+    <Container size="xl" py={0} w="100%">
       <Stack align="center">
-        <Title order={2} ta="center">
-          {content.heading}
-        </Title>
         <div
           style={{
             textAlign: 'center',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             lineHeight: '2',
-            maxWidth: 800,
-            fontFamily: 'fantasy'
+            maxWidth: 1300,
+            fontFamily: 'fantasy',
           }}
         >
           <ReactMarkdown

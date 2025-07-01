@@ -12,7 +12,7 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
       audience={audience}
       content={content}
       showDescription={audience==='design'}
-      textKey={audience === 'design' ? 'monica' : 'empty'}
+      // textKey={audience === 'design' ? 'monica' : 'empty'}
     />
   );
 }
