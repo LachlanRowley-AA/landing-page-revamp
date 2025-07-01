@@ -9,7 +9,7 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
   const audience = params.audience as AudienceKey
   const partner = 'monicakade';
   const content = audienceContent[audience];
-  const description = 'monica' as textKey
+  const description = 'websites' as textKey
   
   return (
     <HomePageClient 

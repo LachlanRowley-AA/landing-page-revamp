@@ -13,6 +13,8 @@ export default async function HomePage(props: { params: Promise<{ audience: stri
       audience={audience}
       partner={partner}
       content={content}
+      showDescription={audience==='design'}
+      textKey={audience === 'design' ? 'monica' : 'empty'}    
     />
   );
 }
