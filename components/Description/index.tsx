@@ -34,13 +34,13 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
            <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
            Don't let budget hold you back from <Text inherit span fw={800}> making the impact you want. </Text>
           </Text>
-           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+           <Text ta="center" fw={500} fz={{ base: 'xl', sm: 'h2', md: '30px' }}>
           Allow us to help you <Text inherit span fw={800}>build a brand worth owning. </Text>
           </Text>
 
           <Title
             fw={800}
-            fz={{ base: 'xl', sm: '2xl', md: '30px'}}   
+            fz={{ base: 'h2', sm: '2xl', md: '30px'}}   
             ta="center"        
           >
             This is an <Text c="#01E194" span inherit> investment in yourself. </Text>
