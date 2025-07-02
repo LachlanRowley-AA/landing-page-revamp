@@ -28,14 +28,14 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
             so you shouldn't let a limited budget hold you back. We're here to help you get a brand
             worth owning.
          </Text> */}
-           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-          Build your desired brand <strong>without cutting corners.</strong>
+           <Text ta="center" fz={{ base: 'xl', sm: 'xl', md: '30px' }}>
+          Build your desired brand <Text inherit span fw={800}>without cutting corners.</Text>
           </Text>
-           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-           Don't let budget hold you back from <strong>making the impact you want.</strong>
+           <Text ta="center" fz={{ base: 'xl', sm: 'xl', md: '30px' }}>
+           Don't let budget hold you back from <Text inherit span fw={800}>making the impact you want.</Text>
           </Text>
-           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-          Allow us to help you <strong>build a brand worth owning.</strong>
+           <Text ta="center" fz={{ base: 'xl', sm: 'xl', md: '30px' }}>
+          Allow us to help you <Text inherit span fw={800}>build a brand worth owning.</Text>
           </Text>
 
           <Title
