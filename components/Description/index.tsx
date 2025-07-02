@@ -23,11 +23,21 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
     >
       <Container size="lg">
         <Stack align="center">
-          <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+          {/* <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
             <Text c="#01E194" span inherit>Building a brand </Text> that truly represents you shouldn’t mean compromising on quality,
             so you shouldn't let a limited budget hold you back. We're here to help you get a brand
-            worth owing.
-         </Text>
+            worth owning.
+         </Text> */}
+           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+          Build your desired brand without cutting corners
+          </Text>
+           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+           Don't let budget hold you back from making the impact you want
+          </Text>
+           <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
+          Allow us to help you build a brand worth owning.
+          </Text>
+
           <Title
             fw={800}
             fz={{ base: 'xl', sm: '2xl', md: '30px'}}   

@@ -149,7 +149,7 @@ export const Hero03 = ({
                       ? `/${partner}/logo_black.png`
                       : `/${partner}/logo_white.png`
                   }
-                  mb={{base: 0, md:20}}
+                  mb={{base: 50, md:50}}
                   onLoad={() => setImageLoaded(true)}
                   onError={() => setImageLoaded(true)} // Consider loaded even on error
                   style={{
