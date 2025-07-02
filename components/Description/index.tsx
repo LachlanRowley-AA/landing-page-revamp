@@ -29,13 +29,13 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
             worth owning.
          </Text> */}
            <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-          Build your desired brand without cutting corners
+          Build your desired brand <Text inherit span fw={800}> without cutting corners. </Text>
           </Text>
            <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-           Don't let budget hold you back from making the impact you want
+           Don't let budget hold you back from <Text inherit span fw={800}> making the impact you want. </Text>
           </Text>
            <Text ta="center" fw={500} fz={{ base: 'xl', sm: '2xl', md: '30px' }}>
-          Allow us to help you build a brand worth owning.
+          Allow us to help you <Text inherit span fw={800}>build a brand worth owning. </Text>
           </Text>
 
           <Title
@@ -43,7 +43,7 @@ export const DynamicTextDisplay = ({ type = 'empty' }: DynamicTextDisplayProps) 
             fz={{ base: 'xl', sm: '2xl', md: '30px'}}   
             ta="center"        
           >
-            This is an <Text c="#01E194" span inherit> investment in yourself </Text>
+            This is an <Text c="#01E194" span inherit> investment in yourself. </Text>
           </Title>
         </Stack>
       </Container>
