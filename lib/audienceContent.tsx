@@ -96,8 +96,8 @@ export const audienceContent = {
         features: [
         {
             icon: <IconCurrencyDollar size={28} stroke={1.5} />,
-            title: 'Finance up to $300k',
-            description: 'Access unsecured funding of up to $300,000 to fuel your business growth.',
+            title: 'Finance up to $500k',
+            description: 'Access unsecured funding of up to $500,000 to fuel your business growth.',
         },
         {
             icon: <IconFileOff size={28} stroke={1.5} />,
@@ -107,12 +107,12 @@ export const audienceContent = {
         {
             icon: <IconCalendarTime size={28} stroke={1.5} />,
             title: 'Flexible Terms',
-            description: '5-year loan terms with the option for early payoff.',
+            description: '3-year loan terms with the option for early payoff.',
         },
         {
             icon: <IconBuilding size={28} stroke={1.5} />,
             title: 'Use for Materials',
-            description: 'Works with all building material purchases — no restrictions.',
+            description: 'Works with all material purchases — no restrictions.',
         },
         {
             icon: <IconClockBolt size={28} stroke={1.5} />,
@@ -125,7 +125,8 @@ export const audienceContent = {
             description: 'Take on bigger projects without large upfront costs.',
         },
         ],
-    }
+    },
+
 } as const satisfies Record<AudienceKey, AudienceContent>;
 
 export type textKey = 'websites' | 'branding' | 'monica' | 'empty';

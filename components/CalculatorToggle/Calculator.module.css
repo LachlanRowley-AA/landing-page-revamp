@@ -1,0 +1,14 @@
+.input {
+    font-size: "600px";
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px #01E194, 0 0 40px #01E194, 0 0 60px #01E194;
+    transform: translateX(-50%) scale(1);
+  }
+  to {
+    box-shadow: 0 0 30px #01E194, 0 0 60px #01E194, 0 0 90px #01E194;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
