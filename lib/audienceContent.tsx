@@ -15,7 +15,7 @@ export type Feature = {
     description: ReactNode
 }
 
-export type AudienceKey = 'fitout' | 'design' | 'supplier';
+export type AudienceKey = 'fitout' | 'design' | 'supplier' | 'wholesaler';
 
 type AudienceContent = {
     features: Feature[];

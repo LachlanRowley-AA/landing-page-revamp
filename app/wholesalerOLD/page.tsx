@@ -26,8 +26,8 @@ export default async function HomePage() {
     return(
         <>
         <MantineProvider theme={theme}>
-            {/* <HeroA/> */}
-            <HeroB/>
+            <HeroA/>
+            {/* <HeroB/> */}
             <ProblemStatement/>
             <QrCode/>
         </MantineProvider>
