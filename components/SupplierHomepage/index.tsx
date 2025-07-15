@@ -6,7 +6,7 @@ import { Footer01 } from '@/components/footer/footer';
 import { FAQ } from '@/components/FAQ/Faq';
 import { ContactForm } from '@/components/Contact/Contact';
 import { Suspense, useState, useEffect } from 'react';
-import { UseCases as Benefits} from '@/components/Benefits/Benefits';
+import { UseCases} from '@/components/UseCases/Usecases';
 import { AudienceKey, textKey } from '@/lib/audienceContent';
 import { Loader } from '@mantine/core';
 import { DynamicTextDisplay } from '@/components/Description';
@@ -134,7 +134,7 @@ export default function HomePageClient({ audience, partner, content, calculatorV
       {showDescription && <DynamicTextDisplay type='monica'/>}
       <Feature02 features={content?.features}/>
       <Calculator startingAmount={calculatorValueState}/>
-      <Suspense><Benefits /></Suspense>
+      <Suspense><UseCases /></Suspense>
       <FAQ />
       <section id="footer"><ContactForm referrer={partner} /></section>
       <Footer01 />
