@@ -29,6 +29,7 @@ export default function HomePageClient({ audience, partner, content, calculatorV
     has_white: boolean;
   }>({ has_black: false, has_white: false });
   const [calculatorValueState, setCalculatorValueState] = useState(calculatorValue || 30000);
+  sessionStorage.setItem('calculatorValue', calculatorValueState.toString());
 
   // Pre-load hero data before rendering anything
   useEffect(() => {
@@ -134,9 +135,9 @@ export default function HomePageClient({ audience, partner, content, calculatorV
       {showDescription && <DynamicTextDisplay type='monica'/>}
       <Feature02 features={content?.features}/>
       <Calculator startingAmount={calculatorValueState}/>
+      <section id="footer"><ContactForm referrer={partner} /></section>
       <Suspense><UseCases /></Suspense>
       <FAQ />
-      <section id="footer"><ContactForm referrer={partner} /></section>
       <Footer01 />
     </div>
   );

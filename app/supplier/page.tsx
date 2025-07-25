@@ -14,10 +14,10 @@ export default function HomePage() {
       <Suspense><Hero03 /></Suspense>
       <Feature02 />
       <Calculator />
+      <ContactForm />
       {/* <UseCases /> */}
       <Suspense><Benefits /></Suspense>
       <FAQ />
-      <ContactForm />
       <Footer01 />
     </>
   );
