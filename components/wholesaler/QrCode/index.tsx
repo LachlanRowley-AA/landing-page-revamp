@@ -69,7 +69,7 @@ export function QrCode() {
     }
 
     // Create the URL with partner name and tracking data
-    const baseUrl = 'https://assetalley.netlify.app/wholesaler/';
+    const baseUrl = 'https://assetalley.netlify.app/software/';
     const trackingParams = new URLSearchParams({
       utm_source: 'invoice',
       utm_medium: 'qr',
