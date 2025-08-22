@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
-import { getServerSession } from 'next-auth/next';
 import { authConfig } from '@/auth.config'; // Adjust path as needed
 
 interface FileBuffer {
@@ -155,10 +154,6 @@ async function processLogos(partnerFiles: FileBuffer[]): Promise<string[]> {
 export async function POST(request: NextRequest): Promise<NextResponse<UploadResponse>> {
   try {
     // Check authentication
-    const session = await getServerSession(authConfig);
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     // Get form data
     const formData = await request.formData();
