@@ -4,6 +4,7 @@ import { JSX, useContext } from 'react';
 import { IconArrowDownRight, IconCalculator } from '@tabler/icons-react';
 import { BarChart } from '@mantine/charts';
 import { Box, Divider, Grid, GridCol, Group, Stack, Text, ThemeIcon, Title } from '@mantine/core';
+import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { ATO_OptionsContext } from '../Context';
 
 export default function Graph() {
@@ -18,6 +19,7 @@ export default function Graph() {
     taxRate,
     Loan_interestAmount,
     ATO_interestAmount,
+    isMobile,
   } = ctx;
 
   // split finance interest: raw vs. tax savings
@@ -46,11 +48,11 @@ export default function Graph() {
         <ThemeIcon color="teal" radius="xl" size="lg" variant="light">
           <IconArrowDownRight size={20} />
         </ThemeIcon>
-        <Text size="xl" fw={700} c="teal">
+        <Text fz={{base: 'lg', md: "xl"}} fw={700} c="teal">
           You'll pay ${monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })} less
           per month
         </Text>
-        <Text size="xs" fw={500} c='black' ta="center" ml='md'>
+        <Text size="xs" fw={500} c="black" ta="center" ml="md">
           * Monthly repayment comparison is shown only for the duration of the ATO plan.
         </Text>
       </Group>
@@ -58,7 +60,7 @@ export default function Graph() {
 
     chartData = [
       { source: 'ATO Payment Plan', value: ATO_monthlyRepayment },
-      { source: 'Finance Plan', value: Loan_monthlyRepayment, color: 'teal.6'  },
+      { source: 'Finance Plan', value: Loan_monthlyRepayment, color: 'teal.6' },
     ];
 
     chartSeries = [{ name: 'value', label: 'Monthly Repayment', color: 'blue.6' }];
@@ -105,7 +107,7 @@ export default function Graph() {
     // Case 3: No savings
     message = (
       <Text size="lg" fw={600} c="red">
-        No savings with finance option
+        No savings with our finance options
       </Text>
     );
 
@@ -136,13 +138,20 @@ export default function Graph() {
   }
 
   return (
-    <Grid gutter="xl" align="stretch" mih='50vh' mb="20px">
+    <Grid gutter="xl" align="stretch" mih={{ md: '50vh' }} mb="20px">
       {/* LEFT: Chart + savings */}
       <GridCol span={{ base: 12, md: 8 }}>
         <Stack gap="md" align="center">
-          <Title order={3} ta="center">
+      <JumboTitle
+        order={isMobile ? 3 : 1}
+        fz="xs"
+        ta="center"
+        style={{ textWrap: 'balance' }}
+        c="black"
+        fw={600}
+      >
             {title}
-          </Title>
+          </JumboTitle>
 
           {message}
 

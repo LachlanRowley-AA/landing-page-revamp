@@ -12,13 +12,13 @@ type DateSelectProps = {
 const options = [
   {
     text: 'Yes',
-    value: 0.25
+    value: 0.25,
   },
   {
     text: 'No',
-    value: 0.30
-  }
-]
+    value: 0.3,
+  },
+];
 
 export default function TaxSelect({ onSelect }: DateSelectProps) {
   const ctx = useContext(ATO_OptionsContext);
@@ -26,26 +26,26 @@ export default function TaxSelect({ onSelect }: DateSelectProps) {
     throw new Error('ATO_OptionsContext is not provided');
   }
 
-  const { setTaxRate } = ctx;
+  const { setTaxRate, isMobile } = ctx;
 
   const handleSelect = (value: number) => {
     setTaxRate(value);
     onSelect?.(); // trigger auto-progress if provided
   };
 
-
+  console.log('tax mobile', isMobile);
 
   return (
-    <Stack align="center" justify="center" style={{ minHeight: '50vh', gap: 20 }}>
+    <Stack align="center" justify="center" mih={{ md: '50vh' }} style={{ gap: 20 }}>
       <JumboTitle
-        order={1}
+        order={isMobile ? 3 : 1}
         fz="xs"
         ta="center"
         style={{ textWrap: 'balance' }}
-        c={{ base: 'black', md: 'black' }}
+        c="black"
         fw={600}
       >
-        Is your company elible for the lower company tax rate
+        Does your business have a turnover of less than $50 million
       </JumboTitle>
 
       <Grid justify="center" gutter="md" style={{ width: '100%', maxWidth: 400 }}>

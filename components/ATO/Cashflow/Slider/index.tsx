@@ -24,13 +24,12 @@ export default function CalculatorSlider() {
     throw new Error('ATO_OptionsContext is not provided');
   }
 
-  const { amountOwed, setAmountOwed, calculateInterestAmount } = ctx;
+  const { amountOwed, setAmountOwed, calculateInterestAmount, isMobile } = ctx;
   const MAX_AMOUNT = 200000; //max amount ATO allows for payment plan
 
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   return (
-    <Stack align="center" justify="center" style={{ minHeight: '50vh', gap: 20 }}>
+    <Stack align="center" justify="center" mih={{ md: '50vh' }} style={{ gap: 20 }}>
       <Stack align="center" gap="xs">
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
@@ -42,7 +41,7 @@ export default function CalculatorSlider() {
             <Grid.Col span={12}>
               <span>
                 <JumboTitle
-                  order={1}
+                  order={isMobile ? 3 : 1}
                   fz="xs"
                   ta="center"
                   style={{ textWrap: 'balance' }}

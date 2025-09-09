@@ -4,6 +4,6 @@ import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
 
 export default function ContactSpecialist() {
     return (
-        <InlineWidget url='https://calendly.com/louiedib/website-app-development-finance' styles={{height: '400px'}}/>
+        <InlineWidget url='https://calendly.com/d/cmh8-ynr-gby/meet-with-asset-alley' styles={{height: '400px'}}/>
     )
 }

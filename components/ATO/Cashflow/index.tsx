@@ -3,16 +3,28 @@
 import { useState } from 'react';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { motion } from 'motion/react';
-import { Box, Button, Card, Container, Group, Image, Progress, Stack, Text } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Group,
+  Image,
+  Progress,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import ContactSpecialist from './ContactSpecialist';
 import { ATO_ContextProvider } from './Context';
 import DateSelect from './DateSelect';
+import Disclaimer from './Disclaimer';
 import FetchATOInterest from './FetchData';
 import Graph from './Graph';
 import Slider from './Slider';
 import TaxSelect from './TaxSelect';
-import Disclaimer from './Disclaimer';
 
 const ATO_dates = [6, 12, 18, 24];
 const loan_dates = [6, 12, 18, 24, 36, 48, 60];
@@ -22,6 +34,11 @@ export function Options() {
 
   const next = () => setActiveIndex((prev) => (prev + 1) % menus.length);
   const prev = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
+
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`, false, {
+    getInitialValueInEffect: true,
+  });
 
   const menus = [
     { component: <Slider />, label: 'Adjust loan size' },
@@ -38,83 +55,87 @@ export function Options() {
     { component: <ContactSpecialist />, label: 'Talk to a specialist' },
   ];
 
-  return (
-    <ATO_ContextProvider>
-      <FetchATOInterest />
-
-      <Container size="sm" py="xl">
-        <Card
-          shadow="sm"
-          radius="lg"
-          withBorder
-          padding="lg"
-          style={{
-            minHeight: 400, // lock base size
-            minWidth: 800,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+  const content = (
+    <Stack gap="md" style={{ flex: 1 }}>
+      {/* Progress indicator */}
+      <Group align="center">
+        <Image src="/Default/logo_black.png" maw={{ base: '30vw', md: '10vw' }} />
+        <JumboTitle
+          order={2}
+          fz="xs"
+          ta="center"
+          style={{ textWrap: 'balance' }}
+          c={{ base: 'black', md: 'black' }}
+          fw={600}
         >
-          <Stack gap="md" style={{ flex: 1 }}>
-            {/* Progress indicator */}
-            <Group align='center'>
-              <Image src="/Default/logo_black.png" maw={{ base: '10vw' }} />
-              <JumboTitle
-                order={2}
-                fz="xs"
-                ta="center"
-                style={{ textWrap: 'balance' }}
-                c={{ base: 'black', md: 'black' }}
-                fw={600}
-              >
-                ATO Payment Plan vs Finance Comparison
-              </JumboTitle>
-            </Group>
-            <Box>
-              <Text size="sm" fw={500} mb="xs">
-                Step {activeIndex + 1} of {menus.length}: {menus[activeIndex].label}
-              </Text>
-              <Progress value={((activeIndex + 1) / menus.length) * 100} radius="xl" />
-            </Box>
-            <Disclaimer />
-            {/* Animated content, centered */}
-            <Box
-              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                style={{ width: '100%' }}
-              >
-                {menus[activeIndex].component}
-              </motion.div>
-            </Box>
+          ATO Payment Plan vs Finance Comparison
+        </JumboTitle>
+      </Group>
+      <Box>
+        <Text size="sm" fw={500} mb="xs">
+          Step {activeIndex + 1} of {menus.length}: {menus[activeIndex].label}
+        </Text>
+        <Progress value={((activeIndex + 1) / menus.length) * 100} radius="xl" />
+      </Box>
+     {activeIndex !== (menus.length -1) && (<Disclaimer />)}
+      {/* Animated content, centered */}
+      <Box style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          style={{ width: '100%' }}
+        >
+          {menus[activeIndex].component}
+        </motion.div>
+      </Box>
 
-            {/* Navigation */}
-            <Group justify="space-between" mt="md">
-              <Button
-                variant="default"
-                leftSection={<IconChevronLeft size={18} />}
-                onClick={prev}
-                disabled={activeIndex === 0}
-              >
-                Back
-              </Button>
-              {activeIndex !== menus.length - 1 && (
-                <Button
-                  variant="filled"
-                  rightSection={<IconChevronRight size={18} />}
-                  onClick={next}
-                >
-                  {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
-                </Button>
-              )}{' '}
-            </Group>
-          </Stack>
-        </Card>
+      {/* Navigation */}
+      <Group justify="space-between" mt="md">
+        <Button
+          variant="default"
+          leftSection={<IconChevronLeft size={18} />}
+          onClick={prev}
+          disabled={activeIndex === 0}
+        >
+          Back
+        </Button>
+        {activeIndex !== menus.length - 1 && (
+          <Button variant="filled" rightSection={<IconChevronRight size={18} />} onClick={next}>
+            {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
+          </Button>
+        )}{' '}
+      </Group>
+    </Stack>
+  );
+  console.log('mobile :', isMobile);
+
+  return (
+    <ATO_ContextProvider isMobileProp={isMobile}>
+      <FetchATOInterest />
+      <Container size="xl" py={{ base: 0, md: 'xl' }} px="xs">
+        {!isMobile ? (
+          <Card
+            shadow={isMobile ? '0' : 'md'}
+            radius="lg"
+            withBorder={!isMobile}
+            p={{ base: 0, md: 'lg' }}
+            mih={{ base: '100vh', md: '400px' }}
+            miw={{ base: '100vw', md: '800px' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {content}
+          </Card>
+        ) : (
+          <Container bg="white" py="md" mx={0}>
+            {content}
+          </Container>
+        )}
       </Container>
     </ATO_ContextProvider>
   );

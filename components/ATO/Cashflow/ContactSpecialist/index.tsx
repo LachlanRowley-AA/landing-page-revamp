@@ -14,7 +14,7 @@ export default function ContactSpecialist() {
         fw={600}
       >Talk to a Specialist</JumboTitle>
       <InlineWidget
-        url="https://calendly.com/louiedib/website-app-development-finance"
+        url="https://calendly.com/d/cmh8-ynr-gby/meet-with-asset-alley"
         styles={{ height: '500px' }}
         pageSettings={{
           hideEventTypeDetails: true,

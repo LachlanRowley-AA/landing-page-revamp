@@ -6,6 +6,7 @@ export interface ATO_OptionsContextProps {
   amountOwed: number;
   stageIndex: number;
   taxRate: number;
+  isMobile: boolean;
 
   ATO_paymentTermLength: number;
   ATO_interestRate: number;
@@ -20,6 +21,7 @@ export interface ATO_OptionsContextProps {
   setAmountOwed: (value: number) => void;
   setStageIndex: (value: number) => void;
   setTaxRate: (value: number) => void;
+  setIsMobile: (value: boolean) => void;
 
   setATO_paymentTermLength: (value: number) => void;
   setATO_InterestRate: (value: number) => void;
@@ -38,11 +40,13 @@ export const ATO_OptionsContext = createContext<ATO_OptionsContextProps | null>(
 
 type ATO_ContextProviderProps = {
   children: ReactNode;
+  isMobileProp?: boolean;
 };
-export function ATO_ContextProvider({ children }: ATO_ContextProviderProps) {
+export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_ContextProviderProps) {
   const [amountOwed, setAmountOwed] = useState<number>(1000);
   const [stageIndex, setStageIndex] = useState<number>(0);
   const [taxRate, setTaxRate] = useState<number>(0.25);
+  const [isMobile, setIsMobile] = useState<boolean>(isMobileProp);
 
   const [ATO_paymentTermLength, setATO_paymentTermLength] = useState<number>(0);
   const [ATO_interestRate, setATO_InterestRate] = useState<number>(0);
@@ -50,9 +54,13 @@ export function ATO_ContextProvider({ children }: ATO_ContextProviderProps) {
   const [ATO_monthlyRepayment, setATO_MonthlyRepayment] = useState<number>(0);
 
   const [Loan_paymentTermLength, setLoan_paymentTermLength] = useState<number>(0);
-  const [Loan_interestRate, setLoan_InterestRate] = useState<number>(12.95);
+  const [Loan_interestRate, setLoan_InterestRate] = useState<number>(13.95);
   const [Loan_interestAmount, setLoan_InterestAmount] = useState<number>(0);
   const [Loan_monthlyRepayment, setLoan_MonthlyRepayment] = useState<number>(0);
+
+  useEffect(() => {
+    setIsMobile(isMobileProp);
+  }, [isMobileProp]);
 
   const calculateMonthlyRepayment = (
     loanAmount: number,
@@ -125,7 +133,6 @@ export function ATO_ContextProvider({ children }: ATO_ContextProviderProps) {
     setATO_MonthlyRepayment(
       calculateMonthlyRepayment(amountOwed, ATO_interestRate, ATO_paymentTermLength)
     );
-
   }, [amountOwed, ATO_paymentTermLength, ATO_interestRate]);
 
   useEffect(() => {
@@ -143,6 +150,7 @@ export function ATO_ContextProvider({ children }: ATO_ContextProviderProps) {
         amountOwed,
         stageIndex,
         taxRate,
+        isMobile,
 
         ATO_paymentTermLength,
         ATO_interestRate,
@@ -157,6 +165,7 @@ export function ATO_ContextProvider({ children }: ATO_ContextProviderProps) {
         setAmountOwed,
         setStageIndex,
         setTaxRate,
+        setIsMobile,
 
         setATO_paymentTermLength,
         setATO_InterestRate,

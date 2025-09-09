@@ -17,7 +17,7 @@ export default function DateSelect({ dates, setATO, onSelect }: DateSelectProps)
     throw new Error('ATO_OptionsContext is not provided');
   }
 
-  const { setATO_paymentTermLength, setLoan_paymentTermLength } = ctx;
+  const { setATO_paymentTermLength, setLoan_paymentTermLength, isMobile } = ctx;
 
   const handleSelect = (value: number) => {
     if (setATO) {
@@ -29,13 +29,13 @@ export default function DateSelect({ dates, setATO, onSelect }: DateSelectProps)
   };
 
   return (
-    <Stack align="center" justify="center" style={{ minHeight: '50vh', gap: 20 }}>
+    <Stack align="center" justify="center" mih={{ md: '50vh' }} style={{ gap: 20 }}>
       <JumboTitle
-        order={1}
+        order={isMobile ? 3 : 1}
         fz="xs"
         ta="center"
         style={{ textWrap: 'balance' }}
-        c={{ base: 'black', md: 'black' }}
+        c="black"
         fw={600}
       >
         {setATO
