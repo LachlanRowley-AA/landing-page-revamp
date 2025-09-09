@@ -8,13 +8,13 @@ import { useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-const DEFAULT_INTEREST_RATE = 10.78;
+const DEFAULT_INTEREST_RATE = 13.95;
 const DAYS_IN_YEAR = 365;
 const WEEKS_IN_YEAR = 52;
 const MONTHS_IN_YEAR = 12;
 const DAYS_IN_WEEK = 7;
 const DAYS_IN_MONTH = 365 / 12;
-const LOAN_TERM_YEARS = 2;
+const LOAN_TERM_YEARS = 3;
 
 const calculateRepayment = (loanAmount: number, interestRate: number, isWeekly: boolean) => {
   if (loanAmount <= 0) return 0;
@@ -65,7 +65,7 @@ type CalculatorProps = {
   startingAmount?: number;
 }
 
-export const Calculator = ({ startingAmount = 25000 }: CalculatorProps) => {
+export const Calculator = ({ startingAmount = 10000 }: CalculatorProps) => {
   const [baseValue, setBaseValue] = useState(startingAmount);
   const [interestRate, setInterestRate] = useState(DEFAULT_INTEREST_RATE);
   const [isWeekly, setIsWeekly] = useState(false);
