@@ -1,9 +1,11 @@
 import '@mantine/core/styles.css';
+import '@mantine/charts/styles.css'
 
 import React from 'react';
 import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
 import { GoogleAnalytics} from '@next/third-parties/google'
+
 
 
 export const metadata = {

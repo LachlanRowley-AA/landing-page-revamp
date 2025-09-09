@@ -2602,6 +2602,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/charts@npm:^8.2.8":
+  version: 8.2.8
+  resolution: "@mantine/charts@npm:8.2.8"
+  peerDependencies:
+    "@mantine/core": 8.2.8
+    "@mantine/hooks": 8.2.8
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+    recharts: ">=2.13.3"
+  checksum: 10c0/6a6e173d878ea3bbf88dbf589e75da34b3351285123766b9e4b0c4516b14846540585c8d6d7f19ac6fd4968321e10ca0b202e6576755465d8ca886397401b87f
+  languageName: node
+  linkType: hard
+
 "@mantine/core@npm:8.0.2":
   version: 8.0.2
   resolution: "@mantine/core@npm:8.0.2"
@@ -9787,6 +9800,7 @@ __metadata:
     "@babel/core": "npm:^7.26.10"
     "@eslint/js": "npm:^9.23.0"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.4.1"
+    "@mantine/charts": "npm:^8.2.8"
     "@mantine/core": "npm:8.0.2"
     "@mantine/hooks": "npm:8.0.2"
     "@next/bundle-analyzer": "npm:^15.2.3"
@@ -9825,11 +9839,12 @@ __metadata:
     postcss-simple-vars: "npm:^7.0.1"
     prettier: "npm:^3.5.3"
     react: "npm:19.1.0"
+    react-calendly: "npm:^4.4.0"
     react-chartjs-2: "npm:^5.3.0"
     react-dom: "npm:19.1.0"
     react-markdown: "npm:^10.1.0"
     react-qr-code: "npm:^2.0.16"
-    recharts: "npm:^3.1.0"
+    recharts: "npm:^3.1.2"
     sharp: "npm:^0.34.2"
     storybook: "npm:^8.6.8"
     storybook-dark-mode: "npm:^4.0.2"
@@ -11751,6 +11766,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-calendly@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "react-calendly@npm:4.4.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/4eb34866f29ef1b268240cf12bb4a81e26fa2fd1a60adf367eac6b443bb683303f85227291db74e1fa103220ef31a87478dd918b306b38588e9b7ffc30ef3e8c
+  languageName: node
+  linkType: hard
+
 "react-chartjs-2@npm:^5.3.0":
   version: 5.3.0
   resolution: "react-chartjs-2@npm:5.3.0"
@@ -12022,9 +12047,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recharts@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "recharts@npm:3.1.0"
+"recharts@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "recharts@npm:3.1.2"
   dependencies:
     "@reduxjs/toolkit": "npm:1.x.x || 2.x.x"
     clsx: "npm:^2.1.1"
@@ -12041,7 +12066,7 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-is: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/87caca9dec962ff85073590fb39a004dfc827648e51ec0039e1b0c21569a3c7b52896d904508309e7cdb87d5806e974629fc7c35f06720a664dfda27b62d7bde
+  checksum: 10c0/daf04d57a622086e9950a4e4de75b5a8713e3e37401b88373da30efd1618e83de01027ffb9069e076b516fc274954e920ce2f221228a901ca82c6f70fd6a4046
   languageName: node
   linkType: hard
 
