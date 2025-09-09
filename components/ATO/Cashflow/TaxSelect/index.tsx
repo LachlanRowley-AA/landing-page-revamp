@@ -45,7 +45,7 @@ export default function TaxSelect({ onSelect }: DateSelectProps) {
         c="black"
         fw={600}
       >
-        Does your business have a turnover of less than $50 million
+        Does your business have a turnover of less than $50 million?
       </JumboTitle>
 
       <Grid justify="center" gutter="md" style={{ width: '100%', maxWidth: 400 }}>
