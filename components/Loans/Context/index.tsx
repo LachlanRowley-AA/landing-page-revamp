@@ -13,6 +13,8 @@ export interface CalculatorContextProps {
   Loan_interestAmount: number;
   Loan_monthlyRepayment: number;
 
+  balloonAmount: number;
+
   setAmountOwed: (value: number) => void;
   setStageIndex: (value: number) => void;
   setTaxRate: (value: number) => void;
@@ -22,6 +24,9 @@ export interface CalculatorContextProps {
   setLoan_InterestRate: (value: number) => void;
   setLoan_InterestAmount: (value: number) => void;
   setLoan_MonthlyRepayment: (value: number) => void;
+
+  setBalloonAmount: (value: number) => void;
+
   calculateInterestAmount: (loanAmount: number, interestRate: number, termLength: number) => void;
   calculateMonthlyRepayment: (loanAmount: number, interestRate: number, termLength: number) => void;
 }
@@ -42,6 +47,8 @@ export function CalculatorContextProvider({ children, isMobileProp = false }: Ca
   const [Loan_interestRate, setLoan_InterestRate] = useState<number>(13.95);
   const [Loan_interestAmount, setLoan_InterestAmount] = useState<number>(0);
   const [Loan_monthlyRepayment, setLoan_MonthlyRepayment] = useState<number>(0);
+
+  const [balloonAmount, setBalloonAmount] = useState<number>(0);
 
   useEffect(() => {
     setIsMobile(isMobileProp);
@@ -132,6 +139,8 @@ export function CalculatorContextProvider({ children, isMobileProp = false }: Ca
         Loan_monthlyRepayment,
         Loan_paymentTermLength,
 
+        balloonAmount,
+
         setAmountOwed,
         setStageIndex,
         setTaxRate,
@@ -141,6 +150,8 @@ export function CalculatorContextProvider({ children, isMobileProp = false }: Ca
         setLoan_InterestAmount,
         setLoan_MonthlyRepayment,
         setLoan_paymentTermLength,
+
+        setBalloonAmount,
 
         calculateInterestAmount,
         calculateMonthlyRepayment,

@@ -1,0 +1,19 @@
+{
+  "0": {
+    "Title": "Home owning business owner",
+    "Text": [
+      "ABN Running",
+      "GST Registered for 1 day or more",
+      "Own a home in your (or spouse's) name",
+      "No previous issue with Westpac Group",
+      "No bad credit"
+    ],
+    "MaxPrice": 150000,
+    "Rate": 10
+  },
+  "1": {
+    "Title": "Non-home owning business owner",
+    "Text": ["2 Year ABN", "Not property backed"],
+    "Rate": 12
+  }
+}

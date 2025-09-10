@@ -23,6 +23,7 @@
     "@mantine/charts": "^8.2.8",
     "@mantine/core": "8.0.2",
     "@mantine/hooks": "8.0.2",
+    "@mantine/notifications": "^8.3.0",
     "@next/bundle-analyzer": "^15.2.3",
     "@next/third-parties": "^15.3.3",
     "@supabase/supabase-js": "^2.50.0",
