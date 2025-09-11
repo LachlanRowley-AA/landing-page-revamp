@@ -9,11 +9,13 @@
       "No bad credit"
     ],
     "MaxPrice": 150000,
-    "Rate": 10
+    "Rate": 10,
+    "Icon": "IconHome"
   },
   "1": {
     "Title": "Non-home owning business owner",
     "Text": ["2 Year ABN", "Not property backed"],
-    "Rate": 12
+    "Rate": 12,
+    "Icon": "IconHomeOff"
   }
 }

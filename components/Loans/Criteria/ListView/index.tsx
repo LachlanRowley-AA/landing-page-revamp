@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
+import * as TablerIcons from '@tabler/icons-react';
 import {
   Card,
   Divider,
@@ -21,12 +21,17 @@ interface ItemLayoutProps {
   categories: string[];
   rate: number;
   index: string;
+  image: string;
 }
 
-const ItemLayout = ({ title, categories, rate, index }: ItemLayoutProps) => {
+const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
+
+  const Icon = (TablerIcons as any)[image] || 'a';
+  console.log(Icon);
+  console.log('image=', image)
   return (
     <Card
       shadow="sm"
@@ -49,8 +54,10 @@ const ItemLayout = ({ title, categories, rate, index }: ItemLayoutProps) => {
       }}
     >
       <Grid>
-        <GridCol span={2} />
-        <GridCol span={10}>
+        <GridCol span={{base: 0, md:2}}>
+          <Icon style={{height: '100%', width: '50%', align: 'center', justifyContent: 'center'}} color='#01E194' stroke={1}/>
+        </GridCol>
+        <GridCol span={{base: 12, md:10}}>
           <Stack gap="sm">
             <Title order={4}>{title}</Title>
             <Divider />
@@ -59,7 +66,7 @@ const ItemLayout = ({ title, categories, rate, index }: ItemLayoutProps) => {
                 <GridCol span={4} key={idx}>
                   <Flex gap="xs" align="c" wrap="wrap">
                     <ThemeIcon size="xs" radius="xl" color="teal">
-                      <IconRosetteDiscountCheckFilled size={12} />
+                      <TablerIcons.IconRosetteDiscountCheckFilled size={12} />
                     </ThemeIcon>
                     <Text
                       size="sm"
@@ -93,7 +100,7 @@ export default function ListView() {
   }
 
   return (
-    <Stack gap="lg" bg="white" p="md">
+    <Stack gap="lg" bg="white" p="xs">
       {Object.entries(itemList).map(([key, item]) => (
         <ItemLayout
           key={key}
@@ -101,6 +108,7 @@ export default function ListView() {
           title={item.Title}
           categories={item.Text}
           rate={item.Rate}
+          image={item.Icon}
         />
       ))}
     </Stack>

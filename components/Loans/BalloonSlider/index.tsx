@@ -111,11 +111,13 @@ export default function BalloonSlider() {
               </Group>
             </Stack>
           </Stack>
-
+          {/* Change this to just be a grid */}
           {/* Alert on the right */}
           {balloonAmount > 30 && (
-            <Box pos='absolute' left='75%' maw='20%'>
-              <Alert color="orange">We recommend talking to a specialist. lorem ipsum delores</Alert>
+            <Box pos="absolute" left="75%" maw="20%">
+              <Alert color="orange">
+                We recommend talking to a specialist if you would like this balloon amount
+              </Alert>
             </Box>
           )}
         </Group>

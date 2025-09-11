@@ -1,4 +1,15 @@
-import { Box, Card, Container, Divider, Group, Stack, Text, Title } from '@mantine/core';
+'use client';
+
+import {
+  Box,
+  Card,
+  Container,
+  Divider,
+  Group,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
 import Navbar from '@/components/Loans/Calculator';
 import { CriteriaHandler } from '@/components/Loans/Criteria/CriteriaHandler';
 import ListView from '@/components/Loans/Criteria/ListView';
@@ -7,30 +18,38 @@ export default function Page() {
   return (
     <div>
       <Navbar />
-      <div style={{ backgroundColor: '#e2e1e1ff', height: '100vh', paddingTop: '40px' }}>
+      <Box bg="#f4f4f4" py="xl" mih="100vh">
         <CriteriaHandler>
-          <Card h="100%" bg="white" py="xl" mx={200}>
-            <Group align="stretch" gap="sm">
-              <Box w={6} bg="#01E194" style={{ borderRadius: 2 }} />
-              <Stack gap={0} w="95%">
-                <Title order={2} ta="center">
-                  Vehicle Finance Calculators
-                </Title>
-                <Text fz='sm' fw="bold" ta='center'>
-                  for vehicles up to 5 years old
-                </Text>
+          <Container size="lg">
+            <Card
+              shadow="md"
+              radius="lg"
+              withBorder
+              p={{base:'xs', md:"xl"}}
+              bg="white"
+            >
+              <Group align="flex-start" gap="md" mb="md">
+                <Box w={8} bg="#01E194" style={{ borderRadius: 4 }} />
+                <Stack gap={4} w="100%">
+                  <Title order={2} ta="center" c="dark">
+                    Vehicle Finance Calculators
+                  </Title>
+                  <Text fz="sm" fw={600} ta="center" c="dimmed">
+                    for vehicles up to 5 years old
+                  </Text>
+                  <Text fz="lg" fw="bold" mt="sm">
+                    Choose the category which fits you best
+                  </Text>
+                </Stack>
+              </Group>
 
-                <Text fz={24} fw="bold" py="md">
-                  Choose the category which fits you best
-                </Text>
-              </Stack>
-            </Group>
+              <Divider mb="lg" />
 
-            <Divider />
-            <ListView />
-          </Card>
+              <ListView />
+            </Card>
+          </Container>
         </CriteriaHandler>
-      </div>
+      </Box>
     </div>
   );
 }

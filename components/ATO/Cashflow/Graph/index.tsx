@@ -1,7 +1,13 @@
 'use client';
 
 import { JSX, useContext } from 'react';
-import { IconArrowDownRight, IconCalculator } from '@tabler/icons-react';
+import {
+  IconArrowDown,
+  IconArrowDownRight,
+  IconArrowUp,
+  IconCalculator,
+  IconEqual,
+} from '@tabler/icons-react';
 import { BarChart } from '@mantine/charts';
 import { Box, Divider, Grid, GridCol, Group, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
@@ -19,6 +25,8 @@ export default function Graph() {
     taxRate,
     Loan_interestAmount,
     ATO_interestAmount,
+    Loan_paymentTermLength,
+    ATO_paymentTermLength,
     isMobile,
   } = ctx;
 
@@ -48,12 +56,12 @@ export default function Graph() {
         <ThemeIcon color="teal" radius="xl" size="lg" variant="light">
           <IconArrowDownRight size={20} />
         </ThemeIcon>
-        <Text fz={{base: 'lg', md: "xl"}} fw={700} c="teal">
+        <Text fz={{ base: 'lg', md: 'xl' }} fw={700} c="teal">
           You'll pay ${monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })} less
           per month
         </Text>
         <Text size="xs" fw={500} c="black" ta="center" ml="md">
-          * Monthly repayment comparison is shown only for the duration of the ATO plan.
+          * Monthly repayment comparison is shown only for an equivalent duration of the ATO plan.
         </Text>
       </Group>
     );
@@ -142,14 +150,14 @@ export default function Graph() {
       {/* LEFT: Chart + savings */}
       <GridCol span={{ base: 12, md: 8 }}>
         <Stack gap="md" align="center">
-      <JumboTitle
-        order={isMobile ? 3 : 1}
-        fz="xs"
-        ta="center"
-        style={{ textWrap: 'balance' }}
-        c="black"
-        fw={600}
-      >
+          <JumboTitle
+            order={isMobile ? 3 : 1}
+            fz="xs"
+            ta="center"
+            style={{ textWrap: 'balance' }}
+            c="black"
+            fw={600}
+          >
             {title}
           </JumboTitle>
 
@@ -189,38 +197,59 @@ export default function Graph() {
       {/* RIGHT: Sidebar explanation */}
       <GridCol span={{ base: 12, md: 4 }}>
         <Stack gap="sm">
+          <Text size="md">
+            <b style={{ color: 'blue' }}>ATO repayment:</b> $
+            {ATO_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })} for{' '}
+            {ATO_paymentTermLength} months
+          </Text>
+          <Text size="md">
+            <b style={{ color: 'green' }}>Finance repayment:</b> $
+            {Loan_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })} for{' '}
+            {Loan_paymentTermLength} months
+          </Text>
+          <Divider />
+
+          <Text size="md">
+            <b>ATO GIC (non deductible):</b> $
+            {ATO_interestAmount.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </Text>
+          <Text size="md">
+            <b>Loan interest (deductible):</b> $
+            {Loan_interestAmount.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </Text>
+          <Divider label="Tax deduction" />
+
+          <Text size="sm">
+            <b>Loan interest:</b> $
+            {Loan_interestAmount.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </Text>
+
           <Text size="sm">
             <b>Tax rate:</b> {(taxRate * 100).toFixed(0)}%
           </Text>
           <Text size="sm">
-            <b>Loan interest (before tax):</b> $
-            {Loan_interestAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            <b>Interest tax deduction:</b> $
+            {financeTaxDeduction.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
           </Text>
-          <Text size="sm">
-            <b>Tax deduction:</b> $
-            {financeTaxDeduction.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-          </Text>
-          <Text size="sm">
+          <Divider />
+          <Text size="md" c={financeNetInterest > ATO_interestAmount ? 'red' : 'black'}>
             <b>Net finance cost:</b> $
-            {financeNetInterest.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-          </Text>
-
-          <Divider />
-
-          <Text size="sm">
-            <b>ATO GIC cost:</b> $
-            {ATO_interestAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-          </Text>
-
-          <Divider />
-
-          <Text size="sm">
-            <b>ATO repayment:</b> $
-            {ATO_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-          </Text>
-          <Text size="sm">
-            <b>Finance repayment:</b> $
-            {Loan_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            {financeNetInterest.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
           </Text>
         </Stack>
       </GridCol>

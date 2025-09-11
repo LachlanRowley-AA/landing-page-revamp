@@ -7,6 +7,7 @@ interface Criteria {
   Title: string;
   Text: string[];
   Rate: number;
+  Icon: string;
 }
 type CriteriaMap = Record<string, Criteria>;
 
