@@ -101,7 +101,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
 
   // --- Calculation helpers ---
   const [balloonCalcMethod, setBalloonCalcMethod] = useState<balloonCalcMethodValues>('Additional');
-  const [brokerageCalcMethod, setBrokerageCalcMethod] = useState<brokerageCalcMethodValues>('IncFee');
+  const [brokerageCalcMethod, setBrokerageCalcMethod] =
+    useState<brokerageCalcMethodValues>('IncFee');
 
   const calculateMonthlyRepayment = (
     loanAmount: number,
@@ -134,7 +135,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     balloonRate: number,
     calcMethod: balloonCalcMethodValues,
     brokerageCalcMethod: brokerageCalcMethodValues,
-    brokerageRate = 0.03,
+    brokerageRate = 0.03
   ): number => {
     if (loanAmount <= 0 || termLength <= 0) {
       return 0;
@@ -175,82 +176,87 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     );
   };
 
+  function findEffectiveRateBinaryBalloon(
+    principal: number,
+    fee: number,
+    realMonthly: number,
+    numMonths: number,
+    balloonRate: number,
+    balloonCalcMethod: balloonCalcMethodValues,
+    tolerance = 0.01,
+    maxIterations = 1000
+  ) {
+    if (principal <= 0 || realMonthly >= 0 || balloonAmount < 0) {
+      return {
+        monthlyRate: 0,
+        annualRate: 0,
+        annualRatePercent: 0,
+        iterations: 0,
+      };
+    }
+    // Binary search
+    let low = 0;
+    let high = 100;
+    let mid = 0;
+    let iteration = 0;
+
+    for (iteration = 1; iteration <= maxIterations; iteration++) {
+      mid = (low + high) / 2;
+      const value = calculateEffectiveRate(
+        principal,
+        fee,
+        mid,
+        numMonths,
+        balloonRate,
+        balloonCalcMethod,
+        'IncFee',
+        0
+      );
+
+      const diff = Math.abs(realMonthly) - value;
+
+      if (Math.abs(diff) < tolerance) {
+        break;
+      }
+
+      if (diff > 0) {
+        low = mid;
+      } else {
+        high = mid;
+      }
+    }
+
+    const annualRatePercent = mid;
+
+    return { annualRatePercent };
+  }
+
   // --- Internal utilities ---
   function findEffectiveInterestRate(
     principal: number,
+    fee: number,
     monthlyPayment: number,
     baseMonths: number,
     futureValue: number,
-    balloonAmount : number,
-    balloonCalcMethod : balloonCalcMethodValues,
+    balloonAmount: number,
+    balloonCalcMethod: balloonCalcMethodValues,
     tolerance = 1e-10,
-    maxIterations = 3000,
+    maxIterations = 3000
   ) {
     if (principal <= 0 || monthlyPayment >= 0) {
       return { monthlyRate: 0, annualRate: 0, annualRatePercent: 0, iterations: 1 };
     }
-
-    let rate = 0.01 / 12; // initial guess
-    let numMonths = baseMonths;
-    switch (balloonCalcMethod) {
-      case "Additional":
-        break;
-      case "TakesFinal":
-        numMonths = balloonAmount > 0 ? numMonths - 1 : numMonths;
-        break;
-      case "OnTop":
-        break;
-    }
-
-    for (let i = 0; i < maxIterations; i++) {
-      const { fValue, fDerivative } = calculateFunctionAndDerivative(
-        rate,
-        principal,
-        monthlyPayment,
-        numMonths,
-        futureValue
-      );
-
-      const newRate = rate - fValue / fDerivative;
-      if (Math.abs(newRate - rate) < tolerance) {
-        return {
-          monthlyRate: newRate,
-          annualRate: newRate * 12,
-          annualRatePercent: newRate * 12 * 100,
-          iterations: i + 1,
-        };
-      }
-      rate = Math.max(newRate, 0.001 / 12);
-    }
-
-    throw new Error(`Failed to converge after ${maxIterations} iterations`);
-  }
-
-  function calculateFunctionAndDerivative(
-    rate: number,
-    principal: number,
-    monthlyPayment: number,
-    numMonths: number,
-    futureValue: number
-  ) {
-    if (rate === 0) {
-      const fValue = principal + monthlyPayment * numMonths - futureValue;
-      const fDerivative = (monthlyPayment * numMonths * (numMonths + 1)) / 2;
-      return { fValue, fDerivative };
-    }
-
-    const onePlusR = 1 + rate;
-    const onePlusRtoN = onePlusR ** numMonths;
-
-    const compoundedPrincipal = principal * onePlusRtoN;
-    const annuityFV = (monthlyPayment * (onePlusRtoN - 1)) / rate;
-    const fValue = compoundedPrincipal + annuityFV - futureValue;
-
-    const dCompoundedPrincipal = principal * numMonths * onePlusR ** (numMonths - 1);
-    const numerator = numMonths * onePlusRtoN * rate - (onePlusRtoN - 1);
-    const dAnnuityFV = (monthlyPayment * numerator) / (rate * rate);
-
-    return { fValue, fDerivative: dCompoundedPrincipal + dAnnuityFV };
+    const binaryRate = findEffectiveRateBinaryBalloon(
+      principal,
+      fee,
+      monthlyPayment,
+      baseMonths,
+      balloonAmount,
+      balloonCalcMethod,
+      0.01
+    );
+    console.log('binary rate found = ', binaryRate);
+    return binaryRate;
   }
 
   // --- Derived state ---
@@ -264,14 +270,16 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
   }, [baseAmountOwed, baseFee, isPrivateSale, privateSaleFee, depositRate]);
 
   useEffect(() => {
+    const realInterestRate = isPrivateSale ? loanInterestRate + privateSaleRateUplift : loanInterestRate
+
     const interestAmount = calculateInterestAmount(
       amountOwed,
-      loanInterestRate,
+      realInterestRate,
       loanPaymentTermLength
     );
     const monthlyRepayment = calculateMonthlyRepayment(
       amountOwed,
-      loanInterestRate,
+      realInterestRate,
       loanPaymentTermLength
     );
     const effectiveRepayment = calculateEffectiveRate(
@@ -282,28 +290,26 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       balloonAmount,
       balloonCalcMethod,
       brokerageCalcMethod,
-      0.03
     );
 
     console.log(
       'effective repayment values',
       baseAmountOwed - (baseAmountOwed * depositRate) / 100,
       amountOwed - (baseAmountOwed - (baseAmountOwed * depositRate) / 100),
-      loanInterestRate,
+      realInterestRate,
       loanPaymentTermLength,
       balloonAmount,
       amountOwed
     );
 
-    console.log('interest paid: ', effectiveRepayment * (loanPaymentTermLength - 1) - amountOwed);
-
     const effectiveRate = findEffectiveInterestRate(
-      amountOwed - (balloonAmount * baseAmountOwed) / 100,
+      baseAmountOwed - (baseAmountOwed * depositRate) / 100,
+      baseFee,
       -effectiveRepayment,
       loanPaymentTermLength,
       (balloonAmount * baseAmountOwed) / 100,
       balloonAmount,
-      balloonCalcMethod,
+      balloonCalcMethod
     ).annualRatePercent;
 
     setLoanInterestAmount(interestAmount);
@@ -345,7 +351,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         setBalloonAmount,
         setBalloonCalcMethod,
         setBrokerageCalcMethod,
-        
+
         setEffectiveLoanMonthlyRepayment,
         setEffectiveLoanInterestRate,
 

@@ -27,7 +27,7 @@ export default function CalculatedAmount({ calculatorIndex }: CalculatedAmountPr
       <Title order={2} c="dark">
         Effective Interest Rate
       </Title>
-      <Title>
+      <Title ta={{base: 'center', md: 'left'}}>
         {effectiveLoanInterestRate.toLocaleString(undefined, {
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
@@ -38,7 +38,7 @@ export default function CalculatedAmount({ calculatorIndex }: CalculatedAmountPr
       <Title order={2} ta="center" c="dark">
         Loan Repayment (monthly)
       </Title>
-      <Title>
+      <Title ta={{base: 'center', md: 'left'}}>
         $
         {effectiveLoanMonthlyRepayment.toLocaleString(undefined, {
           maximumFractionDigits: 2,

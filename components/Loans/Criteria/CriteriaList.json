@@ -32,7 +32,7 @@
     "Icon": "IconHomeOff",
     "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
-    "FinanceFee": 519,
+    "FinanceFee": 495,
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
     "BalloonCalcMethod": "Additional",
@@ -122,16 +122,16 @@
   },
   "7": {
     "Title": "Test",
-    "Text": ["Not real"],
-    "MaxPrice": 100000,
-    "Rate": 6.25,
+    "Text": ["Not real - Resimac"],
+    "MaxPrice": 200000,
+    "Rate": 6.85,
     "Icon": "IconHomeOff",
-    "MaxBalloon": 30,
+    "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
-    "FinanceFee": 0,
-    "PrivateSaleFee": 100,
+    "FinanceFee": 745,
+    "PrivateSaleFee": 0,
     "MinDeposit": 0,
-    "BalloonCalcMethod": "OnTop",
-    "BrokerageCalcMethod": "IncFee"
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "ExFee"
   }
 }

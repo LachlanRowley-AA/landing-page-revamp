@@ -72,7 +72,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
       setPrivateSaleFee,
       setDepositRate,
       setBalloonCalcMethod,
-      setBrokerageCalcMethod
+      setBrokerageCalcMethod,
     } = calcCtx;
     useEffect(() => {
       if (mounted) {
@@ -102,12 +102,16 @@ export function Loans({ calculatorIndex }: LoanProps) {
           <BalloonSlider index={calculatorIndex} />
           <TermSlider />
         </GridCol>
-        <GridCol span={6} visibleFrom="md">
+        <GridCol span={{ base: 12, md: 6 }}>
           <Center h="100%">
             {showCalc ? (
-              <CalculatedAmount calculatorIndex={calculatorIndex} />
+              <div>
+                <Divider hiddenFrom="md" size='xl' mt='xl' />
+                <CalculatedAmount calculatorIndex={calculatorIndex} />
+              </div>
             ) : (
               <Button
+                visibleFrom="md"
                 radius="xl"
                 rightSection={<IconChevronRight size={18} />}
                 onClick={() => setShowCalc(true)}
@@ -124,7 +128,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
         <Button
           radius="xl"
           rightSection={<IconChevronRight size={18} />}
-          onClick={() => setShowInput(false)}
+          onClick={() => setShowCalc(true)}
         >
           Calculate
         </Button>
