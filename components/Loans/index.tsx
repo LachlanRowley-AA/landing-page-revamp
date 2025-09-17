@@ -79,7 +79,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
         return;
       }
       setLoanInterestRate(calculator.Rate);
-      setLoanPaymentTermLength(12);
+      setLoanPaymentTermLength(60);
       setBaseFee(calculator.FinanceFee);
       setPrivateSaleFee(calculator.PrivateSaleFee);
       setDepositRate(calculator.MinDeposit);

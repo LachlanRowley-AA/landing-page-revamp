@@ -33,7 +33,7 @@ export default function TermSlider() {
   
 
   const { loanPaymentTermLength, setLoanPaymentTermLength } = ctx;
-  const [loanLengthYears, setLoanLengthYears] = useState<number>(1);
+  const [loanLengthYears, setLoanLengthYears] = useState<number>(5);
 
   function loanLengthSetter(years : number) {
     console.log('year set', years);
