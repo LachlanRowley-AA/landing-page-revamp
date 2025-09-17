@@ -1,8 +1,9 @@
 'use client';
 
-import { useContext, useState } from 'react';
-import { motion } from 'motion/react';
+import { useContext } from 'react';
 import {
+  Alert,
+  Box,
   Button,
   Container,
   Grid,
@@ -16,52 +17,68 @@ import {
 } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { CalculatorContext } from '../Context';
+import { useCriteria } from '../Criteria/CriteriaHandler';
+import { useDisplay } from '../DisplayContext';
 
-export default function CalculatorSlider() {
+interface CalculatorSliderProps {
+  index: number;
+}
+export default function CalculatorSlider({ index }: CalculatorSliderProps) {
   const theme = useMantineTheme();
   const ctx = useContext(CalculatorContext);
   if (!ctx) {
     throw new Error('CalculatorContext is not provided');
   }
 
-  const { amountOwed, setAmountOwed, calculateInterestAmount, isMobile } = ctx;
-  const MAX_AMOUNT = 200000; //max amount ATO allows for payment plan
+  const displayCtx = useDisplay();
+  const { isMobile } = displayCtx;
+
+  const calc = useCriteria()[index];
+
+  const { baseAmountOwed, setBaseAmountOwed } = ctx;
+  const MAX_AMOUNT = calc.MaxPrice ? calc.MaxPrice : 0;
+  const depositAmount = calc.MinDeposit;
 
   const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
-    <Stack align="center" justify="center">
-      <Stack align="center" gap="xs">
-        <Grid align="center" gutter="xl">
-          <Grid.Col span={12}>
-            <span>
-              <JumboTitle
-                order={isMobile ? 3 : 2}
-                fz="xs"
-                ta="center"
-                style={{ textWrap: 'balance' }}
-                c={{ base: 'black', md: 'black' }}
-                fw={600}
-              >
-                Amount to finance
-              </JumboTitle>
-            </span>
-          </Grid.Col>
-        </Grid>
+    <Stack align="center" justify="center" gap="xs" pt="xs" w="100%">
+      <Stack align="center" gap="xs" w="100%">
+        <span>
+          <JumboTitle
+            order={isMobile ? 3 : 2}
+            fz="xs"
+            ta="center"
+            style={{ textWrap: 'balance' }}
+            fw={600}
+          >
+            Amount to finance
+          </JumboTitle>
+        </span>
+        {depositAmount > 0 && (
+          <Box
+            pos={isMobile ? 'relative' : 'relative'}
+            left={isMobile ? '0' : '0'}
+            w={isMobile ? '100%' : '100%'}
+            ta='center'
+          >
+            <Alert color="orange">A minimum deposit of {depositAmount}% is required</Alert>
+          </Box>
+        )}
       </Stack>
 
       <Container size="lg" ta="center" style={{ height: '100%' }}>
         <Stack>
           <TextInput
             type="text"
-            value={amountOwed.toLocaleString()}
+            value={baseAmountOwed.toLocaleString()}
             onChange={(event) => {
               const raw = event.currentTarget.value;
               const parsed = Number(raw.replace(/,/g, ''));
 
               if (!isNaN(parsed)) {
                 const capped = Math.min(parsed, MAX_AMOUNT);
-                setAmountOwed(capped);
+                setBaseAmountOwed(capped);
                 sessionStorage.setItem('loanAmount', capped.toString());
               }
             }}
@@ -87,11 +104,11 @@ export default function CalculatorSlider() {
               }
             }}
             onBlur={() => {
-              const raw = amountOwed.toString();
+              const raw = baseAmountOwed.toString();
               const parsed = Number(raw.replace(/,/g, ''));
               if (!isNaN(parsed)) {
                 const capped = Math.max(0, parsed);
-                setAmountOwed(capped);
+                setBaseAmountOwed(capped);
                 sessionStorage.setItem('loanAmount', capped.toString());
               }
             }}
@@ -109,8 +126,8 @@ export default function CalculatorSlider() {
                 size="xs"
                 variant="subtle"
                 onClick={() => {
-                  setAmountOwed(Math.min(amountOwed, MAX_AMOUNT));
-                  sessionStorage.setItem('loanAmount', amountOwed.toString());
+                  setBaseAmountOwed(Math.min(baseAmountOwed, MAX_AMOUNT));
+                  sessionStorage.setItem('loanAmount', baseAmountOwed.toString());
                 }}
               >
                 Reset
@@ -124,10 +141,9 @@ export default function CalculatorSlider() {
               min={0}
               max={MAX_AMOUNT}
               step={1000}
-              value={amountOwed}
+              value={baseAmountOwed}
               onChange={(value) => {
-                setAmountOwed(Math.max(0, value));
-                sessionStorage.setItem('loanAmount', value.toString());
+                setBaseAmountOwed(Math.max(0, value));
                 console.log('Loan Amount set to:', sessionStorage.getItem('loanAmount'));
               }}
               c={{ base: 'white', md: theme.colors.tertiary[0] }}

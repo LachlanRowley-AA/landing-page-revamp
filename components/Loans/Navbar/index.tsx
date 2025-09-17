@@ -13,7 +13,6 @@ export default function Navbar() {
     >
       <Container size="lg">
         <Group justify="space-between" align="center">
-          {/* Replace with your logo path */}
           <Image
             src="/Default/logo_black.png"
             alt="Company Logo"

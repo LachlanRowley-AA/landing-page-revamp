@@ -18,21 +18,32 @@ import {
 } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { CalculatorContext } from '../Context';
+import { useDisplay } from '../DisplayContext';
+import { useCriteria } from '../Criteria/CriteriaHandler';
 
-export default function BalloonSlider() {
+
+interface BalloonSliderProps {
+    index: number;
+}
+export default function BalloonSlider({ index } : BalloonSliderProps) {
   const theme = useMantineTheme();
   const ctx = useContext(CalculatorContext);
   if (!ctx) {
     throw new Error('CalculatorContext is not provided');
   }
 
-  const { balloonAmount, setBalloonAmount, isMobile } = ctx;
-  const MAX_AMOUNT = 100;
+  const displayCtx = useDisplay();
+  const { isMobile } = displayCtx;
+
+  const { balloonAmount, setBalloonAmount } = ctx;
+  const calc = useCriteria()[index];
+  const MAX_AMOUNT = calc.MaxBalloon ? calc.MaxBalloon : 0;
 
   const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+
   return (
-    <Stack align="center" justify="center">
+    <Stack align="center" justify="center" gap="xs">
       <Stack align="center" gap="xs">
         <Grid align="center" gutter="xl">
           <Grid.Col span={12}>
@@ -52,12 +63,13 @@ export default function BalloonSlider() {
         </Grid>
       </Stack>
 
-      <Container size="lg" ta="center" style={{ height: '100%' }}>
-        <Group align="center">
+      <Container size="lg" ta="center" style={{ height: '100%', width: '100%' }}>
+        <Group align="center" w='100%'>
           {/* Main Stack (input + slider) */}
-          <Stack align="center">
+          <Stack align="center" w='100%'>
             <TextInput
-              type="text"
+              w="100%"
+              type="number"
               value={balloonAmount.toLocaleString()}
               onChange={(event) => {
                 const raw = event.currentTarget.value;
@@ -100,23 +112,29 @@ export default function BalloonSlider() {
                 color={balloonAmount >= 41 ? 'red' : balloonAmount >= 31 ? 'orange' : 'blue'}
                 mx={isMobile ? 'xs' : 0}
                 size="xl"
+                w="100%"
               />
               <Group justify="space-between" px="xs">
                 <Text fz="xs" c="dimmed">
                   0%
                 </Text>
                 <Text fz="xs" c="dimmed">
-                  ${formatNumber(MAX_AMOUNT)}
+                  {formatNumber(MAX_AMOUNT)}%
                 </Text>
               </Group>
             </Stack>
           </Stack>
           {/* Change this to just be a grid */}
           {/* Alert on the right */}
-          {balloonAmount > 30 && (
-            <Box pos="absolute" left="75%" maw="20%">
+          {balloonAmount > 30 || (balloonAmount === 30 && MAX_AMOUNT === 30) && (
+            <Box
+              pos={isMobile ? 'relative' : 'relative'}
+              left={isMobile ? '0' : '0'}
+              maw={isMobile ? '100%' : '100%'}
+              w='100%'
+            >
               <Alert color="orange">
-                We recommend talking to a specialist if you would like this balloon amount
+                For bigger balloons, speak to a specialist
               </Alert>
             </Box>
           )}

@@ -1,19 +1,31 @@
 'use client';
 
 import { createContext, ReactNode, useContext } from 'react';
-import criteria from '../CriteriaList.json';
+import criteriaJSON from '../CriteriaList.json';
 
-interface Criteria {
+export type balloonCalcMethodValues = "TakesFinal" | "Additional" | "OnTop" | ""
+export type brokerageCalcMethodValues = "ExFee" | "IncFee" | ""
+
+export interface Criteria {
   Title: string;
   Text: string[];
   Rate: number;
   Icon: string;
+  MaxPrice: number;
+  MaxBalloon: number;
+  PrivateSaleUplift: number;
+  FinanceFee: number;
+  PrivateSaleFee: number;
+  MinDeposit: number;
+  BalloonCalcMethod: balloonCalcMethodValues;
+  BrokerageCalcMethod: brokerageCalcMethodValues;
 }
 type CriteriaMap = Record<string, Criteria>;
 
 const CriteriaContext = createContext<CriteriaMap | null>(null);
 
 export function CriteriaHandler({ children }: { children: ReactNode }) {
+  const criteria = criteriaJSON as CriteriaMap;
   return <CriteriaContext.Provider value={criteria}>{children}</CriteriaContext.Provider>;
 }
 

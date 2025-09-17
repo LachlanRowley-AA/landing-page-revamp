@@ -1,33 +1,22 @@
 'use client';
 
-import {
-  Box,
-  Card,
-  Container,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
-import Navbar from '@/components/Loans/Calculator';
+import { Box, Card, Container, Divider, Group, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import Navbar from '@/components/Loans/Navbar';
 import { CriteriaHandler } from '@/components/Loans/Criteria/CriteriaHandler';
 import ListView from '@/components/Loans/Criteria/ListView';
+import { DisplayContextProvider } from '@/components/Loans/DisplayContext';
 
 export default function Page() {
+
+
   return (
-    <div>
+    <DisplayContextProvider>
       <Navbar />
-      <Box bg="#f4f4f4" py="xl" mih="100vh">
+      <Box bg="#f4f4f4" py="xl" mih="100vh" px={0}>
         <CriteriaHandler>
-          <Container size="lg">
-            <Card
-              shadow="md"
-              radius="lg"
-              withBorder
-              p={{base:'xs', md:"xl"}}
-              bg="white"
-            >
+          <Container size="lg" px={0}>
+            <Card shadow="md" radius="lg" withBorder p={{ base: 'xs', md: 'xl' }} bg="white">
               <Group align="flex-start" gap="md" mb="md">
                 <Box w={8} bg="#01E194" style={{ borderRadius: 4 }} />
                 <Stack gap={4} w="100%">
@@ -50,6 +39,6 @@ export default function Page() {
           </Container>
         </CriteriaHandler>
       </Box>
-    </div>
+    </DisplayContextProvider>
   );
 }

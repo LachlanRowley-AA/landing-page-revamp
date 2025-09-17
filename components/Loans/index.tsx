@@ -1,90 +1,154 @@
 'use client';
 
-import { useState } from 'react';
-import { IconArrowLeft, IconArrowRight, IconChevronRight } from '@tabler/icons-react';
-import { Button, Card, Container, Divider, Group, Image, Stack, Switch, Text } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import { useContext, useEffect, useState } from 'react';
+import { IconChevronRight } from '@tabler/icons-react';
+import {
+  Button,
+  Card,
+  Center,
+  Container,
+  Divider,
+  Grid,
+  GridCol,
+  Group,
+  Image,
+  Stack,
+} from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import BalloonSlider from './BalloonSlider';
-import { CalculatorContextProvider } from './Context';
+import CalculatedAmount from './CalculatedAmount';
+import { CalculatorContext } from './Context';
 import CriteriaDisplay from './Criteria/CriteriaDisplay';
-import { CriteriaHandler } from './Criteria/CriteriaHandler';
-import Slider from './Slider';
+import { CriteriaHandler, useCriteria } from './Criteria/CriteriaHandler';
+import { useDisplay } from './DisplayContext';
+import PrivateSaleSlider from './PrivateSaleSlider';
+import LoanSlider from './Slider';
+import TermSlider from './TermSlider';
 
 interface LoanProps {
-  calculatorIndex?: number;
+  calculatorIndex: number;
 }
+
 export function Loans({ calculatorIndex }: LoanProps) {
+  const displayCtx = useDisplay();
+  const { isMobile } = displayCtx;
+  const calcCtx = useContext(CalculatorContext);
+  const [showCalc, setShowCalc] = useState(false);
+
+  if (!calcCtx) {
+    return null;
+  }
+
   const Header = (
-    <Group align="center" justify="center" mb="md">
+    <Group align="center" justify="center" mb={{ base: 'xs', md: 'md' }}>
       <Image src="/Default/logo_black.png" maw={{ base: '25vw', md: '8vw' }} py={0} my={0} />
-      <JumboTitle order={2} ta="center" style={{ textWrap: 'balance' }} fw={700} pb="xs">
+      <JumboTitle
+        order={isMobile ? 3 : 2}
+        ta="center"
+        style={{ textWrap: 'balance' }}
+        fw={700}
+        pb={{ base: '0', md: 'xs' }}
+      >
         Vehicle Finance Calculator
       </JumboTitle>
     </Group>
   );
-  const [privateChecked, setPrivateChecked] = useState(false);
+
+  const [showInput, setShowInput] = useState(true);
+
+  // Inner component to safely use useCriteria inside CriteriaHandler
+  const [mounted, setMounted] = useState(false);
+  const CriteriaConsumer = () => {
+    const criteria = useCriteria();
+    if (!criteria) {
+      return null;
+    }
+
+    const calculator = criteria[calculatorIndex];
+    const {
+      setLoanInterestRate,
+      setLoanPaymentTermLength,
+      setBaseFee,
+      setPrivateSaleFee,
+      setDepositRate,
+      setBalloonCalcMethod,
+      setBrokerageCalcMethod
+    } = calcCtx;
+    useEffect(() => {
+      if (mounted) {
+        return;
+      }
+      setLoanInterestRate(calculator.Rate);
+      setLoanPaymentTermLength(12);
+      setBaseFee(calculator.FinanceFee);
+      setPrivateSaleFee(calculator.PrivateSaleFee);
+      setDepositRate(calculator.MinDeposit);
+      setBalloonCalcMethod(calculator.BalloonCalcMethod);
+      setBrokerageCalcMethod(calculator.BrokerageCalcMethod);
+      console.log('base fee:', calculator.FinanceFee);
+
+      setMounted(true);
+    }, [calculator.Rate, setLoanInterestRate]);
+  };
+
+  const input = (
+    <Stack gap="xs">
+      <CriteriaDisplay index={calculatorIndex} />
+      <Divider />
+      <Grid>
+        <GridCol span={{ base: 12, md: 6 }}>
+          <PrivateSaleSlider index={calculatorIndex} />
+          <LoanSlider index={calculatorIndex} />
+          <BalloonSlider index={calculatorIndex} />
+          <TermSlider />
+        </GridCol>
+        <GridCol span={6} visibleFrom="md">
+          <Center h="100%">
+            {showCalc ? (
+              <CalculatedAmount calculatorIndex={calculatorIndex} />
+            ) : (
+              <Button
+                radius="xl"
+                rightSection={<IconChevronRight size={18} />}
+                onClick={() => setShowCalc(true)}
+                size="xl"
+              >
+                Calculate
+              </Button>
+            )}
+          </Center>
+        </GridCol>
+      </Grid>
+      <Divider my="sm" />
+      <Group justify="flex-end" mt="md">
+        <Button
+          radius="xl"
+          rightSection={<IconChevronRight size={18} />}
+          onClick={() => setShowInput(false)}
+        >
+          Calculate
+        </Button>
+      </Group>
+    </Stack>
+  );
 
   return (
-    <CalculatorContextProvider>
-      <Container size="lg" py="xl" px="xs">
+    <CriteriaHandler>
+      <Container size="lg" py={{ base: 'sm', md: 'xl' }} px="xs">
         <Card
           shadow="md"
           radius="xl"
           withBorder
           p={{ base: 'md', md: 'xl' }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+          style={{ display: 'flex', flexDirection: 'column' }}
         >
           {Header}
-
-          <Divider my="sm" />
-
-          <Stack gap="xs">
-            <CriteriaHandler>
-              <CriteriaDisplay index={calculatorIndex ? calculatorIndex : 0} />
-            </CriteriaHandler>
-            <Divider />
-            <Group justify="center">
-              <Text my="">Dealership</Text>
-              <Switch
-                width="500px"
-                size='xl'
-                styles={{
-                  track: {
-                    backgroundColor: 'lightblue',
-                    width: '300px',
-                  },
-                }}
-                onClick={((event) => setPrivateChecked(event.currentTarget.checked))}
-                c="red"
-                checked={privateChecked}
-                thumbIcon={
-                  privateChecked ? (
-                    <IconArrowRight size={20} color="green" />
-                  ) : (
-                    <IconArrowLeft size={20} color='green'/>
-                  )
-                }
-              />
-              <Text>Private Sale</Text>
-            </Group>
-            <Slider />
-            <BalloonSlider />
-          </Stack>
-
-          <Divider my="sm" />
-
-          <Group justify="flex-end" mt="md">
-            <Button radius="xl" rightSection={<IconChevronRight size={18} />}>
-              Calculate
-            </Button>
-          </Group>
+          <Divider my="xs" />
+          <CriteriaConsumer />
+          {input}
         </Card>
       </Container>
-    </CalculatorContextProvider>
+    </CriteriaHandler>
   );
 }
 

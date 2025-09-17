@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as TablerIcons from '@tabler/icons-react';
 import {
   Card,
+  Container,
   Divider,
   Flex,
   Grid,
@@ -28,15 +29,14 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
   const router = useRouter();
   const pathname = usePathname();
 
-
   const Icon = (TablerIcons as any)[image] || 'a';
   console.log(Icon);
-  console.log('image=', image)
+  console.log('image=', image);
   return (
     <Card
       shadow="sm"
       radius="lg"
-      p="lg"
+      p={{ base: 'md', md: 'lg' }}
       withBorder
       onClick={() => router.push(`${pathname}/${index}`)}
       style={{
@@ -54,22 +54,69 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
       }}
     >
       <Grid>
-        <GridCol span={{base: 0, md:2}}>
-          <Icon style={{height: '100%', width: '50%', align: 'center', justifyContent: 'center'}} color='#01E194' stroke={1}/>
+        <GridCol span={{ base: 2, md: 2 }} visibleFrom="md">
+          <Icon
+            style={{ height: '100%', width: '50%', align: 'center', justifyContent: 'center' }}
+            color="#01E194"
+            stroke={1}
+          />
         </GridCol>
-        <GridCol span={{base: 12, md:10}}>
+        <GridCol span={{ base: 12, md: 10 }}>
           <Stack gap="sm">
-            <Title order={4}>{title}</Title>
+            <Group align="flex-start" style={{ flexWrap: 'wrap' }}>
+              <Container
+                hiddenFrom="md"
+                style={{
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  justifyItems: 'center',
+                }}
+              >
+                <Icon
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    align: 'center',
+                    justifyContent: 'center',
+                  }}
+                  color="#01E194"
+                  stroke={1}
+                />
+              </Container>
+
+              <Title
+                order={4}
+                style={{
+                  whiteSpace: 'normal',
+                  wordBreak: 'break-word',
+                  flex: 1, // makes the title shrink and wrap within container width
+                }}
+              >
+                {title}
+              </Title>
+            </Group>
+
             <Divider />
             <Grid>
-              {categories.map((category, idx) => (
-                <GridCol span={4} key={idx}>
+              {categories.map((category, idx) => {
+                const maxItems = 3;
+                const total = categories.length;
+
+                const isLastRow = idx >= Math.floor((total - 1) / maxItems) * maxItems;
+                const remaining = total % maxItems || maxItems;
+
+                const span = isLastRow ? 12 / remaining : 12 / maxItems;
+                
+                return(
+                
+                <GridCol span={span} key={idx}>
                   <Flex gap="xs" align="c" wrap="wrap">
-                    <ThemeIcon size="xs" radius="xl" color="teal">
+                    <ThemeIcon size="xs" radius="xl" color="teal" visibleFrom="md">
                       <TablerIcons.IconRosetteDiscountCheckFilled size={12} />
                     </ThemeIcon>
                     <Text
-                      size="sm"
+                      fz={{base:"xs", md:"sm"}}
                       fw={500}
                       style={{
                         flex: 1,
@@ -83,7 +130,7 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
                     </Text>
                   </Flex>
                 </GridCol>
-              ))}
+              )})}
             </Grid>
           </Stack>
         </GridCol>

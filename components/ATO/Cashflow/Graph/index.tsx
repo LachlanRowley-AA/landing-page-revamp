@@ -223,7 +223,7 @@ export default function Graph() {
               minimumFractionDigits: 2,
             })}
           </Text>
-          <Divider label="Tax deduction" />
+          <Divider label="Finance Tax deduction" />
 
           <Text size="sm">
             <b>Loan interest:</b> $
@@ -245,7 +245,7 @@ export default function Graph() {
           </Text>
           <Divider />
           <Text size="md" c={financeNetInterest > ATO_interestAmount ? 'red' : 'black'}>
-            <b>Net finance cost:</b> $
+            <b>Finance cost after tax deduction:</b> $
             {financeNetInterest.toLocaleString(undefined, {
               maximumFractionDigits: 2,
               minimumFractionDigits: 2,
