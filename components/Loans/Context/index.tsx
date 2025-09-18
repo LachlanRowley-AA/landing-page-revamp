@@ -376,6 +376,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
 
         setVehicleAgeToggle,
         setVehicleAgeInterestUplift,
+        setMaxBalloonAmount,
+        setVehicleAgeBalloonDecrease,
 
         calculateInterestAmount,
         calculateMonthlyRepayment,
