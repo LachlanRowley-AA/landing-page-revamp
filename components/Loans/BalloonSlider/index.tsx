@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import {
   Alert,
@@ -18,29 +18,35 @@ import {
 } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { CalculatorContext } from '../Context';
-import { useDisplay } from '../DisplayContext';
 import { useCriteria } from '../Criteria/CriteriaHandler';
-
+import { useDisplay } from '../DisplayContext';
 
 interface BalloonSliderProps {
-    index: number;
+  index: number;
 }
-export default function BalloonSlider({ index } : BalloonSliderProps) {
+export default function BalloonSlider({ index }: BalloonSliderProps) {
   const theme = useMantineTheme();
   const ctx = useContext(CalculatorContext);
   if (!ctx) {
     throw new Error('CalculatorContext is not provided');
   }
+  const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   const displayCtx = useDisplay();
   const { isMobile } = displayCtx;
 
-  const { balloonAmount, setBalloonAmount } = ctx;
+  const { balloonAmount, setBalloonAmount, vehicleAgeToggle } = ctx;
   const calc = useCriteria()[index];
-  const MAX_AMOUNT = calc.MaxBalloon ? calc.MaxBalloon : 0;
+  const [maxBalloon, setMaxBalloon] = useState(calc.MaxBalloon ?? 0);
 
-  const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  useEffect(() => {
+    const newMax = vehicleAgeToggle
+      ? calc.MaxBalloon - calc.VehicleAgeImpact.BalloonDecrease
+      : calc.MaxBalloon;
 
+    setMaxBalloon(newMax);
+    setBalloonAmount(Math.min(newMax, balloonAmount))
+  }, [vehicleAgeToggle, calc.MaxBalloon, calc.VehicleAgeImpact.BalloonDecrease]);
 
   return (
     <Stack align="center" justify="center" gap="xs">
@@ -64,9 +70,9 @@ export default function BalloonSlider({ index } : BalloonSliderProps) {
       </Stack>
 
       <Container size="lg" ta="center" style={{ height: '100%', width: '100%' }}>
-        <Group align="center" w='100%'>
+        <Group align="center" w="100%">
           {/* Main Stack (input + slider) */}
-          <Stack align="center" w='100%'>
+          <Stack align="center" w="100%">
             <TextInput
               w="100%"
               type="number"
@@ -75,7 +81,7 @@ export default function BalloonSlider({ index } : BalloonSliderProps) {
                 const raw = event.currentTarget.value;
                 const parsed = Number(raw.replace(/,/g, ''));
                 if (!isNaN(parsed)) {
-                  setBalloonAmount(Math.min(parsed, MAX_AMOUNT));
+                  setBalloonAmount(Math.min(parsed, maxBalloon));
                 }
               }}
               onKeyDown={(e) => {
@@ -105,7 +111,7 @@ export default function BalloonSlider({ index } : BalloonSliderProps) {
               <Slider
                 px="xl"
                 min={0}
-                max={MAX_AMOUNT}
+                max={maxBalloon}
                 step={1}
                 value={balloonAmount}
                 onChange={(value) => setBalloonAmount(Math.max(0, value))}
@@ -119,23 +125,21 @@ export default function BalloonSlider({ index } : BalloonSliderProps) {
                   0%
                 </Text>
                 <Text fz="xs" c="dimmed">
-                  {formatNumber(MAX_AMOUNT)}%
+                  {formatNumber(maxBalloon)}%
                 </Text>
               </Group>
             </Stack>
           </Stack>
           {/* Change this to just be a grid */}
           {/* Alert on the right */}
-          {balloonAmount > 30 || (balloonAmount === 30 && MAX_AMOUNT === 30) && (
+          {balloonAmount === maxBalloon && (
             <Box
               pos={isMobile ? 'relative' : 'relative'}
               left={isMobile ? '0' : '0'}
               maw={isMobile ? '100%' : '100%'}
-              w='100%'
+              w="100%"
             >
-              <Alert color="orange">
-                For bigger balloons, speak to a specialist
-              </Alert>
+              <Alert color="orange">For bigger balloons, speak to a specialist</Alert>
             </Box>
           )}
         </Group>

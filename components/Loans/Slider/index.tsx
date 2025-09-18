@@ -42,7 +42,7 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
   const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
-    <Stack align="center" justify="center" gap="xs" pt="xs" w="100%">
+    <Stack align="center" justify="center" gap="xs" w="100%">
       <Stack align="center" gap="xs" w="100%">
         <span>
           <JumboTitle
@@ -121,18 +121,18 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
             }}
             ta="center"
             c={{ base: 'white', md: theme.colors.tertiary[0] }}
-            rightSection={
-              <Button
-                size="xs"
-                variant="subtle"
-                onClick={() => {
-                  setBaseAmountOwed(Math.min(baseAmountOwed, MAX_AMOUNT));
-                  sessionStorage.setItem('loanAmount', baseAmountOwed.toString());
-                }}
-              >
-                Reset
-              </Button>
-            }
+            // rightSection={
+            //   <Button
+            //     size="xs"
+            //     variant="subtle"
+            //     onClick={() => {
+            //       setBaseAmountOwed(Math.min(baseAmountOwed, MAX_AMOUNT));
+            //       sessionStorage.setItem('loanAmount', baseAmountOwed.toString());
+            //     }}
+            //   >
+            //     Reset
+            //   </Button>
+            // }
             rightSectionWidth={100}
           />
           <Stack gap={0}>
@@ -144,7 +144,6 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
               value={baseAmountOwed}
               onChange={(value) => {
                 setBaseAmountOwed(Math.max(0, value));
-                console.log('Loan Amount set to:', sessionStorage.getItem('loanAmount'));
               }}
               c={{ base: 'white', md: theme.colors.tertiary[0] }}
               mx={isMobile ? 'xs' : 0}

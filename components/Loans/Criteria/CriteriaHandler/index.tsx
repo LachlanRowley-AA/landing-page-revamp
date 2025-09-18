@@ -19,6 +19,10 @@ export interface Criteria {
   MinDeposit: number;
   BalloonCalcMethod: balloonCalcMethodValues;
   BrokerageCalcMethod: brokerageCalcMethodValues;
+  VehicleAgeImpact: {
+    BalloonDecrease : number,
+    InterestUplift: number
+  }
 }
 type CriteriaMap = Record<string, Criteria>;
 

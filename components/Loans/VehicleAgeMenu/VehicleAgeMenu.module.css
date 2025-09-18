@@ -1,0 +1,5 @@
+.root {
+    &[data-checked] {
+        border-color: var(--mantine-primary-color-filled);
+    }
+}

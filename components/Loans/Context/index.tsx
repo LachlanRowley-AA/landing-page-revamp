@@ -25,6 +25,7 @@ export interface CalculatorContextProps {
   isPrivateSale: boolean;
   // privateSaleRateUplift: number;
   // privateSaleFee: number;
+  vehicleAgeToggle: boolean;
 
   // Setters
   setBaseAmountOwed: (value: number) => void;
@@ -43,13 +44,16 @@ export interface CalculatorContextProps {
   setLoanMonthlyRepayment: (value: number) => void;
   setEffectiveLoanMonthlyRepayment: (value: number) => void;
   setEffectiveLoanInterestRate: (value: number) => void;
+
+  setMaxBalloonAmount: (value: number) => void;
   setBalloonAmount: (value: number) => void;
 
-  // Calculators
-  // balloonCalcMethod: balloonCalcMethodValues;
-  setBalloonCalcMethod: (value: balloonCalcMethodValues) => void;
+  setVehicleAgeToggle: (value: boolean) => void;
+  setVehicleAgeBalloonDecrease: (value: number) => void;
+  setVehicleAgeInterestUplift: (value: number) => void;
 
-  // brokerageCalcMethod: brokerageCalcMethodValues;
+  // Calculators
+  setBalloonCalcMethod: (value: balloonCalcMethodValues) => void;
   setBrokerageCalcMethod: (value: brokerageCalcMethodValues) => void;
 
   calculateInterestAmount: (loanAmount: number, interestRate: number, termLength: number) => number;
@@ -93,11 +97,17 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
   const [effectiveLoanInterestRate, setEffectiveLoanInterestRate] = useState(0);
 
   // Fees & balloon
+
+  const [maxBalloonAmount, setMaxBalloonAmount] = useState(100);
   const [balloonAmount, setBalloonAmount] = useState(0);
   const [isPrivateSale, setIsPrivateSale] = useState(false);
   const [baseFee, setBaseFee] = useState(0);
   const [privateSaleFee, setPrivateSaleFee] = useState(0);
   const [privateSaleRateUplift, setPrivateSaleRateUplift] = useState(0);
+
+  const [vehicleAgeToggle, setVehicleAgeToggle] = useState(false);
+  const [vehicleAgeBalloonDecrease, setVehicleAgeBalloonDecrease] = useState(0);
+  const [vehicleAgeInterestUplift, setVehicleAgeInterestUplift] = useState(0);
 
   // --- Calculation helpers ---
   const [balloonCalcMethod, setBalloonCalcMethod] = useState<balloonCalcMethodValues>('Additional');
@@ -109,10 +119,14 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     interestRate: number,
     termLength: number
   ) => {
-    if (loanAmount <= 0 || termLength <= 0) return 0;
+    if (loanAmount <= 0 || termLength <= 0) {
+      return 0;
+    }
 
     const monthlyRate = interestRate / 100 / 12;
-    if (monthlyRate === 0) return loanAmount / termLength;
+    if (monthlyRate === 0) {
+      return loanAmount / termLength;
+    }
 
     return (loanAmount * monthlyRate) / (1 - (1 + monthlyRate) ** -termLength);
   };
@@ -157,7 +171,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       return (financedAmount - balloonValue) / termLength;
     }
 
-    console.log('base term length', termLength);
     // n = number of 'normal' repayments. Balloon replaces the final repayment if it exists
     let n = 0;
     switch (calcMethod) {
@@ -170,10 +183,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       case 'OnTop':
         n = termLength;
     }
-    return (
-      ((financedAmount - balloonValue / Math.pow(1 + r, termLength)) * r) /
-      (1 - Math.pow(1 + r, -n))
-    );
+    return ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
   };
 
   function findEffectiveRateBinaryBalloon(
@@ -237,11 +247,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     fee: number,
     monthlyPayment: number,
     baseMonths: number,
-    futureValue: number,
     balloonAmount: number,
     balloonCalcMethod: balloonCalcMethodValues,
-    tolerance = 1e-10,
-    maxIterations = 3000
   ) {
     if (principal <= 0 || monthlyPayment >= 0) {
       return { monthlyRate: 0, annualRate: 0, annualRatePercent: 0, iterations: 1 };
@@ -255,7 +262,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       balloonCalcMethod,
       0.01
     );
-    console.log('binary rate found = ', binaryRate);
     return binaryRate;
   }
 
@@ -269,8 +275,14 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     setAmountOwed(total);
   }, [baseAmountOwed, baseFee, isPrivateSale, privateSaleFee, depositRate]);
 
+
   useEffect(() => {
-    const realInterestRate = isPrivateSale ? loanInterestRate + privateSaleRateUplift : loanInterestRate
+    let realInterestRate = isPrivateSale
+      ? loanInterestRate + privateSaleRateUplift
+      : loanInterestRate;
+    realInterestRate = vehicleAgeToggle
+      ? realInterestRate + vehicleAgeInterestUplift
+      : realInterestRate;
 
     const interestAmount = calculateInterestAmount(
       amountOwed,
@@ -285,11 +297,11 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     const effectiveRepayment = calculateEffectiveRate(
       baseAmountOwed - (baseAmountOwed * depositRate) / 100,
       amountOwed - (baseAmountOwed - (baseAmountOwed * depositRate) / 100),
-      loanInterestRate,
+      realInterestRate,
       loanPaymentTermLength,
       balloonAmount,
       balloonCalcMethod,
-      brokerageCalcMethod,
+      brokerageCalcMethod
     );
 
     console.log(
@@ -299,7 +311,9 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       realInterestRate,
       loanPaymentTermLength,
       balloonAmount,
-      amountOwed
+      amountOwed,
+      vehicleAgeToggle,
+      vehicleAgeInterestUplift
     );
 
     const effectiveRate = findEffectiveInterestRate(
@@ -307,7 +321,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       baseFee,
       -effectiveRepayment,
       loanPaymentTermLength,
-      (balloonAmount * baseAmountOwed) / 100,
       balloonAmount,
       balloonCalcMethod
     ).annualRatePercent;
@@ -316,7 +329,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     setLoanMonthlyRepayment(monthlyRepayment);
     setEffectiveLoanMonthlyRepayment(effectiveRepayment);
     setEffectiveLoanInterestRate(effectiveRate);
-  }, [amountOwed, loanInterestRate, loanPaymentTermLength, balloonAmount]);
+  }, [amountOwed, loanInterestRate, loanPaymentTermLength, balloonAmount, vehicleAgeToggle]);
 
   return (
     <CalculatorContext.Provider
@@ -338,6 +351,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         effectiveLoanMonthlyRepayment,
         effectiveLoanInterestRate,
 
+        vehicleAgeToggle,
+
         setBaseAmountOwed,
         setStageIndex,
         setIsPrivateSale,
@@ -358,6 +373,9 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         setPrivateSaleFee,
         setPrivateSaleRateUplift,
         setBaseFee,
+
+        setVehicleAgeToggle,
+        setVehicleAgeInterestUplift,
 
         calculateInterestAmount,
         calculateMonthlyRepayment,

@@ -24,6 +24,7 @@ import { useDisplay } from './DisplayContext';
 import PrivateSaleSlider from './PrivateSaleSlider';
 import LoanSlider from './Slider';
 import TermSlider from './TermSlider';
+import VehicleAgeMenu from './VehicleAgeMenu';
 
 interface LoanProps {
   calculatorIndex: number;
@@ -40,20 +41,13 @@ export function Loans({ calculatorIndex }: LoanProps) {
   }
 
   const Header = (
-    <Group align="center" justify="center" mb={{ base: 'xs', md: 'md' }}>
-      <Image src="/Default/logo_black.png" maw={{ base: '25vw', md: '8vw' }} py={0} my={0} />
-      <JumboTitle
-        order={isMobile ? 3 : 2}
-        ta="center"
-        style={{ textWrap: 'balance' }}
-        fw={700}
-        pb={{ base: '0', md: 'xs' }}
-      >
+    <Stack gap="xs" align="center" mb="md">
+      <Image src="/Default/logo_black.png" maw={{ base: '30vw', md: '10vw' }} alt="Logo" />
+      <JumboTitle order={isMobile ? 3 : 2} ta="center" fw={700} style={{ textWrap: 'balance' }}>
         Vehicle Finance Calculator
       </JumboTitle>
-    </Group>
+    </Stack>
   );
-
   const [showInput, setShowInput] = useState(true);
 
   // Inner component to safely use useCriteria inside CriteriaHandler
@@ -73,6 +67,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
       setDepositRate,
       setBalloonCalcMethod,
       setBrokerageCalcMethod,
+      setVehicleAgeInterestUplift,
     } = calcCtx;
     useEffect(() => {
       if (mounted) {
@@ -85,6 +80,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
       setDepositRate(calculator.MinDeposit);
       setBalloonCalcMethod(calculator.BalloonCalcMethod);
       setBrokerageCalcMethod(calculator.BrokerageCalcMethod);
+      setVehicleAgeInterestUplift(calculator.VehicleAgeImpact.InterestUplift);
       console.log('base fee:', calculator.FinanceFee);
 
       setMounted(true);
@@ -97,16 +93,26 @@ export function Loans({ calculatorIndex }: LoanProps) {
       <Divider />
       <Grid>
         <GridCol span={{ base: 12, md: 6 }}>
-          <PrivateSaleSlider index={calculatorIndex} />
-          <LoanSlider index={calculatorIndex} />
-          <BalloonSlider index={calculatorIndex} />
-          <TermSlider />
+          <Stack gap="md">
+            <PrivateSaleSlider index={calculatorIndex} />
+            <Grid gutter="md">
+              <GridCol span={{ base: 12, md: 6 }}>
+                <LoanSlider index={calculatorIndex} />
+              </GridCol>
+              <GridCol span={{ base: 12, md: 6 }}>
+                <BalloonSlider index={calculatorIndex} />
+              </GridCol>
+            </Grid>
+            <VehicleAgeMenu index={calculatorIndex} />
+
+            <TermSlider />
+          </Stack>
         </GridCol>
         <GridCol span={{ base: 12, md: 6 }}>
           <Center h="100%">
             {showCalc ? (
               <div>
-                <Divider hiddenFrom="md" size='xl' mt='xl' />
+                <Divider hiddenFrom="md" size="xl" mt="xl" mb="md" />
                 <CalculatedAmount calculatorIndex={calculatorIndex} />
               </div>
             ) : (

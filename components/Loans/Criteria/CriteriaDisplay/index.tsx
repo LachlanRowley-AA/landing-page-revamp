@@ -19,7 +19,7 @@ export default function CriteriaDisplay({ criteriaList = [], index = 0 }: Criter
     <Grid w="100%">
       {criteria[index].Text.map((text) => (
         <GridCol span={6} key={text}>
-          <Group align="flex-start" gap="xs" wrap="nowrap">
+          <Group align="center" gap="xs" wrap="nowrap">
             <ThemeIcon
               size={isMobile ? 'sm' : 'lg'}
               radius="xl"
@@ -28,7 +28,7 @@ export default function CriteriaDisplay({ criteriaList = [], index = 0 }: Criter
             >
               <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />
             </ThemeIcon>
-            <Text fz={{ base: 'xs', md: 'sm' }} fw={500} style={{ wordBreak: 'break-word' }}>
+            <Text fz={{ base: 'xs', md: 'md' }} fw={500} style={{ wordBreak: 'break-word' }}>
               {text}
             </Text>
           </Group>

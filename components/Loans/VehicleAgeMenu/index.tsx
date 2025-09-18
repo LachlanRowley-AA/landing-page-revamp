@@ -1,61 +1,37 @@
-'use context';
+'use client';
 
 import { useContext, useState } from 'react';
-import { IconArrowLeft, IconArrowRight, IconBuilding, IconUser } from '@tabler/icons-react';
-import {
-  Card,
-  Grid,
-  GridCol,
-  Group,
-  Radio,
-  Slider,
-  Stack,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { IconCar, IconCarOff, IconSparkles } from '@tabler/icons-react';
+import { Card, Grid, GridCol, Group, Radio, Stack, Text, useMantineTheme } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { CalculatorContext } from '../Context';
-import { Criteria, useCriteria } from '../Criteria/CriteriaHandler';
+import { useCriteria } from '../Criteria/CriteriaHandler';
 import { useDisplay } from '../DisplayContext';
-
-// function  setLoan_InterestRate(
-//     isPrivateSale ? calculator.Rate + calculator.PrivateSaleUplift : calculator.Rate
-//   );
 
 interface PrivateSaleSliderProps {
   index: number;
 }
-export default function PrivateSaleSlider({ index }: PrivateSaleSliderProps) {
-  const ctx = useContext(CalculatorContext);
-  const criteria = useCriteria();
-  if (!criteria) {
-    return;
-  }
-  if (!ctx) {
-    return;
-  }
-  const { setLoanInterestRate, setIsPrivateSale } = ctx;
-  const calculator = criteria[index];
 
+export default function VehicleAgeMenu({ index }: PrivateSaleSliderProps) {
   const theme = useMantineTheme();
-
   const displayCtx = useDisplay();
   const { isMobile } = displayCtx;
+  const ctx = useContext(CalculatorContext);
+  const criteria = useCriteria();
 
-  function toggleIsPrivateSale(value: boolean) {
-    setIsPrivateSale(value);
-    setLoanInterestRate(value ? calculator.Rate + calculator.PrivateSaleUplift : calculator.Rate);
-  }
+  if (!criteria || !ctx) return null;
+
+  const { setVehicleAgeToggle } = ctx;
 
   const data = [
     {
-      text: 'Private Sale',
-      icon: <IconUser size={28} stroke={1.5} />,
+      text: 'Less than 3 years old',
+      icon: <IconSparkles size={28} stroke={1.5} />,
       val: false,
     },
     {
-      text: 'Dealership',
-      icon: <IconBuilding size={28} stroke={1.5} />,
+      text: '3 or more years old',
+      icon: <IconCar size={28} stroke={1.5} />,
       val: true,
     },
   ];
@@ -79,7 +55,7 @@ export default function PrivateSaleSlider({ index }: PrivateSaleSliderProps) {
           }}
           onClick={() => {
             setSelectedOption(item.text);
-            toggleIsPrivateSale(item.val);
+            setVehicleAgeToggle(item.val);
           }}
           h="100%"
         >
@@ -103,7 +79,7 @@ export default function PrivateSaleSlider({ index }: PrivateSaleSliderProps) {
         style={{ textWrap: 'balance' }}
         fw={600}
       >
-        Sale Type
+        Vehicle Age
       </JumboTitle>
 
       <Radio.Group value={selectedOption} onChange={setSelectedOption}>

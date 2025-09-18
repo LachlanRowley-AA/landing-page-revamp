@@ -16,7 +16,11 @@
     "PrivateSaleFee": 0,
     "MinDeposit": 0,
     "BalloonCalcMethod": "TakesFinal",
-    "BrokerageCalcMethod": "IncFee"
+    "BrokerageCalcMethod": "IncFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 0,
+      "InterestUplift": 0
+    }
   },
   "1": {
     "Title": "Resimac",
@@ -36,7 +40,11 @@
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee"
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.5
+    }
   },
   "2": {
     "Title": "Metro Finance",
@@ -56,7 +64,11 @@
     "PrivateSaleFee": 0,
     "MinDeposit": 20,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "IncFee"
+    "BrokerageCalcMethod": "IncFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 0,
+      "InterestUplift": 0
+    }
   },
   "3": {
     "Title": "Resimac",
@@ -76,7 +88,11 @@
     "PrivateSaleFee": 200,
     "MinDeposit": 10,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee"
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.5
+    }
   },
   "4": {
     "Title": "Branded",
@@ -90,7 +106,11 @@
     "PrivateSaleFee": 100,
     "MinDeposit": 10,
     "BalloonCalcMethod": "OnTop",
-    "BrokerageCalcMethod": "IncFee"
+    "BrokerageCalcMethod": "IncFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0
+    }
   },
   "5": {
     "Title": "Angle",
@@ -104,7 +124,11 @@
     "PrivateSaleFee": 0,
     "MinDeposit": 0,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee"
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0
+    }
   },
   "6": {
     "Title": "Angle",
@@ -118,20 +142,28 @@
     "PrivateSaleFee": 0,
     "MinDeposit": 0,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee"
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0
+    }
   },
   "7": {
     "Title": "Test",
-    "Text": ["Not real - Resimac"],
+    "Text": ["Not real - Pepper"],
     "MaxPrice": 200000,
-    "Rate": 6.85,
+    "Rate": 6.69,
     "Icon": "IconHomeOff",
     "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
-    "FinanceFee": 745,
-    "PrivateSaleFee": 0,
+    "FinanceFee": 505,
+    "PrivateSaleFee": 200,
     "MinDeposit": 0,
-    "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee"
+    "BalloonCalcMethod": "TakesFinal",
+    "BrokerageCalcMethod": "IncFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.5
+    }
   }
 }
