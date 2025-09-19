@@ -55,16 +55,6 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
             Amount to finance
           </JumboTitle>
         </span>
-        {depositAmount > 0 && (
-          <Box
-            pos={isMobile ? 'relative' : 'relative'}
-            left={isMobile ? '0' : '0'}
-            w={isMobile ? '100%' : '100%'}
-            ta='center'
-          >
-            <Alert color="orange">A minimum deposit of {depositAmount}% is required</Alert>
-          </Box>
-        )}
       </Stack>
 
       <Container size="lg" ta="center" style={{ height: '100%' }}>
@@ -159,6 +149,16 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
               </Text>
             </Group>
           </Stack>
+          {depositAmount > 0 && (
+            <Box
+              pos={isMobile ? 'relative' : 'relative'}
+              left={isMobile ? '0' : '0'}
+              w={isMobile ? '100%' : '100%'}
+              ta="center"
+            >
+              <Alert color="orange">A minimum deposit of {depositAmount}% is required</Alert>
+            </Box>
+          )}
         </Stack>
       </Container>
     </Stack>

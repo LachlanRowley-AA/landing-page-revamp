@@ -1,12 +1,12 @@
 {
   "0": {
     "Title": "Drive Online",
-    "Text": [
-      "2 Years ABN Running",
-      "GST Registered for 1 day or more",
-      "Own a home in your (or spouse's) name",
-      "No previous issue with Westpac Group"
-    ],
+    "Text": {
+      "ABN": 2,
+      "GST": 0.1,
+      "Property": true,
+      "Misc": ["No previous issue with Westpac Group"]
+    },
     "MaxPrice": 150000,
     "Rate": 6.25,
     "Icon": "IconHome",
@@ -24,22 +24,21 @@
   },
   "1": {
     "Title": "Resimac",
-    "Text": [
-      "2 Years ABN Running",
-      "GST Registered for 2 years or more",
-      "No home ownership",
-      "Existing comparable reference",
-      "Min 20% deposit"
-    ],
+    "Text": {
+      "ABN": 2,
+      "GST": 2,
+      "Property": false,
+      "Misc": ["Minimum 20% deposit"]
+    },
     "MaxPrice": 200000,
-    "Rate": 6.44,
+    "Rate": 6.89,
     "Icon": "IconHomeOff",
     "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
     "FinanceFee": 495,
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
-    "BalloonCalcMethod": "Additional",
+    "BalloonCalcMethod": "OnTop",
     "BrokerageCalcMethod": "ExFee",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
@@ -48,23 +47,22 @@
   },
   "2": {
     "Title": "Metro Finance",
-    "Text": [
-      "2 Years ABN Running",
-      "GST Registered for 1 year or more",
-      "No home ownership",
-      "Existing car loan reference",
-      "Min 10% deposit available"
-    ],
+    "Text": {
+      "ABN": 2,
+      "GST": 2,
+      "Property": false,
+      "Misc": ["Existing car loan reference", "Minimum 20% deposit"]
+    },
     "MaxPrice": 100000,
-    "Rate": 6.89,
+    "Rate": 6.44,
     "Icon": "IconHomeOff",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 2,
-    "FinanceFee": 450,
+    "FinanceFee": 531.25,
     "PrivateSaleFee": 0,
     "MinDeposit": 20,
-    "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "IncFee",
+    "BalloonCalcMethod": "TakesFinal",
+    "BrokerageCalcMethod": "Trains",
     "VehicleAgeImpact": {
       "BalloonDecrease": 0,
       "InterestUplift": 0
@@ -72,13 +70,12 @@
   },
   "3": {
     "Title": "Resimac",
-    "Text": [
-      "2 Years ABN Running",
-      "GST Registered for 2 years or more",
-      "No home ownership",
-      "No asset finance reference",
-      "Min 10% deposit available"
-    ],
+    "Text": {
+      "ABN": 2,
+      "GST": 2,
+      "Property": false,
+      "Misc": ["No asset finance reference", "Minimum 20% deposit"]
+    },
     "MaxPrice": 200000,
     "Rate": 10.75,
     "Icon": "IconHomeOff",
@@ -96,15 +93,20 @@
   },
   "4": {
     "Title": "Branded",
-    "Text": ["2 Years ABN Running", "No GST Registration", "Own a home in your (or spouse's) name"],
+    "Text": {
+      "ABN": 2,
+      "GST": 2,
+      "Property": false,
+      "Misc": ["No asset finance reference"]
+    },
     "MaxPrice": 100000,
-    "Rate": 12.95,
+    "Rate": 9.75,
     "Icon": "IconHomeOff",
     "MaxBalloon": 30,
     "PrivateSaleUplift": 0,
     "FinanceFee": 550,
     "PrivateSaleFee": 100,
-    "MinDeposit": 10,
+    "MinDeposit": 0,
     "BalloonCalcMethod": "OnTop",
     "BrokerageCalcMethod": "IncFee",
     "VehicleAgeImpact": {
@@ -114,7 +116,12 @@
   },
   "5": {
     "Title": "Angle",
-    "Text": ["2 Years ABN Running", "No GST Registration", "No home ownership"],
+    "Text": {
+      "ABN": 2,
+      "GST": 0,
+      "Property": false,
+      "Misc": []
+    },
     "MaxPrice": 100000,
     "Rate": 16.95,
     "Icon": "IconHomeOff",
@@ -132,7 +139,12 @@
   },
   "6": {
     "Title": "Angle",
-    "Text": ["2 Years ABN Running", "No GST Registration", "Own a home in your (or spouse's) name"],
+    "Text": {
+      "ABN": 2,
+      "GST": 0,
+      "Property": true,
+      "Misc": []
+    },
     "MaxPrice": 100000,
     "Rate": 12.95,
     "Icon": "IconHomeOff",
@@ -150,20 +162,25 @@
   },
   "7": {
     "Title": "Test",
-    "Text": ["Not real - Pepper"],
+    "Text": {
+      "ABN": 0,
+      "GST": 0,
+      "Property": false,
+      "Misc": ["Not real"]
+    },
     "MaxPrice": 200000,
-    "Rate": 6.69,
+    "Rate": 6.8,
     "Icon": "IconHomeOff",
     "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
-    "FinanceFee": 505,
+    "FinanceFee": 496,
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
-    "BalloonCalcMethod": "TakesFinal",
-    "BrokerageCalcMethod": "IncFee",
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "PMTDiff",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
-      "InterestUplift": 0.5
+      "InterestUplift": 0
     }
   }
 }

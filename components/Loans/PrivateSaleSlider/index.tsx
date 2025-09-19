@@ -51,16 +51,16 @@ export default function PrivateSaleSlider({ index }: PrivateSaleSliderProps) {
     {
       text: 'Private Sale',
       icon: <IconUser size={28} stroke={1.5} />,
-      val: false,
+      val: true,
     },
     {
       text: 'Dealership',
       icon: <IconBuilding size={28} stroke={1.5} />,
-      val: true,
+      val: false,
     },
   ];
 
-  const [selectedOption, setSelectedOption] = useState<string>(data[0].text);
+  const [selectedOption, setSelectedOption] = useState<string>(data[1].text);
 
   const cards = data.map((item) => {
     const isSelected = selectedOption === item.text;

@@ -136,7 +136,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
           rightSection={<IconChevronRight size={18} />}
           onClick={() => setShowCalc(true)}
         >
-          Calculate
+          Speak to a specialist
         </Button>
       </Group>
     </Stack>

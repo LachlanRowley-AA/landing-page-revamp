@@ -62,7 +62,7 @@ export interface CalculatorContextProps {
     interestRate: number,
     termLength: number
   ) => number;
-  calculateEffectiveRate: (
+  calculateEffectiveRepayment: (
     loanAmount: number,
     fees: number,
     interestRate: number,
@@ -141,7 +141,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     );
   };
 
-  const calculateEffectiveRate = (
+  const calculateEffectiveRepayment = (
     loanAmount: number,
     fee: number,
     interestRate: number,
@@ -151,19 +151,70 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     brokerageCalcMethod: brokerageCalcMethodValues,
     brokerageRate = 0.03
   ): number => {
+    switch (brokerageCalcMethod) {
+      case 'ExFee':
+        return calculateEffectiveRepay(
+          loanAmount,
+          loanAmount * (1 + brokerageRate) + fee,
+          interestRate,
+          termLength,
+          balloonRate,
+          calcMethod
+        );
+      case 'IncFee':
+        return calculateEffectiveRepay(
+          loanAmount,
+          (loanAmount + fee) * (1 + brokerageRate),
+          interestRate,
+          termLength,
+          balloonRate,
+          calcMethod
+        );
+      case 'PMTDiff': {
+        const baseRepay = calculateEffectiveRepay(
+          loanAmount,
+          loanAmount + fee,
+          interestRate,
+          termLength,
+          balloonRate,
+          calcMethod
+        );
+        const comm = (loanAmount + fee) * 0.04; //3% with 25% reduction
+        const repayIncrease = comm / termLength;
+        return baseRepay + repayIncrease;
+      }
+      case 'Trains': {
+        //Assume the base fee includes the 2.5c per $broker fee dollar so only need to calc net brokerage 2.5c
+        const brokerageFee = (loanAmount + fee) * brokerageRate * 0.025;
+        console.log('brokerage fee:', brokerageFee, loanAmount, fee)
+        console.log('financed amount: ', loanAmount + fee + brokerageFee)
+        return calculateEffectiveRepay(
+          loanAmount,
+          (loanAmount + fee) * (1 + brokerageRate) + brokerageFee,
+          interestRate,
+          termLength,
+          balloonRate,
+          calcMethod
+        )
+      }
+      default:
+        return 0;
+    }
+  };
+
+  const calculateEffectiveRepay = (
+    loanAmount: number,
+    financedAmount: number,
+    interestRate: number,
+    termLength: number, // e.g. 12 months (excludes balloon month)
+    balloonRate: number,
+    calcMethod: balloonCalcMethodValues
+  ): number => {
     if (loanAmount <= 0 || termLength <= 0) {
       return 0;
     }
-
-    let financedAmount = 0;
-    switch (brokerageCalcMethod) {
-      case 'ExFee':
-        financedAmount = loanAmount * (1 + brokerageRate) + fee;
-        break;
-      case 'IncFee':
-        financedAmount = (loanAmount + fee) * (1 + brokerageRate);
-    }
     const balloonValue = (loanAmount * balloonRate) / 100;
+    console.log('balloon value is:', balloonValue);
     const r = interestRate / 100 / 12;
 
     if (r === 0) {
@@ -182,6 +233,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         break;
       case 'OnTop':
         n = termLength;
+        // return (financedAmount * r) / (1 - (1 + r) ** -termLength);
     }
     return ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
   };
@@ -212,7 +264,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
 
     for (iteration = 1; iteration <= maxIterations; iteration++) {
       mid = (low + high) / 2;
-      const value = calculateEffectiveRate(
+      const value = calculateEffectiveRepayment(
         principal,
         fee,
         mid,
@@ -248,7 +300,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     monthlyPayment: number,
     baseMonths: number,
     balloonAmount: number,
-    balloonCalcMethod: balloonCalcMethodValues,
+    balloonCalcMethod: balloonCalcMethodValues
   ) {
     if (principal <= 0 || monthlyPayment >= 0) {
       return { monthlyRate: 0, annualRate: 0, annualRatePercent: 0, iterations: 1 };
@@ -275,7 +327,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     setAmountOwed(total);
   }, [baseAmountOwed, baseFee, isPrivateSale, privateSaleFee, depositRate]);
 
-
   useEffect(() => {
     let realInterestRate = isPrivateSale
       ? loanInterestRate + privateSaleRateUplift
@@ -294,7 +345,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       realInterestRate,
       loanPaymentTermLength
     );
-    const effectiveRepayment = calculateEffectiveRate(
+    const effectiveRepayment = calculateEffectiveRepayment(
       baseAmountOwed - (baseAmountOwed * depositRate) / 100,
       amountOwed - (baseAmountOwed - (baseAmountOwed * depositRate) / 100),
       realInterestRate,
@@ -381,7 +432,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
 
         calculateInterestAmount,
         calculateMonthlyRepayment,
-        calculateEffectiveRate,
       }}
     >
       {children}

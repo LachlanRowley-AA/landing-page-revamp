@@ -4,11 +4,16 @@ import { createContext, ReactNode, useContext } from 'react';
 import criteriaJSON from '../CriteriaList.json';
 
 export type balloonCalcMethodValues = "TakesFinal" | "Additional" | "OnTop" | ""
-export type brokerageCalcMethodValues = "ExFee" | "IncFee" | ""
+export type brokerageCalcMethodValues = "ExFee" | "IncFee" | "PMTDiff" | "Trains" |""
 
 export interface Criteria {
   Title: string;
-  Text: string[];
+  Text: {
+    ABN: number,
+    GST: number,
+    Property: boolean,
+    Misc: string[],
+  };
   Rate: number;
   Icon: string;
   MaxPrice: number;
