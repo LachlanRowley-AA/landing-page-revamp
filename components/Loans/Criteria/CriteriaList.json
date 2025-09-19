@@ -61,7 +61,7 @@
     "FinanceFee": 531.25,
     "PrivateSaleFee": 0,
     "MinDeposit": 20,
-    "BalloonCalcMethod": "TakesFinal",
+    "BalloonCalcMethod": "OnTop",
     "BrokerageCalcMethod": "Trains",
     "VehicleAgeImpact": {
       "BalloonDecrease": 0,
