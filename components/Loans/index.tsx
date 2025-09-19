@@ -1,7 +1,8 @@
 'use client';
 
 import { useContext, useEffect, useState } from 'react';
-import { IconChevronRight } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+import { IconChevronRight, IconArrowLeft } from '@tabler/icons-react';
 import {
   Button,
   Card,
@@ -35,6 +36,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
   const { isMobile } = displayCtx;
   const calcCtx = useContext(CalculatorContext);
   const [showCalc, setShowCalc] = useState(false);
+  const router = useRouter();
 
   if (!calcCtx) {
     return null;
@@ -46,8 +48,18 @@ export function Loans({ calculatorIndex }: LoanProps) {
       <JumboTitle order={isMobile ? 3 : 2} ta="center" fw={700} style={{ textWrap: 'balance' }}>
         Vehicle Finance Calculator
       </JumboTitle>
+      {/* Go Back button */}
+      <Button
+        variant="light"
+        radius="xl"
+        leftSection={<IconArrowLeft size={18} />}
+        onClick={() => router.push('/calculators/vehicles')}
+      >
+        Back to Vehicles
+      </Button>
     </Stack>
   );
+
   const [showInput, setShowInput] = useState(true);
 
   // Inner component to safely use useCriteria inside CriteriaHandler
@@ -68,6 +80,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
       setBalloonCalcMethod,
       setBrokerageCalcMethod,
       setVehicleAgeInterestUplift,
+      setAKF,
     } = calcCtx;
     useEffect(() => {
       if (mounted) {
@@ -81,7 +94,7 @@ export function Loans({ calculatorIndex }: LoanProps) {
       setBalloonCalcMethod(calculator.BalloonCalcMethod);
       setBrokerageCalcMethod(calculator.BrokerageCalcMethod);
       setVehicleAgeInterestUplift(calculator.VehicleAgeImpact.InterestUplift);
-      console.log('base fee:', calculator.FinanceFee);
+      setAKF(calculator.AKF);
 
       setMounted(true);
     }, [calculator.Rate, setLoanInterestRate]);
@@ -96,10 +109,10 @@ export function Loans({ calculatorIndex }: LoanProps) {
           <Stack gap="md">
             <PrivateSaleSlider index={calculatorIndex} />
             <Grid gutter="md">
-              <GridCol span={{ base: 12, md: 6 }}>
+              <GridCol span={{ base: 12, md: 12 }}>
                 <LoanSlider index={calculatorIndex} />
               </GridCol>
-              <GridCol span={{ base: 12, md: 6 }}>
+              <GridCol span={{ base: 12, md: 12 }}>
                 <BalloonSlider index={calculatorIndex} />
               </GridCol>
             </Grid>

@@ -72,6 +72,8 @@ export interface CalculatorContextProps {
     brokerageCalcMethod: brokerageCalcMethodValues,
     brokerageRate?: number
   ) => number;
+
+  setAKF: (value: number) => void;
 }
 
 export const CalculatorContext = createContext<CalculatorContextProps | null>(null);
@@ -108,6 +110,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
   const [vehicleAgeToggle, setVehicleAgeToggle] = useState(false);
   const [vehicleAgeBalloonDecrease, setVehicleAgeBalloonDecrease] = useState(0);
   const [vehicleAgeInterestUplift, setVehicleAgeInterestUplift] = useState(0);
+
+  const [AKF, setAKF] = useState<number>(0);
 
   // --- Calculation helpers ---
   const [balloonCalcMethod, setBalloonCalcMethod] = useState<balloonCalcMethodValues>('Additional');
@@ -149,11 +153,12 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     balloonRate: number,
     calcMethod: balloonCalcMethodValues,
     brokerageCalcMethod: brokerageCalcMethodValues,
-    brokerageRate = 0.03
+    brokerageRate = 0.03,
+    akf = 0
   ): number => {
     switch (brokerageCalcMethod) {
       case 'ExFee':
-        return calculateEffectiveRepay(
+        return akf + calculateEffectiveRepay(
           loanAmount,
           loanAmount * (1 + brokerageRate) + fee,
           interestRate,
@@ -162,7 +167,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
           calcMethod
         );
       case 'IncFee':
-        return calculateEffectiveRepay(
+        return akf + calculateEffectiveRepay(
           loanAmount,
           (loanAmount + fee) * (1 + brokerageRate),
           interestRate,
@@ -181,21 +186,32 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         );
         const comm = (loanAmount + fee) * 0.04; //3% with 25% reduction
         const repayIncrease = comm / termLength;
-        return baseRepay + repayIncrease;
+        return akf + baseRepay + repayIncrease;
       }
       case 'Trains': {
         //Assume the base fee includes the 2.5c per $broker fee dollar so only need to calc net brokerage 2.5c
         const brokerageFee = (loanAmount + fee) * brokerageRate * 0.025;
-        console.log('brokerage fee:', brokerageFee, loanAmount, fee)
-        console.log('financed amount: ', loanAmount + fee + brokerageFee)
-        return calculateEffectiveRepay(
+        console.log('brokerage fee:', brokerageFee, loanAmount, fee);
+        console.log('financed amount: ', (loanAmount + fee) * (1 + brokerageRate) + brokerageFee, loanAmount + fee + brokerageFee);
+        return akf + calculateEffectiveRepay(
           loanAmount,
           (loanAmount + fee) * (1 + brokerageRate) + brokerageFee,
           interestRate,
           termLength,
           balloonRate,
           calcMethod
-        )
+        );
+      }
+      case 'Advance': {
+        return akf + calculateEffectiveRepay(
+          loanAmount,
+          loanAmount * (1 + brokerageRate) + fee,
+          interestRate,
+          termLength,
+          balloonRate,
+          calcMethod,
+          true
+        );
       }
       default:
         return 0;
@@ -206,23 +222,22 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     loanAmount: number,
     financedAmount: number,
     interestRate: number,
-    termLength: number, // e.g. 12 months (excludes balloon month)
+    termLength: number, // months (excludes balloon month)
     balloonRate: number,
-    calcMethod: balloonCalcMethodValues
+    calcMethod: balloonCalcMethodValues,
+    payInAdvance: boolean = false
   ): number => {
     if (loanAmount <= 0 || termLength <= 0) {
       return 0;
     }
     const balloonValue = (loanAmount * balloonRate) / 100;
-    console.log('balloon value is:', balloonValue);
     const r = interestRate / 100 / 12;
 
     if (r === 0) {
-      // No interest → divide evenly across n repayments, balloon at end
+      // No interest → divide evenly, balloon at end
       return (financedAmount - balloonValue) / termLength;
     }
 
-    // n = number of 'normal' repayments. Balloon replaces the final repayment if it exists
     let n = 0;
     switch (calcMethod) {
       case 'TakesFinal':
@@ -233,9 +248,18 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         break;
       case 'OnTop':
         n = termLength;
-        // return (financedAmount * r) / (1 - (1 + r) ** -termLength);
+        break;
     }
-    return ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
+
+    // Standard present value with balloon discounted
+    let pmt = ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
+
+    // Adjust if payments are in advance (annuity due)
+    if (payInAdvance) {
+      pmt /= 1 + r;
+    }
+
+    return pmt;
   };
 
   function findEffectiveRateBinaryBalloon(
@@ -352,7 +376,9 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       loanPaymentTermLength,
       balloonAmount,
       balloonCalcMethod,
-      brokerageCalcMethod
+      brokerageCalcMethod,
+      0.03,
+      AKF
     );
 
     console.log(
@@ -364,7 +390,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       balloonAmount,
       amountOwed,
       vehicleAgeToggle,
-      vehicleAgeInterestUplift
+      vehicleAgeInterestUplift,
+      AKF
     );
 
     const effectiveRate = findEffectiveInterestRate(
@@ -380,7 +407,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
     setLoanMonthlyRepayment(monthlyRepayment);
     setEffectiveLoanMonthlyRepayment(effectiveRepayment);
     setEffectiveLoanInterestRate(effectiveRate);
-  }, [amountOwed, loanInterestRate, loanPaymentTermLength, balloonAmount, vehicleAgeToggle]);
+  }, [amountOwed, loanInterestRate, loanPaymentTermLength, balloonAmount, vehicleAgeToggle, AKF]);
 
   return (
     <CalculatorContext.Provider
@@ -429,6 +456,8 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
         setVehicleAgeInterestUplift,
         setMaxBalloonAmount,
         setVehicleAgeBalloonDecrease,
+
+        setAKF,
 
         calculateInterestAmount,
         calculateMonthlyRepayment,

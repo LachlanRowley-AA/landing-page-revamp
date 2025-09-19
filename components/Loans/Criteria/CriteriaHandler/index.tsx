@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext } from 'react';
 import criteriaJSON from '../CriteriaList.json';
 
 export type balloonCalcMethodValues = "TakesFinal" | "Additional" | "OnTop" | ""
-export type brokerageCalcMethodValues = "ExFee" | "IncFee" | "PMTDiff" | "Trains" |""
+export type brokerageCalcMethodValues = "ExFee" | "IncFee" | "PMTDiff" | "Trains" | "Advance" | "" //Advance isn't broker related but ...
 
 export interface Criteria {
   Title: string;
@@ -27,7 +27,8 @@ export interface Criteria {
   VehicleAgeImpact: {
     BalloonDecrease : number,
     InterestUplift: number
-  }
+  };
+  AKF: number;
 }
 type CriteriaMap = Record<string, Criteria>;
 

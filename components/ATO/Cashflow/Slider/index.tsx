@@ -138,8 +138,6 @@ export default function CalculatorSlider() {
                 value={amountOwed}
                 onChange={(value) => {
                   setAmountOwed(Math.max(0, value));
-                  sessionStorage.setItem('loanAmount', value.toString());
-                  console.log('Loan Amount set to:', sessionStorage.getItem('loanAmount'));
                 }}
                 c={{ base: 'white', md: theme.colors.tertiary[0] }}
                 mx={isMobile ? 'xs' : 0}

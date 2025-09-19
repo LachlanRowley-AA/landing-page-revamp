@@ -63,7 +63,7 @@ export default function CriteriaDisplay({ criteriaList = [], index = 0 }: Criter
 
         // Render primitive values
         return (
-          <GridCol span={6} key={key}>
+          <GridCol span={{base:6, md:4}} key={key}>
             <Group align="center" gap="xs" wrap="nowrap">
               <ThemeIcon size={isMobile ? 'sm' : 'lg'} radius="xl" color="teal" mt={2}>
                 <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />

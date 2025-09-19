@@ -20,7 +20,8 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 0,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 0
   },
   "1": {
     "Title": "Resimac",
@@ -43,7 +44,8 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0.5
-    }
+    },
+    "AKF": 4.95
   },
   "2": {
     "Title": "Metro Finance",
@@ -66,7 +68,8 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 0,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 0
   },
   "3": {
     "Title": "Resimac",
@@ -74,7 +77,7 @@
       "ABN": 2,
       "GST": 2,
       "Property": false,
-      "Misc": ["No asset finance reference", "Minimum 20% deposit"]
+      "Misc": ["Has asset finance reference", "Minimum 10% deposit"]
     },
     "MaxPrice": 200000,
     "Rate": 10.75,
@@ -85,11 +88,12 @@
     "PrivateSaleFee": 200,
     "MinDeposit": 10,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "ExFee",
+    "BrokerageCalcMethod": "Advance",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0.5
-    }
+    },
+    "AKF": 4.95
   },
   "4": {
     "Title": "Branded",
@@ -100,19 +104,20 @@
       "Misc": ["No asset finance reference"]
     },
     "MaxPrice": 100000,
-    "Rate": 9.75,
+    "Rate": 10.75,
     "Icon": "IconHomeOff",
     "MaxBalloon": 30,
     "PrivateSaleUplift": 0,
-    "FinanceFee": 550,
+    "FinanceFee": 556,
     "PrivateSaleFee": 100,
     "MinDeposit": 0,
     "BalloonCalcMethod": "OnTop",
-    "BrokerageCalcMethod": "IncFee",
+    "BrokerageCalcMethod": "PMTDiff",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 0
   },
   "5": {
     "Title": "Angle",
@@ -135,7 +140,8 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 4.95
   },
   "6": {
     "Title": "Angle",
@@ -158,7 +164,8 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 4.95
   },
   "7": {
     "Title": "Test",
@@ -181,6 +188,7 @@
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0
-    }
+    },
+    "AKF": 4.95
   }
 }
