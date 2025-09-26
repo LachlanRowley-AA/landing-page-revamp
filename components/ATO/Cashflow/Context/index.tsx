@@ -12,6 +12,7 @@ export interface ATO_OptionsContextProps {
   ATO_interestRate: number;
   ATO_interestAmount: number;
   ATO_monthlyRepayment: number;
+  ATOFinalPayment: number;
 
   Loan_paymentTermLength: number;
   Loan_interestRate: number;
@@ -52,6 +53,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
   const [ATO_interestRate, setATO_InterestRate] = useState<number>(0);
   const [ATO_interestAmount, setATO_InterestAmount] = useState<number>(0);
   const [ATO_monthlyRepayment, setATO_MonthlyRepayment] = useState<number>(0);
+  const [ATOFinalPayment, setATOFinalPayment] = useState<number>(0);
 
   const [Loan_paymentTermLength, setLoan_paymentTermLength] = useState<number>(0);
   const [Loan_interestRate, setLoan_InterestRate] = useState<number>(13.95);
@@ -93,6 +95,56 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     );
   };
 
+  const calculateEffectiveRepayment = (
+    loanAmount: number,
+    fee: number,
+    interestRate: number,
+    termLength: number, // e.g. 12 months (excludes balloon month)
+    brokerageRate = 0.03,
+    akf = 0
+  ): number => {
+    return (
+      akf +
+      calculateEffectiveRepay(
+        loanAmount,
+        loanAmount * (1 + brokerageRate) + fee,
+        interestRate,
+        termLength,
+        true
+      )
+    );
+  };
+
+  const calculateEffectiveRepay = (
+    loanAmount: number,
+    financedAmount: number,
+    interestRate: number,
+    termLength: number, // months (excludes balloon month)
+    payInAdvance: boolean = false
+  ): number => {
+    if (loanAmount <= 0 || termLength <= 0) {
+      return 0;
+    }
+    const balloonValue = 0;
+    const r = interestRate / 100 / 12;
+
+    if (r === 0) {
+      // No interest → divide evenly, balloon at end
+      return (financedAmount - balloonValue) / termLength;
+    }
+
+    const n = termLength;
+    // Standard present value with balloon discounted
+    let pmt = ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
+
+    // Adjust if payments are in advance (annuity due)
+    if (payInAdvance) {
+      pmt /= 1 + r;
+    }
+
+    return pmt;
+  };
+
   const calculateDailyInterest = (loanAmount: number, interestRate: number, days: number) => {
     const DAYS_IN_YEAR = 365;
     const DAYS_IN_MONTH = 365 / 12; // Average days per month
@@ -121,26 +173,92 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     termLength: number
   ) => {
     return (
-      calculateMonthlyRepayment(loanAmount, interestRate, termLength) * termLength - loanAmount
+      calculateEffectiveRepayment(loanAmount, 0, interestRate, termLength) * termLength - loanAmount
     );
   };
 
-  useEffect(() => {
-    setATO_InterestAmount(
-      calculateInterestAmount(amountOwed, ATO_interestRate, ATO_paymentTermLength) * 1.04
+  function daysBetween(startDate: Date, endDate: Date) {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const start = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+    const end = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    return (start - end) / oneDay;
+  }
+
+  // Half-up rounding to 2 decimal places (like Python's ROUND_HALF_UP)
+  function round2DecimalPlaces(num: number): number {
+    return Math.round(num * 100) / 100;
+  }
+
+  const calculateATORepayment = (
+    amountOwed: number,
+    interestRate: number,
+    ATO_paymentTermLength: number
+  ) => {
+    const dailyRate = interestRate / 365 / 100;
+    const daysInPaymentPeriod = 365 / 12;
+    const startDate = new Date(); // assume the loan starts today
+    const endDate = new Date(
+      new Date(startDate).setMonth(startDate.getMonth() + ATO_paymentTermLength)
     );
 
-    setATO_MonthlyRepayment(
-      calculateMonthlyRepayment(amountOwed, ATO_interestRate, ATO_paymentTermLength)
+    const totalDays = daysBetween(startDate, endDate) - 1;
+    const numberOfPayments = Math.ceil(totalDays / daysInPaymentPeriod);
+
+    // 7-day initial interest
+    const initialInterest = round2DecimalPlaces(amountOwed * ((1 + dailyRate) ** 7 - 1));
+
+    // balance after deposit
+    const afterDeposit = round2DecimalPlaces(amountOwed + initialInterest - amountOwed * 0.05);
+
+    const totalPeriodDays = numberOfPayments * daysInPaymentPeriod;
+    const compoundFactor = (1 + dailyRate) ** totalPeriodDays;
+    const annuityFactor = compoundFactor / (compoundFactor - 1);
+
+    // theoretical payment size
+    const paymentSize = round2DecimalPlaces(
+      daysInPaymentPeriod * afterDeposit * dailyRate * annuityFactor +
+        initialInterest / numberOfPayments
     );
+
+    // Simulate payments
+    let currentBalance = afterDeposit;
+    let totalInterest = initialInterest;
+    let finalPayment = 0;
+
+    while (currentBalance >= paymentSize) {
+      const interest = round2DecimalPlaces(currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1));
+      currentBalance = round2DecimalPlaces(currentBalance + interest - paymentSize);
+      totalInterest = round2DecimalPlaces(totalInterest + interest);
+    }
+
+    if (currentBalance > 0) {
+      const finalInterest = round2DecimalPlaces(currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1));
+      finalPayment = round2DecimalPlaces(currentBalance + finalInterest);
+      totalInterest = round2DecimalPlaces(totalInterest + finalInterest);
+    }
+
+    return {
+      Payments: paymentSize,
+      TotalInterest: totalInterest,
+      FinalPayment: finalPayment,
+    };
+  };
+
+  useEffect(() => {
+    const atoResults = calculateATORepayment(amountOwed, ATO_interestRate, ATO_paymentTermLength);
+    setATO_InterestAmount(atoResults.TotalInterest);
+    setATO_MonthlyRepayment(atoResults.Payments);
+    setATOFinalPayment(atoResults.FinalPayment);
+    console.log(atoResults);
   }, [amountOwed, ATO_paymentTermLength, ATO_interestRate]);
 
   useEffect(() => {
+    const amountAfterDeposit = amountOwed * 0.95;
     setLoan_InterestAmount(
       calculateInterestAmount(amountOwed, Loan_interestRate, Loan_paymentTermLength)
     );
     setLoan_MonthlyRepayment(
-      calculateMonthlyRepayment(amountOwed, Loan_interestRate, Loan_paymentTermLength)
+      calculateEffectiveRepayment(amountOwed, 0, Loan_interestRate, Loan_paymentTermLength)
     );
   }, [amountOwed, Loan_interestRate, Loan_paymentTermLength]);
 
@@ -153,6 +271,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
         isMobile,
 
         ATO_paymentTermLength,
+        ATOFinalPayment,
         ATO_interestRate,
         ATO_interestAmount,
         ATO_monthlyRepayment,

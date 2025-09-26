@@ -1,9 +1,22 @@
 'use client';
 
-import { JumboTitle } from '../JumboTitle/JumboTitle';
-import { Badge, Box, BoxProps, Container, Grid, Stack, Text, rem, Group, useMantineTheme, Card, Divider } from '@mantine/core';
 import { motion } from 'motion/react';
+import {
+  Badge,
+  Box,
+  BoxProps,
+  Card,
+  Container,
+  Divider,
+  Grid,
+  Group,
+  rem,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { JumboTitle } from '../JumboTitle/JumboTitle';
 
 const DEFAULT_INTEREST_RATE = 15.95; // 15.95% annual interest
 const DAYS_IN_YEAR = 365;
@@ -15,10 +28,14 @@ const LOAN_TERM_YEARS = 5;
 const EXAMPLE_AMOUNT = 30000;
 
 const calculateRepayment = (loanAmount: number, interestRate: number, isWeekly: boolean) => {
-  if (loanAmount <= 0) return 0;
+  if (loanAmount <= 0) {
+    return 0;
+  }
 
   const annualRate = interestRate / 100;
-  const totalPayments = isWeekly ? LOAN_TERM_YEARS * WEEKS_IN_YEAR : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
+  const totalPayments = isWeekly
+    ? LOAN_TERM_YEARS * WEEKS_IN_YEAR
+    : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
   const dailyRate = annualRate / DAYS_IN_YEAR;
   const daysBetweenPayments = isWeekly ? DAYS_IN_WEEK : DAYS_IN_MONTH;
 
@@ -33,21 +50,23 @@ const calculateRepayment = (loanAmount: number, interestRate: number, isWeekly: 
 };
 
 const calculateTotalInterest = (loanAmount: number, interestRate: number, isWeekly: boolean) => {
-  const totalPayments = isWeekly ? LOAN_TERM_YEARS * WEEKS_IN_YEAR : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
+  const totalPayments = isWeekly
+    ? LOAN_TERM_YEARS * WEEKS_IN_YEAR
+    : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
   const repayment = calculateRepayment(loanAmount, interestRate, isWeekly);
-  return (repayment * totalPayments) - loanAmount;
+  return repayment * totalPayments - loanAmount;
 };
 
-const ExampleCard = ({ 
-  title, 
-  amount, 
-  period, 
-  highlight = false 
-}: { 
-  title: string; 
-  amount: string; 
-  period?: string; 
-  highlight?: boolean; 
+const ExampleCard = ({
+  title,
+  amount,
+  period,
+  highlight = false,
+}: {
+  title: string;
+  amount: string;
+  period?: string;
+  highlight?: boolean;
 }) => (
   <motion.div
     initial={{ opacity: 0.0, y: 20 }}
@@ -55,20 +74,25 @@ const ExampleCard = ({
     transition={{ duration: 0.6, ease: 'easeInOut' }}
     viewport={{ once: true }}
   >
-    <Card 
-      padding="md" 
-      radius="md" 
-      bg={highlight ? "rgba(1, 225, 148, 0.1)" : "rgba(255, 255, 255, 0.05)"}
-      style={{ 
-        border: highlight ? "2px solid #01E194" : "1px solid rgba(255, 255, 255, 0.1)",
-        backdropFilter: "blur(10px)"
+    <Card
+      padding="md"
+      radius="md"
+      bg={highlight ? 'rgba(1, 225, 148, 0.1)' : 'rgba(255, 255, 255, 0.05)'}
+      style={{
+        border: highlight ? '2px solid #01E194' : '1px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <Stack align="center" gap="xs">
         <Text size="xl" c="rgba(255, 255, 255, 0.7)" ta="center" fw={500}>
           {title}
         </Text>
-        <Text fz={{base: rem(24), md: rem(54)}} fw="bold" c={highlight ? "#01E194" : "white"} ta="center">
+        <Text
+          fz={{ base: rem(24), md: rem(54) }}
+          fw="bold"
+          c={highlight ? '#01E194' : 'white'}
+          ta="center"
+        >
           {amount}
         </Text>
         {period && (
@@ -81,7 +105,7 @@ const ExampleCard = ({
   </motion.div>
 );
 
-const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
+const CalculationBreakdown = ({ amount = EXAMPLE_AMOUNT }) => {
   const weeklyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, true);
   const monthlyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, false);
   const totalInterestWeekly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, true);
@@ -97,9 +121,9 @@ const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
           viewport={{ once: true }}
         >
           <Box ta="center" mb="xl">
-            <Badge 
-              size="lg" 
-              variant="light" 
+            <Badge
+              size="lg"
+              variant="light"
               color="rgba(1, 225, 148, 0.2)"
               c="#01E194"
               fw={500}
@@ -121,7 +145,7 @@ const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
 
         <Grid gutter="md">
           <Grid.Col span={12}>
-            <ExampleCard 
+            <ExampleCard
               title="Weekly Repayment"
               amount={`$${weeklyRepayment.toFixed(2)}`}
               period=""
@@ -142,12 +166,11 @@ const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
               period=""
             />
           </Grid.Col> */}
-
         </Grid>
 
         <Divider color="rgba(255, 255, 255, 0.1)" />
 
-          {/* <Grid.Col span={6}>
+        {/* <Grid.Col span={6}>
             <ExampleCard 
               title="Total Interest (Monthly)"
               amount={`$${totalInterestMonthly.toFixed(2)}`}
@@ -187,21 +210,14 @@ const CalculationBreakdown = ({amount = EXAMPLE_AMOUNT}) => {
 
 type CalculatorProps = {
   startingAmount?: number;
-}
+};
 
-export const Calculator = ({
-  startingAmount = 30000
-}: CalculatorProps) => {
+export const Calculator = ({ startingAmount = 30000 }: CalculatorProps) => {
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
-  
+
   return (
-    <Box
-      bg="black"
-      py="xl"
-      px={{ base: "xs", md: "xl" }}
-      style={{ minHeight: "70vh" }}
-    >
+    <Box bg="black" py="xl" px={{ base: 'xs', md: 'xl' }} style={{ minHeight: '70vh' }}>
       <Container size="lg" ta="center">
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
@@ -210,21 +226,21 @@ export const Calculator = ({
           viewport={{ once: true }}
         >
           <Stack align="center" gap="lg" mb="xl">
-            <JumboTitle 
-              order={2} 
+            <JumboTitle
+              order={2}
               fz="md"
-              ta="center" 
-              style={{ textWrap: 'balance' }} 
+              ta="center"
+              style={{ textWrap: 'balance' }}
               c="#01E194"
               fw={700}
             >
               Example
             </JumboTitle>
-            <JumboTitle 
-              order={2} 
+            <JumboTitle
+              order={2}
               fz="md"
-              ta="center" 
-              style={{ textWrap: 'balance' }} 
+              ta="center"
+              style={{ textWrap: 'balance' }}
               c="white"
               fw={700}
             >
@@ -232,8 +248,8 @@ export const Calculator = ({
             </JumboTitle>
           </Stack>
         </motion.div>
-        
-        <CalculationBreakdown amount={startingAmount}/>
+
+        <CalculationBreakdown amount={startingAmount} />
       </Container>
     </Box>
   );

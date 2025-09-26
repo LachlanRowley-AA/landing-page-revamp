@@ -40,7 +40,7 @@
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
     "BalloonCalcMethod": "OnTop",
-    "BrokerageCalcMethod": "ExFee",
+    "BrokerageCalcMethod": "Advance",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0.5
@@ -168,6 +168,126 @@
     "AKF": 4.95
   },
   "7": {
+    "Title": "Resimac Basic",
+    "Text": {
+      "ABN": 1,
+      "GST": 0,
+      "Property": true,
+      "Misc": ["Has asset finance reference running for more than 12 months or 12 months mortgage statemen showing perfect conduct"]
+    },
+    "MaxPrice": 100000,
+    "Rate": 6.89,
+    "Icon": "IconHomeOff",
+    "MaxBalloon": 40,
+    "PrivateSaleUplift": 2,
+    "FinanceFee": 495,
+    "PrivateSaleFee": 200,
+    "MinDeposit": 0,
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "Advance",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.5
+    },
+    "AKF": 4.95
+  },
+  "8": {
+    "Title": "Resimac Basic - Non home owner",
+    "Text": {
+      "ABN": 1,
+      "GST": 1,
+      "Property": false,
+      "Misc": ["Has asset finance reference running for more than 12 months or 12 months mortgage statemen showing perfect conduct"]
+    },
+    "MaxPrice": 100000,
+    "Rate": 6.89,
+    "Icon": "IconHomeOff",
+    "MaxBalloon": 40,
+    "PrivateSaleUplift": 2,
+    "FinanceFee": 495,
+    "PrivateSaleFee": 200,
+    "MinDeposit": 10,
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "Advance",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.5
+    },
+    "AKF": 4.95
+  },
+  "9": {
+    "Title": "Veya - Home owner",
+    "Text": {
+      "ABN": 1,
+      "GST": 0,
+      "Property": true,
+      "Misc": [""]
+    },
+    "MaxPrice": 50000,
+    "Rate": 8.3,
+    "Icon": "IconHomeOff",
+    "MaxBalloon": 40,
+    "PrivateSaleUplift": 0,
+    "FinanceFee": 0,
+    "PrivateSaleFee": 0,
+    "MinDeposit": 0,
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.75
+    },
+    "AKF": 4.95
+  },
+  "10": {
+    "Title": "Veya - Non Home owner",
+    "Text": {
+      "ABN": 1,
+      "GST": 0,
+      "Property": false,
+      "Misc": [""]
+    },
+    "MaxPrice": 50000,
+    "Rate": 12.8,
+    "Icon": "IconHomeOff",
+    "MaxBalloon": 40,
+    "PrivateSaleUplift": 0,
+    "FinanceFee": 0,
+    "PrivateSaleFee": 0,
+    "MinDeposit": 0,
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.75
+    },
+    "AKF": 4.95
+  },
+  "11": {
+    "Title": "Veya - Home owner GST",
+    "Text": {
+      "ABN": 1,
+      "GST": 1,
+      "Property": false,
+      "Misc": [""]
+    },
+    "MaxPrice": 150000,
+    "Rate": 12.8,
+    "Icon": "IconHomeOff",
+    "MaxBalloon": 40,
+    "PrivateSaleUplift": 0,
+    "FinanceFee": 604.95,
+    "PrivateSaleFee": 0,
+    "MinDeposit": 0,
+    "BalloonCalcMethod": "Additional",
+    "BrokerageCalcMethod": "ExFee",
+    "VehicleAgeImpact": {
+      "BalloonDecrease": 10,
+      "InterestUplift": 0.75
+    },
+    "AKF": 4.95
+  },
+  "999": {
     "Title": "Test",
     "Text": {
       "ABN": 0,
@@ -176,19 +296,19 @@
       "Misc": ["Not real"]
     },
     "MaxPrice": 200000,
-    "Rate": 6.8,
+    "Rate": 13.95,
     "Icon": "IconHomeOff",
     "MaxBalloon": 35,
     "PrivateSaleUplift": 0.5,
-    "FinanceFee": 496,
+    "FinanceFee": 0,
     "PrivateSaleFee": 200,
     "MinDeposit": 0,
     "BalloonCalcMethod": "Additional",
-    "BrokerageCalcMethod": "PMTDiff",
+    "BrokerageCalcMethod": "Advance",
     "VehicleAgeImpact": {
       "BalloonDecrease": 10,
       "InterestUplift": 0
     },
-    "AKF": 4.95
+    "AKF": 0
   }
 }

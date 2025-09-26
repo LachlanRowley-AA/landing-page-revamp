@@ -381,19 +381,6 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
       AKF
     );
 
-    console.log(
-      'effective repayment values',
-      baseAmountOwed - (baseAmountOwed * depositRate) / 100,
-      amountOwed - (baseAmountOwed - (baseAmountOwed * depositRate) / 100),
-      realInterestRate,
-      loanPaymentTermLength,
-      balloonAmount,
-      amountOwed,
-      vehicleAgeToggle,
-      vehicleAgeInterestUplift,
-      AKF
-    );
-
     const effectiveRate = findEffectiveInterestRate(
       baseAmountOwed - (baseAmountOwed * depositRate) / 100,
       baseFee,
@@ -461,6 +448,7 @@ export function CalculatorContextProvider({ children }: ProviderProps) {
 
         calculateInterestAmount,
         calculateMonthlyRepayment,
+        calculateEffectiveRepayment,
       }}
     >
       {children}

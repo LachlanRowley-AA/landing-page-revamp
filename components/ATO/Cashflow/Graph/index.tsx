@@ -21,6 +21,7 @@ export default function Graph() {
 
   const {
     ATO_monthlyRepayment,
+    ATOFinalPayment,
     Loan_monthlyRepayment,
     taxRate,
     Loan_interestAmount,
@@ -28,7 +29,10 @@ export default function Graph() {
     Loan_paymentTermLength,
     ATO_paymentTermLength,
     isMobile,
+    amountOwed,
   } = ctx;
+
+  console.log('graph sees final payment as: ', ATOFinalPayment);
 
   // split finance interest: raw vs. tax savings
   const financeTaxDeduction = Loan_interestAmount * taxRate;
@@ -57,7 +61,7 @@ export default function Graph() {
           <IconArrowDownRight size={20} />
         </ThemeIcon>
         <Text fz={{ base: 'lg', md: 'xl' }} fw={700} c="teal">
-          You'll pay ${monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })} less
+          You'll pay ${monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} less
           per month
         </Text>
         <Text size="xs" fw={500} c="black" ta="center" ml="md">
@@ -81,7 +85,7 @@ export default function Graph() {
           <IconCalculator size={20} />
         </ThemeIcon>
         <Text size="xl" fw={700} c="teal">
-          You'll save ${netSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })} overall
+          You'll save ${netSavings.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} overall
           with finance
         </Text>
       </Group>
@@ -198,14 +202,23 @@ export default function Graph() {
       <GridCol span={{ base: 12, md: 4 }}>
         <Stack gap="sm">
           <Text size="md">
-            <b style={{ color: 'blue' }}>ATO repayment:</b> $
-            {ATO_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })} for{' '}
-            {ATO_paymentTermLength} months
+            <b style={{ color: 'blue' }}>ATO repayment:</b><br/> An upfront deposit of $
+            {(amountOwed * 0.05).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}
+            <br /><b>${ATO_monthlyRepayment.toLocaleString(undefined, {
+              maximumFractionDigits: 2, minimumFractionDigits: 2
+            })}{' '}
+            for {ATO_paymentTermLength} months </b>
+            {ATOFinalPayment > 0
+              ? ` plus a final payment of $${ATOFinalPayment.toLocaleString(undefined, {
+                  maximumFractionDigits: 2, minimumFractionDigits: 2
+                })}`
+              : ''}
           </Text>
+
           <Text size="md">
-            <b style={{ color: 'green' }}>Finance repayment:</b> $
-            {Loan_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 0 })} for{' '}
-            {Loan_paymentTermLength} months
+            <b style={{ color: 'green' }}>Finance repayment:</b> <br/>
+            <b>${Loan_monthlyRepayment.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} for{' '}
+            {Loan_paymentTermLength} months</b>
           </Text>
           <Divider />
 

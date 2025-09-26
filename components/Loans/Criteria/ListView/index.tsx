@@ -78,13 +78,6 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
       withBorder
       onClick={() => router.push(`${pathname}/${index}`)}
       style={{ cursor: 'pointer', transition: 'all 200ms ease' }}
-      sx={(theme) => ({
-        '&:hover': {
-          transform: 'scale(1.02)',
-          boxShadow: theme.shadows.lg,
-        },
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#fff',
-      })}
     >
       <Grid gutter="md" align="center">
         <GridCol span={{ base: 12, md: 2 }}>
@@ -106,7 +99,6 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
                   color="teal"
                   variant="light"
                   size="md"
-                  sx={{ textTransform: 'none', fontWeight: 500 }}
                 >
                   {category}
                 </Badge>

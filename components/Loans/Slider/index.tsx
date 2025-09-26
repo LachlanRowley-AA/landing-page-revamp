@@ -64,8 +64,8 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
   };
 
   return (
-    <Stack align="center" justify="center" gap="xs" w="100%">
-      <Container size="lg" ta="center" style={{ height: '100%' }}>
+    <Stack align="center" justify="center" gap="xs">
+      <Container size="lg" ta="center" style={{ height: '100%' }} w='100%'>
         <Stack>
           {depositPercent > 0 ? (
             <>
