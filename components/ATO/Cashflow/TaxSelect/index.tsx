@@ -33,8 +33,6 @@ export default function TaxSelect({ onSelect }: DateSelectProps) {
     onSelect?.(); // trigger auto-progress if provided
   };
 
-  console.log('tax mobile', isMobile);
-
   return (
     <Stack align="center" justify="center" mih={{ md: '50vh' }} style={{ gap: 20 }} maw='800px'>
       <JumboTitle

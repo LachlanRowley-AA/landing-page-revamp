@@ -110,7 +110,6 @@ export function Options() {
       </Group>
     </Stack>
   );
-  console.log('mobile :', isMobile);
 
   return (
     <ATO_ContextProvider isMobileProp={isMobile}>

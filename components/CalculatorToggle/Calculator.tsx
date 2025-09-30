@@ -169,7 +169,6 @@ type CalculatorProps = {
 export const Calculator = ({
   startingAmount = 20000
 }: CalculatorProps) => {
-  console.log(startingAmount);
   const [baseValue, setBaseValue] = useState(startingAmount ? startingAmount : 10000);
   const [interestRate, setInterestRate] = useState(DEFAULT_INTEREST_RATE);
   const [isWeekly, setIsWeekly] = useState(false);

@@ -161,9 +161,6 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     if (monthlyRate === 0) {
       return 0;
     }
-
-    console.log('daily', (1 + dailyRate) ** 7);
-
     return loanAmount * (1 + dailyRate) ** days;
   };
 
@@ -184,7 +181,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     return (start - end) / oneDay;
   }
 
-  // Half-up rounding to 2 decimal places (like Python's ROUND_HALF_UP)
+  // Half-up rounding to 2 decimal places
   function round2DecimalPlaces(num: number): number {
     return Math.round(num * 100) / 100;
   }
@@ -249,7 +246,6 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     setATO_InterestAmount(atoResults.TotalInterest);
     setATO_MonthlyRepayment(atoResults.Payments);
     setATOFinalPayment(atoResults.FinalPayment);
-    console.log(atoResults);
   }, [amountOwed, ATO_paymentTermLength, ATO_interestRate]);
 
   useEffect(() => {

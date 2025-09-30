@@ -14,9 +14,9 @@ export default function FetchATOInterest() {
       return;
     }
     //To stop spamming ATO == Remove in Live
-    ctx?.setATO_InterestRate(10.78);
-    interestFetched.current = true;
-    return;
+    // ctx?.setATO_InterestRate(10.78);
+    // interestFetched.current = true;
+    // return;
 
     
     const fetchData = async () => {
@@ -50,12 +50,8 @@ export default function FetchATOInterest() {
         }
 
         const rate = interestBase + Number(rowToUse[interestCol]);
-        console.log(rate);
         ctx?.setATO_InterestRate(Number(rate.toFixed(2)));
         interestFetched.current = true;
-        if (ctx) {
-          console.log('ctx exists and Interest rate set in context:', rate.toFixed(2));
-        }
       } catch (err: any) {
         console.error('Failed to fetch ATO interest data:', err.message);
       }

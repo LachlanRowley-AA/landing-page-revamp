@@ -73,7 +73,6 @@ export default function CalculatorSlider() {
                 if (!isNaN(parsed)) {
                   const capped = Math.min(parsed, MAX_AMOUNT);
                   setAmountOwed(capped);
-                  sessionStorage.setItem('loanAmount', capped.toString());
                 }
               }}
               onKeyDown={(e) => {
@@ -103,7 +102,6 @@ export default function CalculatorSlider() {
                 if (!isNaN(parsed)) {
                   const capped = Math.max(0, parsed);
                   setAmountOwed(capped);
-                  sessionStorage.setItem('loanAmount', capped.toString());
                 }
               }}
               leftSection="$"
@@ -121,7 +119,6 @@ export default function CalculatorSlider() {
                   variant="subtle"
                   onClick={() => {
                     setAmountOwed(Math.min(amountOwed, MAX_AMOUNT));
-                    sessionStorage.setItem('loanAmount', amountOwed.toString());
                   }}
                 >
                   Reset

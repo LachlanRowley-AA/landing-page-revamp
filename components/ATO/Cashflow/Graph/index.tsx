@@ -32,8 +32,6 @@ export default function Graph() {
     amountOwed,
   } = ctx;
 
-  console.log('graph sees final payment as: ', ATOFinalPayment);
-
   // split finance interest: raw vs. tax savings
   const financeTaxDeduction = Loan_interestAmount * taxRate;
   const financeNetInterest = Loan_interestAmount - financeTaxDeduction;
