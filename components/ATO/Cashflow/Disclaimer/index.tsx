@@ -19,7 +19,7 @@ export default function Disclaimer() {
         This calculator uses the current GIC rate of {ATO_interestRate}%. The GIC may vary.
       </Text>
       <Text size="sm" mb={0}>
-        Finance interest rates last updated: 29/09/2025
+        Finance interest rates correct as of: 29/09/2025. Interest rates updated regularly.
       </Text>
     </Alert>
   );
