@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   Container,
+  Divider,
   Group,
   Image,
   Progress,
@@ -77,7 +78,7 @@ export function Options() {
         </Text>
         <Progress value={((activeIndex + 1) / menus.length) * 100} radius="xl" />
       </Box>
-     {activeIndex !== (menus.length -1) && (<Disclaimer />)}
+      {activeIndex !== menus.length - 1 && <Disclaimer />}
       {/* Animated content, centered */}
       <Box style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <motion.div
@@ -93,7 +94,7 @@ export function Options() {
       </Box>
 
       {/* Navigation */}
-      <Group justify="space-between" mt="md">
+      <Group justify="space-between" mt={0}>
         <Button
           variant="default"
           leftSection={<IconChevronLeft size={18} />}
@@ -102,11 +103,29 @@ export function Options() {
         >
           Back
         </Button>
-        {activeIndex !== menus.length - 1 && (
-          <Button variant="filled" rightSection={<IconChevronRight size={18} />} onClick={next}>
-            {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
-          </Button>
-        )}{' '}
+          {activeIndex === menus.length - 2 && (
+            <div>
+              <Button
+                component="a"
+                size="xl"
+                variant="filled"
+                href="https://taxdebt.assetalley.com.au"
+                bg="#01E194"
+              >
+                Interested in learning more?
+              </Button>
+            </div>
+          )}
+          {(activeIndex === 0 || activeIndex === menus.length - 2) && (
+            <Button
+              size={activeIndex === menus.length - 2 ? 'xl' : 'md'}
+              variant="filled"
+              rightSection={<IconChevronRight size={18} />}
+              onClick={next}
+            >
+              {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
+            </Button>
+          )}{' '}
       </Group>
     </Stack>
   );
