@@ -1,25 +1,22 @@
-import { useContext } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { Alert, Text } from '@mantine/core';
-import { ATO_OptionsContext } from '../Context';
 
 export default function Disclaimer() {
-  const ctx = useContext(ATO_OptionsContext);
-  if (!ctx) {
-    throw new Error('ATO_OptionsContext is not provided');
-  }
-  const { ATO_interestRate } = ctx;
   return (
     <Alert variant="light" color="blue" icon={<IconInfoCircle />} py="xs">
-      <Text size="sm" mb={0}>
-        This calculator provides an estimate only. You are not guaranteed to receive the rates
-        provided.
+      <Text size="sm">
+        This calculator provides estimates only and does not constitute a guarantee of the rates
+        shown.
       </Text>
-      <Text size="sm" mb={0}>
-        This calculator uses the current GIC rate of {ATO_interestRate}%. The GIC may vary.
+      <Text size="sm">
+        The General Interest Charge (GIC) rate of 10.61% is sourced from the Australian Taxation
+        Office (ATO) and is subject to change.
       </Text>
-      <Text size="sm" mb={0}>
-        Finance interest rates correct as of: 29/09/2025. Interest rates updated regularly.
+      <Text size="sm">
+        We are not affiliated with, endorsed by, or acting on behalf of the ATO.
+      </Text>
+      <Text size="sm">
+        Finance plan rates are set independently and were last updated on 1 October 2025.
       </Text>
     </Alert>
   );

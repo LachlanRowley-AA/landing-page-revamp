@@ -6,19 +6,13 @@ import { ATO_OptionsContext } from '../Context';
 export default function FetchATOInterest() {
   const ctx = useContext(ATO_OptionsContext);
   const interestBase = 7;
+  const fallbackRate = 10.61; // <-- fallback
 
   const interestFetched = useRef(false);
 
   useEffect(() => {
-    if (interestFetched.current) {
-      return;
-    }
-    //To stop spamming ATO == Remove in Live
-    // ctx?.setATO_InterestRate(10.78);
-    // interestFetched.current = true;
-    // return;
+    if (interestFetched.current) return;
 
-    
     const fetchData = async () => {
       try {
         const res = await fetch(
@@ -32,33 +26,32 @@ export default function FetchATOInterest() {
         const interestCol = json.columns.findIndex((i: any) => i.name === 'AM_FIGURE');
         const interestTypeCol = json.columns.findIndex((i: any) => i.name === 'IN_TYPE_FIGURE');
 
-        if (interestCol === -1) {
-          throw new Error('AM_FIGURE column not found');
-        }
-        if (interestTypeCol === -1) {
-          throw new Error('IN_TYPE_FIGURE column not found');
-        }
-        if (!json.rows || json.rows.length === 0) {
-          throw new Error('No rows found in data');
-        }
+        if (interestCol === -1) throw new Error('AM_FIGURE column not found');
+        if (interestTypeCol === -1) throw new Error('IN_TYPE_FIGURE column not found');
+        if (!json.rows || json.rows.length === 0) throw new Error('No rows found in data');
 
-        // Find the last row with IN_TYPE_FIGURE === 'T'
         const rowToUse = [...json.rows].reverse().find((row: any) => row[interestTypeCol] === 'T');
-
-        if (!rowToUse) {
-          throw new Error('No row found with IN_TYPE_FIGURE === "T"');
-        }
+        if (!rowToUse) throw new Error('No row found with IN_TYPE_FIGURE === "T"');
 
         const rate = interestBase + Number(rowToUse[interestCol]);
         ctx?.setATO_InterestRate(Number(rate.toFixed(2)));
         interestFetched.current = true;
       } catch (err: any) {
         console.error('Failed to fetch ATO interest data:', err.message);
+
+        // Mark as fetched BEFORE alert to prevent re-renders retriggering
+        interestFetched.current = true;
+
+        // Fallback: set predefined rate and alert user
+        ctx?.setATO_InterestRate(fallbackRate);
+        alert(
+          `We were unable to fetch the current ATO interest rate. A fallback rate of ${fallbackRate}% has been applied.`
+        );
       }
     };
 
     fetchData();
-  });
+  }, [ctx]); // <--- dependency array
 
-  return null; // Nothing to render
+  return null;
 }
