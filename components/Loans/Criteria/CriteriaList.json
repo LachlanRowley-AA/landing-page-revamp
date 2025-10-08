@@ -56,7 +56,7 @@
       "Misc": ["Existing car loan reference", "Minimum 20% deposit"]
     },
     "MaxPrice": 100000,
-    "Rate": 6.44,
+    "Rate": 6.46,
     "Icon": "IconHomeOff",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 2,
@@ -173,7 +173,7 @@
       "ABN": 1,
       "GST": 0,
       "Property": true,
-      "Misc": ["Has asset finance reference running for more than 12 months or 12 months mortgage statemen showing perfect conduct"]
+      "Misc": ["Has asset finance reference running for more than 12 months or 12 months mortgage statement showing perfect conduct"]
     },
     "MaxPrice": 100000,
     "Rate": 6.89,
@@ -197,7 +197,7 @@
       "ABN": 1,
       "GST": 1,
       "Property": false,
-      "Misc": ["Has asset finance reference running for more than 12 months or 12 months mortgage statemen showing perfect conduct"]
+      "Misc": ["Asset finance reference running for more than 12 months or 12 months mortgage statement showing perfect conduct"]
     },
     "MaxPrice": 100000,
     "Rate": 6.89,
@@ -221,7 +221,7 @@
       "ABN": 1,
       "GST": 0,
       "Property": true,
-      "Misc": [""]
+      "Misc": []
     },
     "MaxPrice": 50000,
     "Rate": 8.3,
@@ -245,7 +245,7 @@
       "ABN": 1,
       "GST": 0,
       "Property": false,
-      "Misc": [""]
+      "Misc": []
     },
     "MaxPrice": 50000,
     "Rate": 12.8,
@@ -269,7 +269,7 @@
       "ABN": 1,
       "GST": 1,
       "Property": false,
-      "Misc": [""]
+      "Misc": []
     },
     "MaxPrice": 150000,
     "Rate": 12.8,
