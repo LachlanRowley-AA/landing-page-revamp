@@ -1,0 +1,30 @@
+import { createClient } from '@supabase/supabase-js';
+import { NextResponse, NextRequest } from 'next/server';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
+
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  try {
+    const body = await request.json();
+    console.log('Received JSON:', body);
+
+    const { data, error } = await supabase
+      .from('lenders')
+      .upsert(body);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ data, status: 200 });
+  } catch (error) {
+    console.error('Error in /api/updatelender:', error);
+    return NextResponse.json(
+      { error: 'Failed to submit form' },
+      { status: 500 }
+    );
+  }
+}

@@ -17,7 +17,7 @@ export default function DateSelect({ dates, setATO, onSelect }: DateSelectProps)
     throw new Error('ATO_OptionsContext is not provided');
   }
 
-  const { setATO_paymentTermLength, setLoan_paymentTermLength, isMobile } = ctx;
+  const { setATO_paymentTermLength, setLoan_paymentTermLength, isMobile, ATO_paymentTermLength } = ctx;
 
   const handleSelect = (value: number) => {
     if (setATO) {
@@ -45,12 +45,13 @@ export default function DateSelect({ dates, setATO, onSelect }: DateSelectProps)
 
       <Grid justify="center" gutter="md" style={{ width: '100%', maxWidth: 400 }}>
         {dates.map((i) => (
+          (setATO || i >= ATO_paymentTermLength) && (
           <GridCol span={6} key={i}>
             <Button fullWidth size="md" variant="outline" onClick={() => handleSelect(i)}>
               {i} Months
             </Button>
           </GridCol>
-        ))}
+        )))}
       </Grid>
     </Stack>
   );

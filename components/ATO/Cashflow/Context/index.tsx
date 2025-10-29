@@ -18,6 +18,7 @@ export interface ATO_OptionsContextProps {
   Loan_interestRate: number;
   Loan_interestAmount: number;
   Loan_monthlyRepayment: number;
+  loanDeposit: boolean;
 
   setAmountOwed: (value: number) => void;
   setStageIndex: (value: number) => void;
@@ -33,6 +34,8 @@ export interface ATO_OptionsContextProps {
   setLoan_InterestRate: (value: number) => void;
   setLoan_InterestAmount: (value: number) => void;
   setLoan_MonthlyRepayment: (value: number) => void;
+  setLoanDeposit: (value: boolean) => void;
+
   calculateInterestAmount: (loanAmount: number, interestRate: number, termLength: number) => void;
   calculateMonthlyRepayment: (loanAmount: number, interestRate: number, termLength: number) => void;
 }
@@ -59,6 +62,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
   const [Loan_interestRate, setLoan_InterestRate] = useState<number>(13.95);
   const [Loan_interestAmount, setLoan_InterestAmount] = useState<number>(0);
   const [Loan_monthlyRepayment, setLoan_MonthlyRepayment] = useState<number>(0);
+  const [loanDeposit, setLoanDeposit] = useState<boolean>(false);
 
   useEffect(() => {
     setIsMobile(isMobileProp);
@@ -223,13 +227,17 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     let finalPayment = 0;
 
     while (currentBalance >= paymentSize) {
-      const interest = round2DecimalPlaces(currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1));
+      const interest = round2DecimalPlaces(
+        currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1)
+      );
       currentBalance = round2DecimalPlaces(currentBalance + interest - paymentSize);
       totalInterest = round2DecimalPlaces(totalInterest + interest);
     }
 
     if (currentBalance > 0) {
-      const finalInterest = round2DecimalPlaces(currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1));
+      const finalInterest = round2DecimalPlaces(
+        currentBalance * ((1 + dailyRate) ** daysInPaymentPeriod - 1)
+      );
       finalPayment = round2DecimalPlaces(currentBalance + finalInterest);
       totalInterest = round2DecimalPlaces(totalInterest + finalInterest);
     }
@@ -249,14 +257,19 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
   }, [amountOwed, ATO_paymentTermLength, ATO_interestRate]);
 
   useEffect(() => {
-    const amountAfterDeposit = amountOwed * 0.95;
+    const amount = loanDeposit ? amountOwed * 0.95 : amountOwed;
     setLoan_InterestAmount(
-      calculateInterestAmount(amountOwed, Loan_interestRate, Loan_paymentTermLength)
+      calculateInterestAmount(amount, Loan_interestRate, Loan_paymentTermLength)
     );
-    setLoan_MonthlyRepayment(
-      calculateEffectiveRepayment(amountOwed, 0, Loan_interestRate, Loan_paymentTermLength)
-    );
-  }, [amountOwed, Loan_interestRate, Loan_paymentTermLength]);
+      setLoan_MonthlyRepayment(
+        calculateEffectiveRepayment(
+          amount,
+          0,
+          Loan_interestRate,
+          Loan_paymentTermLength
+        )
+      );
+  }, [amountOwed, Loan_interestRate, Loan_paymentTermLength, loanDeposit]);
 
   return (
     <ATO_OptionsContext.Provider
@@ -276,6 +289,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
         Loan_interestAmount,
         Loan_monthlyRepayment,
         Loan_paymentTermLength,
+        loanDeposit,
 
         setAmountOwed,
         setStageIndex,
@@ -291,6 +305,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
         setLoan_InterestAmount,
         setLoan_MonthlyRepayment,
         setLoan_paymentTermLength,
+        setLoanDeposit,
 
         calculateInterestAmount,
         calculateMonthlyRepayment,

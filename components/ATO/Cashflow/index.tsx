@@ -21,6 +21,7 @@ import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import ContactSpecialist from './ContactSpecialist';
 import { ATO_ContextProvider } from './Context';
 import DateSelect from './DateSelect';
+import DepositSelect from './DepositSelect';
 import Disclaimer from './Disclaimer';
 import FetchATOInterest from './FetchData';
 import Graph from './Graph';
@@ -52,6 +53,7 @@ export function Options() {
       component: <DateSelect dates={loan_dates} setATO={false} onSelect={next} />,
       label: 'Select loan term',
     },
+    { component: <DepositSelect onSelect={next} />, label: 'Deposit options' },
     { component: <Graph />, label: 'View results' },
     { component: <ContactSpecialist />, label: 'Talk to a specialist' },
   ];
@@ -103,29 +105,35 @@ export function Options() {
         >
           Back
         </Button>
-          {activeIndex === menus.length - 2 && (
-            <div>
-              <Button
-                component="a"
-                size="xl"
-                variant="filled"
-                href="https://taxdebt.assetalley.com.au"
-                bg="#01E194"
-              >
-                Interested in learning more?
-              </Button>
-            </div>
-          )}
-          {(activeIndex === 0 || activeIndex === menus.length - 2) && (
+        {activeIndex === menus.length - 2 && (
+          <div>
             <Button
-              size={activeIndex === menus.length - 2 ? 'xl' : 'md'}
+              component="a"
+              size="xl"
               variant="filled"
-              rightSection={<IconChevronRight size={18} />}
-              onClick={next}
+              href="https://taxdebt.assetalley.com.au"
+              bg="#01E194"
             >
-              {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
+              Interested in learning more?
             </Button>
-          )}{' '}
+          </div>
+        )}
+        {(activeIndex === 0 || activeIndex === menus.length - 2) && (
+          <Button
+            size={activeIndex === menus.length - 2 ? 'xl' : 'md'}
+            variant="filled"
+            rightSection={<IconChevronRight size={18} />}
+            onClick={() => {
+              if (activeIndex === menus.length - 2) {
+                window.location.href = 'https://taxdebt.assetalley.com.au/booking';
+              } else {
+                next();
+              }
+            }}
+          >
+            {activeIndex === menus.length - 2 ? 'Talk to a specialist' : 'Continue'}
+          </Button>
+        )}{' '}
       </Group>
     </Stack>
   );
