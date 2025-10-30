@@ -29,7 +29,7 @@
       "ABN": 2,
       "GST": 2,
       "Property": false,
-      "Misc": ["Minimum 20% deposit"]
+      "Misc": []
     },
     "MaxPrice": 200000,
     "Rate": 6.89,
@@ -53,11 +53,11 @@
       "ABN": 2,
       "GST": 2,
       "Property": false,
-      "Misc": ["Existing car loan reference", "Minimum 20% deposit"]
+      "Misc": ["Existing car loan reference"]
     },
     "MaxPrice": 100000,
     "Rate": 6.46,
-    "Icon": "IconHomeOff",
+    "Icon": "IconCar",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 2,
     "FinanceFee": 531.25,
@@ -77,7 +77,7 @@
       "ABN": 2,
       "GST": 2,
       "Property": false,
-      "Misc": ["Has asset finance reference", "Minimum 10% deposit"]
+      "Misc": ["Has asset finance reference"]
     },
     "MaxPrice": 200000,
     "Rate": 10.75,
@@ -177,7 +177,7 @@
     },
     "MaxPrice": 100000,
     "Rate": 6.89,
-    "Icon": "IconHomeOff",
+    "Icon": "IconChecklist",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 2,
     "FinanceFee": 495,
@@ -201,7 +201,7 @@
     },
     "MaxPrice": 100000,
     "Rate": 6.89,
-    "Icon": "IconHomeOff",
+    "Icon": "IconChecklist",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 2,
     "FinanceFee": 495,
@@ -225,7 +225,7 @@
     },
     "MaxPrice": 50000,
     "Rate": 8.3,
-    "Icon": "IconHomeOff",
+    "Icon": "IconHome",
     "MaxBalloon": 40,
     "PrivateSaleUplift": 0,
     "FinanceFee": 0,
@@ -254,7 +254,7 @@
     "PrivateSaleUplift": 0,
     "FinanceFee": 0,
     "PrivateSaleFee": 0,
-    "MinDeposit": 0,
+    "MinDeposit": 20,
     "BalloonCalcMethod": "Additional",
     "BrokerageCalcMethod": "ExFee",
     "VehicleAgeImpact": {
@@ -264,7 +264,7 @@
     "AKF": 4.95
   },
   "11": {
-    "Title": "Veya - Home owner GST",
+    "Title": "Veya - Non-home owner GST",
     "Text": {
       "ABN": 1,
       "GST": 1,

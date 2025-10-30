@@ -1,7 +1,12 @@
 'use client';
 
 import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
-import { Grid, GridCol, Group, Text, ThemeIcon } from '@mantine/core';
+import {
+  Group,
+  Text,
+  ThemeIcon,
+  SimpleGrid,
+} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useCriteria } from '../CriteriaHandler';
 
@@ -14,12 +19,21 @@ interface Property {
   ABN: number;
   GST: number;
   Property: boolean;
+  [key: string]: any;
 }
 
 export default function CriteriaDisplay({ criteriaList = [], index = 0 }: CriteriaProps) {
   const criteria = useCriteria();
-  const isMobile = useMediaQuery('(max-width: 768px)'); // adjust breakpoint
-  const vals: Property = criteria[index].Text as Property;
+  const isMobile = useMediaQuery('(max-width: 768px)'); 
+
+  const currentCriteria = criteria[index];
+
+  // Guard against missing criteria (still loading or invalid index)
+  if (!currentCriteria) {
+    return <Text>Loading criteria...</Text>; // or a spinner
+  }
+
+  const vals: Property = currentCriteria.Text as Property;
 
   const formatValue = (key: string, value: any) => {
     switch (key) {
@@ -39,42 +53,60 @@ export default function CriteriaDisplay({ criteriaList = [], index = 0 }: Criter
         return value;
     }
   };
-  console.log("raw value = ", vals);
+
   const entries = Object.entries(vals);
 
   return (
-    <Grid w="100%">
-      {entries.map(([key, value], idx) => {
-        // Handle arrays separately
+    <SimpleGrid
+      cols={{ base: 2, md: 3 }}
+      spacing="md"
+      w="100%"
+      style={{ alignItems: 'flex-start' }}
+    >
+      {entries.map(([key, value]) => {
         if (Array.isArray(value)) {
           return value.map((v, arrIdx) => (
-            <GridCol span={6} key={`${key}-${arrIdx}`}>
-              <Group align="center" gap="xs" wrap="nowrap">
-                <ThemeIcon size={isMobile ? 'sm' : 'lg'} radius="xl" color="teal" mt={2}>
-                  <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />
-                </ThemeIcon>
-                <Text fz={{ base: 'xs', md: 'md' }} fw={500} style={{ wordBreak: 'break-word' }}>
-                  {v.toString()}
-                </Text>
-              </Group>
-            </GridCol>
+            <Group align="center" gap="xs" wrap="nowrap" key={`${key}-${arrIdx}`}>
+              <ThemeIcon
+                size={isMobile ? 'sm' : 'lg'}
+                radius="xl"
+                color="teal"
+                mt={2}
+              >
+                <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />
+              </ThemeIcon>
+              <Text
+                fz={{ base: 'xs', md: 'md' }}
+                fw={500}
+                style={{ wordBreak: 'break-word' }}
+              >
+                {formatValue(key, v)}
+              </Text>
+            </Group>
           ));
         }
 
-        // Render primitive values
         return (
-          <GridCol span={{base:6, md:4}} key={key}>
-            <Group align="center" gap="xs" wrap="nowrap">
-              <ThemeIcon size={isMobile ? 'sm' : 'lg'} radius="xl" color="teal" mt={2}>
-                <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />
-              </ThemeIcon>
-              <Text fz={{ base: 'xs', md: 'md' }} fw={500} style={{ wordBreak: 'break-word' }}>
-                {formatValue(key, value)}
-              </Text>
-            </Group>
-          </GridCol>
+          <Group align="center" gap="xs" wrap="nowrap" key={key}>
+            <ThemeIcon
+              size={isMobile ? 'sm' : 'lg'}
+              radius="xl"
+              color="teal"
+              mt={2}
+            >
+              <IconRosetteDiscountCheckFilled size={isMobile ? 14 : 18} />
+            </ThemeIcon>
+            <Text
+              fz={{ base: 'xs', md: 'md' }}
+              fw={500}
+              style={{ wordBreak: 'break-word' }}
+            >
+              {formatValue(key, value)}
+            </Text>
+          </Group>
         );
       })}
-    </Grid>
+    </SimpleGrid>
   );
 }
+

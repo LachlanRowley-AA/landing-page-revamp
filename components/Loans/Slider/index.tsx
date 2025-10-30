@@ -11,6 +11,7 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
   useMantineTheme,
 } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
@@ -31,31 +32,30 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
 
   const displayCtx = useDisplay();
   const { isMobile } = displayCtx;
+  const criteria = useCriteria();
+  const calc = criteria[index];
 
-  const calc = useCriteria()[index];
+  // Guard for async fetch
+  if (!calc) {
+    return <Text>Loading calculator...</Text>;
+  }
+
   const { baseAmountOwed, setBaseAmountOwed } = ctx;
 
-  const MAX_AMOUNT = calc.MaxPrice ? calc.MaxPrice : 0;
-  const depositPercent = calc.MinDeposit;
+  const MAX_AMOUNT = calc.MaxPrice ?? 0;
+  const depositPercent = calc.MinDeposit ?? 0;
 
-  // Purchase price is derived when deposit applies
+  // Purchase price derived when deposit applies
   const purchasePrice =
-    depositPercent > 0
-      ? baseAmountOwed / (1 - depositPercent / 100)
-      : baseAmountOwed;
+    depositPercent > 0 ? baseAmountOwed / (1 - depositPercent / 100) : baseAmountOwed;
 
-  useEffect(() => {
-    sessionStorage.setItem('loanAmount', baseAmountOwed.toString());
-  }, [baseAmountOwed]);
 
   const formatNumber = (num: number) =>
-    Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    Math.round(num)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  const handleNumericInput = (
-    raw: string,
-    setter: (val: number) => void,
-    cap = MAX_AMOUNT
-  ) => {
+  const handleNumericInput = (raw: string, setter: (val: number) => void, cap = MAX_AMOUNT) => {
     const parsed = Number(raw.replace(/,/g, ''));
     if (!isNaN(parsed)) {
       const capped = Math.max(0, Math.min(parsed, cap));
@@ -65,28 +65,31 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
 
   return (
     <Stack align="center" justify="center" gap="xs">
-      <Container size="lg" ta="center" style={{ height: '100%' }} w='100%'>
+      <Container size="lg" ta="center" style={{ height: '100%' }} w="100%">
         <Stack>
           {depositPercent > 0 ? (
             <>
+              <Box ta="center">
+                <Alert color="orange">A minimum deposit of {depositPercent}% is required</Alert>
+              </Box>
+
               {/* Side-by-side finance amount + purchase price */}
               <Group grow align="flex-end">
                 <Stack gap={2} w="100%">
-                  <JumboTitle
-                    order={isMobile ? 3 : 2}
-                    fz="xs"
+                  <Title
+                    fz="xl"
                     ta="center"
-                    fw={600}
                     style={{ textWrap: 'balance' }}
+                    c={{ base: 'black', md: 'black' }}
+                    fw={600}
+                    pb="xs"
                   >
                     Amount to Finance
-                  </JumboTitle>
+                  </Title>
                   <TextInput
                     type="text"
                     value={baseAmountOwed.toLocaleString()}
-                    onChange={(e) =>
-                      handleNumericInput(e.currentTarget.value, setBaseAmountOwed)
-                    }
+                    onChange={(e) => handleNumericInput(e.currentTarget.value, setBaseAmountOwed)}
                     leftSection="$"
                     size="md"
                     styles={{
@@ -105,15 +108,16 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
                 </Stack>
 
                 <Stack gap={2} w="100%">
-                  <JumboTitle
-                    order={isMobile ? 3 : 2}
-                    fz="xs"
+                  <Title
+                    fz="xl"
                     ta="center"
-                    fw={600}
                     style={{ textWrap: 'balance' }}
+                    c={{ base: 'black', md: 'black' }}
+                    fw={600}
+                    pb="xs"
                   >
                     Minimum Purchase Price
-                  </JumboTitle>
+                  </Title>{' '}
                   <TextInput
                     type="text"
                     value={formatNumber(purchasePrice)}
@@ -160,12 +164,6 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
                   </Text>
                 </Group>
               </Stack>
-
-              <Box ta="center">
-                <Alert color="orange">
-                  A minimum deposit of {depositPercent}% is required
-                </Alert>
-              </Box>
             </>
           ) : (
             <>
@@ -182,9 +180,7 @@ export default function CalculatorSlider({ index }: CalculatorSliderProps) {
               <TextInput
                 type="text"
                 value={baseAmountOwed.toLocaleString()}
-                onChange={(e) =>
-                  handleNumericInput(e.currentTarget.value, setBaseAmountOwed)
-                }
+                onChange={(e) => handleNumericInput(e.currentTarget.value, setBaseAmountOwed)}
                 leftSection="$"
                 size="md"
                 styles={{

@@ -13,6 +13,7 @@ import {
   Slider,
   Stack,
   Text,
+  Title,
   TextInput,
   useMantineTheme,
 } from '@mantine/core';
@@ -51,16 +52,15 @@ export default function TermSlider() {
         <Grid align="center" gutter="xl">
           <Grid.Col span={12}>
             <span>
-              <JumboTitle
-                order={isMobile ? 3 : 2}
-                fz="xs"
+              <Title
+                fz="xl"
                 ta="center"
                 style={{ textWrap: 'balance' }}
                 c={{ base: 'black', md: 'black' }}
                 fw={600}
               >
                 Term Length
-              </JumboTitle>
+              </Title>
             </span>
           </Grid.Col>
         </Grid>

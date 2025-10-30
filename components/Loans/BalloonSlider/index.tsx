@@ -13,6 +13,7 @@ import {
   Slider,
   Stack,
   Text,
+  Title,
   TextInput,
   useMantineTheme,
 } from '@mantine/core';
@@ -36,7 +37,14 @@ export default function BalloonSlider({ index }: BalloonSliderProps) {
   const { isMobile } = displayCtx;
 
   const { balloonAmount, setBalloonAmount, vehicleAgeToggle } = ctx;
-  const calc = useCriteria()[index];
+  const criteria = useCriteria();
+  const calc = criteria[index];
+
+  // Guard for async fetch
+  if (!calc) {
+    return <Text>Loading calculator...</Text>;
+  }
+
   const [maxBalloon, setMaxBalloon] = useState(calc.MaxBalloon ?? 0);
 
   useEffect(() => {
@@ -45,7 +53,7 @@ export default function BalloonSlider({ index }: BalloonSliderProps) {
       : calc.MaxBalloon;
 
     setMaxBalloon(newMax);
-    setBalloonAmount(Math.min(newMax, balloonAmount))
+    setBalloonAmount(Math.min(newMax, balloonAmount));
   }, [vehicleAgeToggle, calc.MaxBalloon, calc.VehicleAgeImpact.BalloonDecrease]);
 
   return (
@@ -54,16 +62,15 @@ export default function BalloonSlider({ index }: BalloonSliderProps) {
         <Grid align="center" gutter="xl">
           <Grid.Col span={12}>
             <span>
-              <JumboTitle
-                order={isMobile ? 3 : 2}
-                fz="xs"
+              <Title
+                fz="xl"
                 ta="center"
                 style={{ textWrap: 'balance' }}
                 c={{ base: 'black', md: 'black' }}
                 fw={600}
               >
-                Balloon Amount
-              </JumboTitle>
+                Balloon Percentage
+              </Title>
             </span>
           </Grid.Col>
         </Grid>

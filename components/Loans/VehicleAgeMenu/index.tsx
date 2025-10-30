@@ -2,7 +2,7 @@
 
 import { useContext, useState } from 'react';
 import { IconCar, IconCarOff, IconSparkles } from '@tabler/icons-react';
-import { Card, Grid, GridCol, Group, Radio, Stack, Text, useMantineTheme } from '@mantine/core';
+import { Card, Grid, GridCol, Group, Radio, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 import { JumboTitle } from '@/components/JumboTitle/JumboTitle';
 import { CalculatorContext } from '../Context';
 import { useCriteria } from '../Criteria/CriteriaHandler';
@@ -46,7 +46,7 @@ export default function VehicleAgeMenu({ index }: PrivateSaleSliderProps) {
           withBorder
           shadow={isSelected ? 'md' : 'xs'}
           radius="lg"
-          padding="md"
+          padding="xs"
           style={{
             cursor: 'pointer',
             borderColor: isSelected ? theme.colors.blue[6] : theme.colors.gray[3],
@@ -71,19 +71,20 @@ export default function VehicleAgeMenu({ index }: PrivateSaleSliderProps) {
   });
 
   return (
-    <Stack>
-      <JumboTitle
-        order={isMobile ? 3 : 2}
-        fz="xs"
+    <Stack gap={0}>
+      <Title
+        fz="xl"
         ta="center"
         style={{ textWrap: 'balance' }}
+        c={{ base: 'black', md: 'black' }}
         fw={600}
+        pb="xs"
       >
         Vehicle Age
-      </JumboTitle>
+      </Title>
 
       <Radio.Group value={selectedOption} onChange={setSelectedOption}>
-        <Grid gutter={{ base: 'xs', md: 'xl' }}>{cards}</Grid>
+        <Grid gutter={{ base: 'xs', md: 'xs' }}>{cards}</Grid>
       </Radio.Group>
     </Stack>
   );

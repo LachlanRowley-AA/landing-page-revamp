@@ -21,6 +21,7 @@ import {
   Text,
   Title,
   Transition,
+  useMantineTheme,
 } from '@mantine/core';
 import { useCriteria } from '../CriteriaHandler';
 
@@ -30,6 +31,7 @@ interface ItemLayoutProps {
   rate: number;
   index: string;
   image: string;
+  backgroundColor?: string;
 }
 
 const formatValue = (key: string, value: any) => {
@@ -42,8 +44,8 @@ const formatValue = (key: string, value: any) => {
       return value >= 1
         ? `GST registered for ${value} or more years`
         : value > 0
-          ? `GST registered for 1 day or more`
-          : 'Not GST registered';
+        ? `GST registered for 1 day or more`
+        : 'Not GST registered';
     case 'Property':
       return value ? "Own a home in your or your spouse's name" : 'Not a property owner';
     case 'Misc':
@@ -63,8 +65,8 @@ const formatValueShort = (key: string, value: any) => {
       return value >= 1
         ? `GST registered for ${value} years`
         : value > 0
-          ? `GST registered for 1 day or more`
-          : 'Not GST registered';
+        ? `GST registered for 1 day or more`
+        : 'Not GST registered';
     case 'Property':
       return value ? 'Property owner' : 'Not property owner';
     case 'Misc':
@@ -74,11 +76,23 @@ const formatValueShort = (key: string, value: any) => {
   }
 };
 
-const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) => {
+const lightenColor = (color: string, amount: number) => {
+  // Helper: returns a lighter version of a hex color
+  const clamp = (val: number) => Math.min(255, Math.max(0, val));
+  const num = parseInt(color.replace('#', ''), 16);
+  const r = clamp((num >> 16) + amount);
+  const g = clamp(((num >> 8) & 0x00ff) + amount);
+  const b = clamp((num & 0x0000ff) + amount);
+  return `#${(b | (g << 8) | (r << 16)).toString(16).padStart(6, '0')}`;
+};
+
+const ItemLayout = ({ title, categories, rate, index, image, backgroundColor }: ItemLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const Icon = (TablerIcons as any)[image] || TablerIcons.IconCircle;
   const [isHovered, setIsHovered] = useState(false);
+
+  const hoverColor = backgroundColor ? lightenColor(backgroundColor, 10) : '#f9f9f9';
 
   return (
     <Card
@@ -94,6 +108,7 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
         transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
         borderColor: isHovered ? '#01E194' : undefined,
+        backgroundColor: isHovered ? hoverColor : backgroundColor || '#fff',
       }}
     >
       <Grid gutter="lg" align="center">
@@ -116,34 +131,32 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
 
         <GridCol span={{ base: 12, sm: 9 }}>
           <Stack gap="sm">
-            <Group justify="space-between" align="start">
-              <Title order={4} style={{ wordBreak: 'break-word', flex: 1 }}>
-                {title}
-              </Title>
-            </Group>
-
-            <Divider opacity={0.3} />
-
             <Flex gap="xs" wrap="wrap">
               {categories.map((category, idx) => (
                 <Badge
                   key={idx}
-                  color="teal"
+                  color="rgba(255, 255, 255, 1)"
                   variant="light"
-                  size="md"
-                  radius="md"
+                  size="lg"
+                  radius="xl"
                   style={{
                     overflow: 'visible',
                     textOverflow: 'unset',
                     whiteSpace: 'normal',
+                    border: '1.5px solid rgba(1, 225, 148, 0.3)',
+                    fontWeight: 500,
                   }}
                   h="auto"
+                  px="md"
+                  py="xs"
+                  bg='rgba(255, 255, 255, 1)'
                   styles={{
                     label: {
                       whiteSpace: 'normal',
                       overflow: 'visible',
                       textOverflow: 'unset',
                       textAlign: 'center',
+                      color: '#2d2d2d',
                     },
                   }}
                 >
@@ -166,7 +179,7 @@ const ItemLayout = ({ title, categories, rate, index, image }: ItemLayoutProps) 
                 transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
               }}
             >
-              <Container visibleFrom='md'>
+              <Container visibleFrom="md">
                 <IconChevronRight size={24} />
               </Container>
             </ActionIcon>
@@ -231,11 +244,9 @@ export default function ListView() {
       const rateOk = item.Rate >= filters.minRate && item.Rate <= filters.maxRate;
       const priceOk = item.MaxPrice <= filters.maxPrice;
       const searchOk = item.Title.toLowerCase().includes(filters.search.toLowerCase());
-
       const gstOk = !filters.gst || item.Text.GST <= parseInt(filters.gst);
       const homeOk = !filters.home || (filters.home === 'No' ? !item.Text.Property : true);
       const abnOk = !filters.abn || item.Text.ABN <= parseInt(filters.abn);
-
       return rateOk && priceOk && searchOk && gstOk && homeOk && abnOk;
     })
     .sort((a, b) => a[1].Rate - b[1].Rate);
@@ -253,6 +264,9 @@ export default function ListView() {
       abn: '',
     });
   };
+
+  // Alternating background colors
+  const colors = ['#FFFFFF', '#E5F3FD']; //'#fcfcf3'
 
   return (
     <Container size="xl" py="xs">
@@ -274,7 +288,7 @@ export default function ListView() {
             color="teal"
             size="md"
             onClick={() => setShowFilters(!showFilters)}
-            visibleFrom='md'
+            visibleFrom="md"
           >
             {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
@@ -285,7 +299,7 @@ export default function ListView() {
           {(styles) => (
             <Paper shadow="sm" p="md" radius="lg" withBorder style={styles}>
               <Stack gap="xs">
-                <Group justify="space-between" align="center" gap='xs'>
+                <Group justify="space-between" align="center" gap="xs">
                   <Title order={3}>Filter Options</Title>
                   {hasActiveFilters && (
                     <Button
@@ -343,13 +357,14 @@ export default function ListView() {
         {/* Results List */}
         <Stack gap="md">
           {filteredItems.length > 0 ? (
-            filteredItems.map(([key, item]) => {
+            filteredItems.map(([key, item], idx) => {
               const categories = [
                 formatValue('ABN', item.Text.ABN),
                 formatValue('GST', item.Text.GST),
                 formatValue('Property', item.Text.Property),
                 ...item.Text.Misc,
               ];
+              const backgroundColor = colors[idx % colors.length];
 
               return (
                 <ItemLayout
@@ -359,6 +374,7 @@ export default function ListView() {
                   categories={categories}
                   rate={item.Rate}
                   image={item.Icon}
+                  backgroundColor={backgroundColor}
                 />
               );
             })

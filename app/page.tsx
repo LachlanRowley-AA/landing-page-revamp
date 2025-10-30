@@ -1,6 +1,5 @@
-import { audienceContent, AudienceKey } from '@/lib/audienceContent';
+import { audienceContent, AudienceKey, textKey } from '@/lib/audienceContent';
 import HomePageClient from '@/components/Homepage/HomepageClient';
-import { textKey } from '@/lib/audienceContent';
 // This is the Server Component
 export default async function HomePage(props: { params: Promise<{ audience: string, partner: string}>}) {
   const params = await props.params;
