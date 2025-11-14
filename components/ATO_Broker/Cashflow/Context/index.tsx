@@ -104,7 +104,7 @@ export function ATO_ContextProvider({ children, isMobileProp = false }: ATO_Cont
     fee: number,
     interestRate: number,
     termLength: number, // e.g. 12 months (excludes balloon month)
-    brokerageRate = 0.03,
+    brokerageRate = 0.00,
     akf = 0
   ): number => {
     return (
