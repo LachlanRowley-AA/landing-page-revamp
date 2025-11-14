@@ -72,24 +72,23 @@ export function CriteriaHandler({ children }: { children: ReactNode }) {
   const [criteria, setCriteria] = useState<CriteriaMap>({});
 
   useEffect(() => {
-    // ✅ Load from sessionStorage if available
     const stored = sessionStorage.getItem('criteriaData');
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         setCriteria(parsed);
-        console.log('Loaded criteria from sessionStorage');
         return; // skip fetching
       } catch (e) {
-        console.warn('Failed to parse stored criteria, refetching...');
+        console.error('Failed to parse stored criteria, refetching...');
       }
     }
 
-    // ✅ Otherwise fetch from API
     const fetchCriteria = async () => {
       try {
         const res = await fetch('/api/getLenders');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
         const json = await res.json();
         const normalized = normalizeCriteria(json.data);
         setCriteria(normalized);
@@ -103,15 +102,13 @@ export function CriteriaHandler({ children }: { children: ReactNode }) {
     fetchCriteria();
   }, []);
 
-  return (
-    <CriteriaContext.Provider value={criteria}>
-      {children}
-    </CriteriaContext.Provider>
-  );
+  return <CriteriaContext.Provider value={criteria}>{children}</CriteriaContext.Provider>;
 }
 
 export function useCriteria() {
   const ctx = useContext(CriteriaContext);
-  if (!ctx) throw new Error('useCriteria must be used inside CriteriaHandler');
+  if (!ctx) {
+    throw new Error('useCriteria must be used inside CriteriaHandler');
+  }
   return ctx;
 }

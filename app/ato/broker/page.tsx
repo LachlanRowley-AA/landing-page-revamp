@@ -1,0 +1,15 @@
+import { Center, Container } from '@mantine/core';
+import { Cashflow } from '@/components/ATO_Broker';
+
+// import TestCORS from '@/components/ATO/FetchData';
+
+export default function ATO_PAGE() {
+  return (
+    <div style={{backgroundColor:'#ebebeb', width: '100%', height: '100%', minHeight: '100vh'}}>
+      <Center>
+        {/* <Options /> */}
+        <Cashflow />
+      </Center>
+    </div>
+  );
+}

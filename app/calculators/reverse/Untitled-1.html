@@ -1,0 +1,72 @@
+<script>
+function waitForVideo(selector, callback) {
+  const interval = setInterval(() => {
+    const container = document.querySelector(selector);
+    <!-- const video = container?.querySelector('video'); -->
+    console.log('searching for <video> element...');
+    if (video) {
+      console.log('video element found');
+      clearInterval(interval);
+      callback(video);
+    }
+  }, 500);
+}
+
+waitForVideo('#video-8O3OhMtD7v-video-js', (video) => {
+  console.log('Setting up button listener and scroll observer...');
+
+  // --- Auto-pause when video leaves viewport ---
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('Video in view');
+          video.play();
+        } else {
+          console.log('Video out of view, pausing...');
+          video.pause();
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  observer.observe(video);
+
+  // --- Watchtime tracking setup ---
+  const button = document.querySelector('#survey-V8ebMLWm-6');
+  const label = Array.from(document.querySelectorAll('label'))
+    .find(l => l.textContent.trim().includes('Video Watchtime'));
+
+  let input = null;
+  if (label) {
+    const inputId = label.getAttribute('for');
+    input = document.getElementById(inputId);
+    console.log('Found input:', input);
+  } else {
+    console.warn('No label with "Video Watchtime" found.');
+  }
+
+  if (button) {
+    button.addEventListener('click', () => {
+      console.log('Button clicked!');
+      console.log('watchtime (seconds):', video.currentTime);
+
+      if (input) {
+        input.value = video.currentTime;
+
+        // Trigger form update events
+        ['input', 'change', 'blur'].forEach(evt =>
+          input.dispatchEvent(new Event(evt, { bubbles: true }))
+        );
+        console.log('input value is: ', input.value);
+
+        console.log('Set input value to video watchtime');
+      } else {
+        console.warn('Input not found, cannot set value.');
+      }
+    });
+  } else {
+    console.warn('Button not found!');
+  }
+});
+</script>

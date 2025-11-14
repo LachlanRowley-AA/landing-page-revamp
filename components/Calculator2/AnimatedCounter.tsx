@@ -19,7 +19,7 @@ export const AnimatedCounter = ({
   suffix,
   ...textProps
 }: AnimatedCounterProps) => {
-  const startValue = 0.00; // Fixed start value as per your original code
+  const startValue = 0.00; 
   const [currentValue, setCurrentValue] = useState(startValue);
 
   // Immediately calculate the final value

@@ -1,41 +1,41 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
-  TextInput,
-  NumberInput,
-  Select,
   Button,
-  Paper,
-  Title,
   Group,
+  NumberInput,
+  Paper,
+  Select,
   Stack,
   Text,
-} from "@mantine/core";
+  TextInput,
+  Title,
+} from '@mantine/core';
 
-type Lender = "Westpac" | "Branded" | "Resimac" | "Other" | "";
+type Lender = 'Westpac' | 'Branded' | 'Resimac' | 'Other' | '';
 
 const lenderDefaults: Record<
   Lender,
   { calcMethod: string; repaymentTiming: string; balloonPreset: boolean }
 > = {
-  Westpac: { calcMethod: "TakesFinal", repaymentTiming: "Arrears", balloonPreset: false },
-  Branded: { calcMethod: "Additional", repaymentTiming: "Arrears", balloonPreset: false },
-  Resimac: { calcMethod: "OnTop", repaymentTiming: "Advance", balloonPreset: false },
-  Other: { calcMethod: "", repaymentTiming: "", balloonPreset: false },
-  "": { calcMethod: "", repaymentTiming: "", balloonPreset: false },
+  Westpac: { calcMethod: 'TakesFinal', repaymentTiming: 'Arrears', balloonPreset: false },
+  Branded: { calcMethod: 'Additional', repaymentTiming: 'Arrears', balloonPreset: false },
+  Resimac: { calcMethod: 'OnTop', repaymentTiming: 'Advance', balloonPreset: false },
+  Other: { calcMethod: '', repaymentTiming: '', balloonPreset: false },
+  '': { calcMethod: '', repaymentTiming: '', balloonPreset: false },
 };
 
 export default function EffectiveRateCalculator() {
-  const [loanAmount, setLoanAmount] = useState<number | "">(0);
-  const [fee, setFee] = useState<number | "">(0);
-  const [monthlyPayment, setMonthlyPayment] = useState<number | "">(0);
-  const [termLength, setTermLength] = useState<number | "">(0);
-  const [balloonInput, setBalloonInput] = useState<number | "">(0);
-  const [balloonType, setBalloonType] = useState<"dollar" | "percent">("dollar");
-  const [lender, setLender] = useState<Lender>("");
-  const [calcMethod, setCalcMethod] = useState<string>("");
-  const [repaymentTiming, setRepaymentTiming] = useState<string>("");
+  const [loanAmount, setLoanAmount] = useState<number | ''>(0);
+  const [fee, setFee] = useState<number | ''>(0);
+  const [monthlyPayment, setMonthlyPayment] = useState<number | ''>(0);
+  const [termLength, setTermLength] = useState<number | ''>(0);
+  const [balloonInput, setBalloonInput] = useState<number | ''>(0);
+  const [balloonType, setBalloonType] = useState<'dollar' | 'percent'>('dollar');
+  const [lender, setLender] = useState<Lender>('');
+  const [calcMethod, setCalcMethod] = useState<string>('');
+  const [repaymentTiming, setRepaymentTiming] = useState<string>('');
   const [result, setResult] = useState<{ rate: number; text: string } | null>(null);
 
   const onLenderChange = (value: Lender) => {
@@ -52,21 +52,28 @@ export default function EffectiveRateCalculator() {
     termLength: number,
     balloonValue: number,
     calcMethod: string,
-    repaymentTiming: string = "Arrears"
+    repaymentTiming: string = 'Arrears'
   ) => {
-    if (loanAmount <= 0 || termLength <= 0) return 0;
+    if (loanAmount <= 0 || termLength <= 0) {
+      return 0;
+    }
     const financedAmount = loanAmount + fee;
     const r = interestRate / 100 / 12;
-    if (r === 0) return (financedAmount - balloonValue) / termLength;
+    if (r === 0) {
+      return (financedAmount - balloonValue) / termLength;
+    }
 
     let n = termLength;
-    if (calcMethod === "TakesFinal" && balloonValue > 0) n = termLength - 1;
+    if (calcMethod === 'TakesFinal' && balloonValue > 0) {
+      n = termLength - 1;
+    }
 
     let payment =
-      ((financedAmount - balloonValue / Math.pow(1 + r, termLength)) * r) /
-      (1 - Math.pow(1 + r, -n));
+      ((financedAmount - balloonValue / (1 + r) ** termLength) * r) / (1 - (1 + r) ** -n);
 
-    if (repaymentTiming === "Advance") payment = payment / (1 + r);
+    if (repaymentTiming === 'Advance') {
+      payment /= 1 + r;
+    }
     return payment;
   };
 
@@ -77,12 +84,13 @@ export default function EffectiveRateCalculator() {
     numMonths: number,
     balloonValue: number,
     balloonCalcMethod: string,
-    repaymentTiming: string = "Arrears",
+    repaymentTiming: string = 'Arrears',
     tolerance = 0.01,
     maxIterations = 1000
   ) => {
-    if (principal <= 0 || realMonthly >= 0 || balloonValue < 0)
+    if (principal <= 0 || realMonthly >= 0 || balloonValue < 0) {
       return { annualRate: 0, iterations: 0 };
+    }
 
     let low = 0,
       high = 100,
@@ -101,9 +109,14 @@ export default function EffectiveRateCalculator() {
         repaymentTiming
       );
       const diff = Math.abs(realMonthly) - value;
-      if (Math.abs(diff) < tolerance) break;
-      if (diff > 0) low = mid;
-      else high = mid;
+      if (Math.abs(diff) < tolerance) {
+        break;
+      }
+      if (diff > 0) {
+        low = mid;
+      } else {
+        high = mid;
+      }
     }
     return { annualRate: mid, iterations: iteration };
   };
@@ -113,10 +126,10 @@ export default function EffectiveRateCalculator() {
     const monthly = Number(monthlyPayment) * -1;
     const months = Number(termLength);
     const balloonVal =
-      balloonType === "percent" ? (principal * Number(balloonInput)) / 100 : Number(balloonInput);
+      balloonType === 'percent' ? (principal * Number(balloonInput)) / 100 : Number(balloonInput);
 
     if (!calcMethod || !repaymentTiming) {
-      alert("Please select a balloon calculation method and repayment timing");
+      alert('Please select a balloon calculation method and repayment timing');
       return;
     }
 
@@ -132,8 +145,7 @@ export default function EffectiveRateCalculator() {
 
     setResult({
       rate: res.annualRate,
-      text:
-        "If there is a discrepancy please ensure the values are entered correctly. Lenders may not include AKF in their effective interest rate.",
+      text: 'If there is a discrepancy please ensure the values are entered correctly. Lenders may not include AKF in their effective interest rate.',
     });
   };
 
@@ -148,8 +160,8 @@ export default function EffectiveRateCalculator() {
       withBorder
       style={{
         maxWidth: 650,
-        margin: "40px auto",
-        background: "#f9f9f9",
+        margin: '40px auto',
+        background: '#f9f9f9',
       }}
     >
       <Title order={2} ta="center" mb="md">
@@ -160,28 +172,27 @@ export default function EffectiveRateCalculator() {
         <NumberInput
           label="Loan Amount"
           value={loanAmount}
-          onChange={setLoanAmount}
-          min={0}
+          onChange={(value) => setLoanAmount(value === '' ? '' : Number(value))}
         />
 
         <NumberInput
           label="Financed Fees (non-recurring)"
           value={fee}
-          onChange={setFee}
+          onChange={(value) => setFee(value === '' ? '' : Number(value))}
           min={0}
         />
 
         <NumberInput
           label="Monthly Payment"
           value={monthlyPayment}
-          onChange={setMonthlyPayment}
+          onChange={(value) => setMonthlyPayment(value === '' ? '' : Number(value))}
           min={0}
         />
 
         <NumberInput
           label="Number of Months"
           value={termLength}
-          onChange={setTermLength}
+          onChange={(value) => setTermLength(value === '' ? '' : Number(value))}
           min={1}
         />
 
@@ -189,16 +200,16 @@ export default function EffectiveRateCalculator() {
           <NumberInput
             label="Balloon"
             value={balloonInput}
-            onChange={setBalloonInput}
+            onChange={(value) => setBalloonInput(value === '' ? '' : Number(value))}
             min={0}
           />
           <Select
             label="Type"
             value={balloonType}
-            onChange={(v) => setBalloonType(v as "dollar" | "percent")}
+            onChange={(v) => setBalloonType(v as 'dollar' | 'percent')}
             data={[
-              { value: "dollar", label: "$" },
-              { value: "percent", label: "%" },
+              { value: 'dollar', label: '$' },
+              { value: 'percent', label: '%' },
             ]}
           />
         </Group>
@@ -209,10 +220,10 @@ export default function EffectiveRateCalculator() {
           value={lender}
           onChange={(v) => onLenderChange(v as Lender)}
           data={[
-            { value: "Westpac", label: "Westpac" },
-            { value: "Branded", label: "Branded" },
-            { value: "Resimac", label: "Resimac" },
-            { value: "Other", label: "Other / Unknown" },
+            { value: 'Westpac', label: 'Westpac' },
+            { value: 'Branded', label: 'Branded' },
+            { value: 'Resimac', label: 'Resimac' },
+            { value: 'Other', label: 'Other / Unknown' },
           ]}
         />
 
@@ -220,12 +231,12 @@ export default function EffectiveRateCalculator() {
           label="Balloon Calculation Method"
           placeholder="Select Method"
           value={calcMethod}
-          onChange={setCalcMethod}
+          onChange={(value) => setCalcMethod(value!)}
           disabled={calcDisabled}
           data={[
-            { value: "Additional", label: "Paid After the Loan Ends (Extra Month)" },
-            { value: "TakesFinal", label: "Reduces Regular Term Length" },
-            { value: "OnTop", label: "Paid in Addition to the Last Payment (Extra Amount)" },
+            { value: 'Additional', label: 'Paid After the Loan Ends (Extra Month)' },
+            { value: 'TakesFinal', label: 'Reduces Regular Term Length' },
+            { value: 'OnTop', label: 'Paid in Addition to the Last Payment (Extra Amount)' },
           ]}
         />
 
@@ -233,10 +244,10 @@ export default function EffectiveRateCalculator() {
           label="Repayment Timing"
           placeholder="Select Timing"
           value={repaymentTiming}
-          onChange={setRepaymentTiming}
+          onChange={(value) => setRepaymentTiming(value!)}
           data={[
-            { value: "Arrears", label: "Arrears" },
-            { value: "Advance", label: "Advance" },
+            { value: 'Arrears', label: 'Arrears' },
+            { value: 'Advance', label: 'Advance' },
           ]}
         />
 

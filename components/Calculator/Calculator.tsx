@@ -4,18 +4,15 @@ import { motion } from 'motion/react';
 import {
   Badge,
   Box,
-  BoxProps,
   Card,
   Container,
   Divider,
   Grid,
-  Group,
   rem,
   Stack,
   Text,
-  useMantineTheme,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+//import { useMediaQuery } from '@mantine/hooks';
 import { JumboTitle } from '../JumboTitle/JumboTitle';
 
 const DEFAULT_INTEREST_RATE = 15.95; // 15.95% annual interest
@@ -49,13 +46,13 @@ const calculateRepayment = (loanAmount: number, interestRate: number, isWeekly: 
   );
 };
 
-const calculateTotalInterest = (loanAmount: number, interestRate: number, isWeekly: boolean) => {
-  const totalPayments = isWeekly
-    ? LOAN_TERM_YEARS * WEEKS_IN_YEAR
-    : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
-  const repayment = calculateRepayment(loanAmount, interestRate, isWeekly);
-  return repayment * totalPayments - loanAmount;
-};
+// const calculateTotalInterest = (loanAmount: number, interestRate: number, isWeekly: boolean) => {
+//   const totalPayments = isWeekly
+//     ? LOAN_TERM_YEARS * WEEKS_IN_YEAR
+//     : LOAN_TERM_YEARS * MONTHS_IN_YEAR;
+//   const repayment = calculateRepayment(loanAmount, interestRate, isWeekly);
+//   return repayment * totalPayments - loanAmount;
+// };
 
 const ExampleCard = ({
   title,
@@ -107,9 +104,9 @@ const ExampleCard = ({
 
 const CalculationBreakdown = ({ amount = EXAMPLE_AMOUNT }) => {
   const weeklyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, true);
-  const monthlyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, false);
-  const totalInterestWeekly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, true);
-  const totalInterestMonthly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, false);
+  // const monthlyRepayment = calculateRepayment(amount, DEFAULT_INTEREST_RATE, false);
+  // const totalInterestWeekly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, true);
+  // const totalInterestMonthly = calculateTotalInterest(amount, DEFAULT_INTEREST_RATE, false);
 
   return (
     <Container size="sm" p={0}>
@@ -149,7 +146,7 @@ const CalculationBreakdown = ({ amount = EXAMPLE_AMOUNT }) => {
               title="Weekly Repayment"
               amount={`$${weeklyRepayment.toFixed(2)}`}
               period=""
-              highlight={true}
+              highlight
             />
           </Grid.Col>
           {/* <Grid.Col span={6}>
@@ -213,8 +210,8 @@ type CalculatorProps = {
 };
 
 export const Calculator = ({ startingAmount = 30000 }: CalculatorProps) => {
-  const theme = useMantineTheme();
-  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+  // const theme = useMantineTheme();
+  // const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   return (
     <Box bg="black" py="xl" px={{ base: 'xs', md: 'xl' }} style={{ minHeight: '70vh' }}>
